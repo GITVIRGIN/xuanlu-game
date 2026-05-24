@@ -342,14 +342,20 @@ function resolveEnemyIntent(state, enemy) {
 
   const intent = enemy.intent;
 
-  if (intent.type === "attack") {
-    const bossBonus = enemy.enemyId === "blackMountain" && enemy.hp <= enemy.maxHp / 2 ? 2 * combat.turn : 0;
-    const pressureBonus = enemyIntentBonus(run);
-    if (tryChaosAttack(state, enemy, (intent.value ?? 0) + bossBonus + pressureBonus)) {
-      return;
+  if (statusStacks(enemy, "chaos") > 0) {
+    if (intent.type === "attack") {
+      if (tryChaosAttack(state, enemy, enemyRawAttackDamage(run, enemy, intent))) {
+        return;
+      }
     }
+
+    skipEnemyByChaos(combat, enemy);
+    return;
+  }
+
+  if (intent.type === "attack") {
     combat.log.push(`${enemy.name} 攻击。`);
-    applyIncomingDamage(state, (intent.value ?? 0) + bossBonus + pressureBonus);
+    applyIncomingDamage(state, enemyRawAttackDamage(run, enemy, intent));
     return;
   }
 
@@ -372,11 +378,7 @@ function tryChaosAttack(state, enemy, rawDamage) {
   if (!run || !combat || statusStacks(enemy, "chaos") <= 0) return false;
 
   const targets = combat.enemies.filter((item) => item.uid !== enemy.uid && item.hp > 0);
-  if (targets.length === 0) {
-    const reduced = reduceConsumableDebuff(enemy, "chaos", 1);
-    combat.log.push(`${enemy.name} 受到离间影响，却找不到同伴，空过了这一回合${reduced ? "。" : "，凝滞保留了离间。"}`);
-    return true;
-  }
+  if (targets.length === 0) return false;
 
   const target = choice(run, targets);
   const reduced = reduceConsumableDebuff(enemy, "chaos", 1);
@@ -393,6 +395,11 @@ function tryChaosAttack(state, enemy, rawDamage) {
   }
   finishCombatIfWon(state);
   return true;
+}
+
+function skipEnemyByChaos(combat, enemy) {
+  const reduced = reduceConsumableDebuff(enemy, "chaos", 1);
+  combat.log.push(`${enemy.name} 受到离间影响，空过了这一回合${reduced ? "。" : "，凝滞保留了离间。"}`);
 }
 
 function createEnemiesForFloor(run) {
@@ -443,6 +450,50 @@ function enemyHpMultiplier(run) {
   const lateFloor = Math.max(0, run.floor - 8);
   const pressure = runPowerPressure(run);
   return 1 + Math.min(0.85, lateFloor * 0.025 + pressure * 0.035);
+}
+
+export function previewEnemyIntent(run, enemy) {
+  const intent = enemy?.intent;
+  if (!run || !enemy || !intent) return null;
+
+  if (intent.type === "attack") {
+    const base = intent.value ?? 0;
+    const bonus = enemyAttackBonus(run, enemy);
+    const curse = statusStacks(playerAsFighter(run), "curse");
+    return {
+      type: "attack",
+      base,
+      bonus,
+      curse,
+      rawDamage: base + bonus,
+      expectedDamage: base + bonus + curse,
+    };
+  }
+
+  if (intent.type === "block") {
+    const base = intent.value ?? 0;
+    const bonus = enemyIntentBonus(run);
+    return {
+      type: "block",
+      base,
+      bonus,
+      value: base + bonus,
+    };
+  }
+
+  return {
+    type: intent.type,
+    stacks: intent.stacks ?? 0,
+  };
+}
+
+function enemyRawAttackDamage(run, enemy, intent) {
+  return (intent.value ?? 0) + enemyAttackBonus(run, enemy);
+}
+
+function enemyAttackBonus(run, enemy) {
+  const bossBonus = enemy.enemyId === "blackMountain" && enemy.hp <= enemy.maxHp / 2 ? 2 * (run.combat?.turn ?? 0) : 0;
+  return bossBonus + enemyIntentBonus(run);
 }
 
 function enemyIntentBonus(run) {

@@ -1,5 +1,6 @@
 import { cards, gradeInfo, rarityInfo, relics, shopItems, statusInfo, styleInfo } from "../core/data.js";
 import { archetypeRanking, dominantArchetype, styleLabel } from "../core/archetypes.js";
+import { previewEnemyIntent } from "../core/combat.js";
 import { reduceGame } from "../core/reducer.js";
 import { clearSave, loadGame, saveGame } from "../core/save.js";
 import { MAX_FLOOR } from "../core/types.js";
@@ -694,10 +695,37 @@ function renderEffectBadges(definition) {
 }
 
 function renderIntentButton(enemy) {
-  const node = el("button", "intent", enemy.intent.text);
+  const node = el("button", "intent", intentButtonText(enemy));
   node.type = "button";
   node.addEventListener("click", () => showDetail(detailForIntent(enemy)));
   return node;
+}
+
+function intentButtonText(enemy) {
+  const chaos = statusValue(enemy, "chaos");
+  if (chaos > 0) {
+    const hasAlly = state.run?.combat?.enemies.some((item) => item.uid !== enemy.uid && item.hp > 0);
+    return enemy.intent.type === "attack" && hasAlly ? "离间转火" : "离间空过";
+  }
+
+  const preview = previewEnemyIntent(state.run, enemy);
+  if (preview?.type === "attack") {
+    return `${intentName(enemy.intent.text, "攻击")} ${preview.expectedDamage}`;
+  }
+
+  if (preview?.type === "block") {
+    return `${intentName(enemy.intent.text, "格挡")} ${preview.value}`;
+  }
+
+  return enemy.intent.text;
+}
+
+function intentName(text, fallback) {
+  return text.replace(/\s*\d+\s*$/, "").trim() || fallback;
+}
+
+function statusValue(fighter, statusId) {
+  return fighter.statuses.find((status) => status.id === statusId)?.stacks ?? 0;
 }
 
 function renderBarImpacts(statuses, owner) {
@@ -838,7 +866,7 @@ function detailForStatus(status) {
   const map = {
     spirit: [`当前数值 ${stacks} 表示：你用卡牌造成伤害时，会按卡牌费用获得部分伤害加成。`, "低费牌只能承载部分灵气，高费牌更容易吃满收益；战斗结束后清空。"],
     ward: [`当前数值 ${stacks} 表示：下次受到伤害前，先抵消 ${stacks} 点。`, "它会优先保护血条，作用类似一层可消耗的小格挡。"],
-    chaos: [`当前数值 ${stacks} 表示：敌人接下来 ${stacks} 次攻击会优先打同伴。`, "如果场上只剩一个敌人，离间暂时不会触发。"],
+    chaos: [`当前数值 ${stacks} 表示：敌人接下来 ${stacks} 次行动会被离间干扰。`, "如果本次是攻击且有同伴，会转而攻击同伴；否则会直接空过，不会攻击、格挡或施加状态。"],
     stasis: [`当前数值 ${stacks} 表示：流血、毒瘴、离间将要减少层数时，先消耗凝滞。`, "它会让核心 debuff 不掉层，适合把流血、中毒、控制不断堆高。"],
     curse: [`当前数值 ${stacks} 表示：受到卡牌伤害时额外 +${stacks}。`, "如果在敌人身上，它会让敌人血条掉得更快；如果在你身上，敌人攻击会更痛。"],
     burn: [`当前数值 ${stacks} 表示：回合结算时受到 ${stacks} 点伤害。`, "造成伤害后会消退一半，至少减少 1 层，不会一直滚到无解。"],
@@ -857,27 +885,53 @@ function detailForStatus(status) {
 
 function detailForIntent(enemy) {
   const intent = enemy.intent;
+  const chaos = statusValue(enemy, "chaos");
+  if (chaos > 0) {
+    const hasAlly = state.run?.combat?.enemies.some((item) => item.uid !== enemy.uid && item.hp > 0);
+    const willTurn = intent.type === "attack" && hasAlly;
+    return {
+      key: `intent:${enemy.uid}:chaos:${chaos}:${intent.text}`,
+      type: "敌人意图",
+      title: willTurn ? "离间转火" : "离间空过",
+      main: `${enemy.name} 当前受到离间影响，本次不会正常执行原意图。`,
+      lines: [
+        `离间层数：${chaos}`,
+        willTurn ? "它会优先攻击同伴，而不是攻击你。" : "它不会攻击、格挡或施加状态，会直接空过这一回合。",
+        "结算后离间减少 1 层；如果有凝滞，则消耗凝滞并保留离间。",
+      ],
+    };
+  }
+
   if (intent.type === "attack") {
+    const preview = previewEnemyIntent(state.run, enemy);
     return {
       key: `intent:${enemy.uid}:${intent.type}:${intent.text}`,
       type: "敌人意图",
-      title: intent.text,
+      title: intentButtonText(enemy),
       main: `${enemy.name} 下次行动会攻击。`,
       lines: [
-        `数字 ${intent.value} 表示基础伤害。`,
+        `基础伤害：${preview?.base ?? intent.value}`,
+        `难度/ Boss 加成：${preview?.bonus ?? 0}`,
+        `你身上的诅咒加成：${preview?.curse ?? 0}`,
+        `预计未被护体和格挡抵消前伤害：${preview?.expectedDamage ?? intent.value}`,
         "伤害会先被你的护体和格挡抵消。",
-        "如果你身上有诅咒，实际受到的伤害会增加。",
       ],
     };
   }
 
   if (intent.type === "block") {
+    const preview = previewEnemyIntent(state.run, enemy);
     return {
       key: `intent:${enemy.uid}:${intent.type}:${intent.text}`,
       type: "敌人意图",
-      title: intent.text,
+      title: intentButtonText(enemy),
       main: `${enemy.name} 下次行动会获得格挡。`,
-      lines: [`数字 ${intent.value} 表示获得的格挡值。`, "格挡会显示在敌人血条下面，先抵消你造成的伤害。"],
+      lines: [
+        `基础格挡：${preview?.base ?? intent.value}`,
+        `难度加成：${preview?.bonus ?? 0}`,
+        `实际获得格挡：${preview?.value ?? intent.value}`,
+        "格挡会显示在敌人血条下面，先抵消你造成的伤害。",
+      ],
     };
   }
 
