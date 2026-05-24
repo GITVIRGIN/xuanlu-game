@@ -13,6 +13,9 @@ export function enterShop(state) {
   if (!run.visitedShopTiers.includes(run.currentNode.tier)) {
     run.visitedShopTiers.push(run.currentNode.tier);
   }
+  if (run.currentNode.id === "shop_final") {
+    run.finalShopVisited = true;
+  }
 
   state.phase = "shop";
   state.message = "路边灯火微亮，有商人低声招呼。";

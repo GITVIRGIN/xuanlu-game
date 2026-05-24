@@ -50,6 +50,9 @@ export function finishCurrentNode(run) {
     if (!run.completedSideTiers.includes(node.tier)) {
       run.completedSideTiers.push(node.tier);
     }
+    if (node.id === "side_final") {
+      run.finalSideCompleted = true;
+    }
   }
 
   run.currentNode = null;
@@ -59,6 +62,7 @@ function buildNodeChoices(run) {
   const tier = tierForFloor(run.floor);
   const tierName = tierNames[tier - 1];
   const visitedShopTiers = run.visitedShopTiers ?? [];
+  const finalFloor = run.floor >= MAX_FLOOR;
   const choices = [
     {
       id: `main_${run.floor}`,
@@ -70,6 +74,36 @@ function buildNodeChoices(run) {
       rewardKind: isTierGateFloor(run.floor) ? "tierPremium" : "normal",
     },
   ];
+
+  if (finalFloor) {
+    const finalChoices = [];
+
+    if (!run.finalSideCompleted) {
+      finalChoices.push({
+        id: "side_final",
+        type: "side",
+        tier,
+        title: "终局支线",
+        text: "黑山脚下最后一处岔路，敌人更硬，但能把临门一脚的资源补足。",
+        rewardText: "高额金币 / 遗物 / 回复",
+        rewardKind: "side",
+      });
+    }
+
+    if (!run.finalShopVisited) {
+      finalChoices.push({
+        id: "shop_final",
+        type: "shop",
+        tier,
+        title: "终局商店",
+        text: "最终 Boss 前的补给点，把本局攒下的金币转化成战力。",
+        rewardText: "终局补给",
+        rewardKind: "shop",
+      });
+    }
+
+    return [...finalChoices, ...choices];
+  }
 
   const completedSideTiers = run.completedSideTiers ?? [];
   const branch = branchForFloor(run, tier, completedSideTiers, visitedShopTiers);

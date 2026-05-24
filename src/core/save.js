@@ -39,7 +39,9 @@ function migrateGame(state) {
   run.nodeChoices = run.nodeChoices ?? [];
   run.currentNode = run.currentNode ?? null;
   run.completedSideTiers = run.completedSideTiers ?? [];
+  run.finalSideCompleted = Boolean(run.finalSideCompleted);
   run.visitedShopTiers = run.visitedShopTiers ?? [];
+  run.finalShopVisited = Boolean(run.finalShopVisited);
   run.shopStock = run.shopStock ?? [];
   run.pendingChoice = run.pendingChoice ?? null;
   run.guaranteedNextHand = run.guaranteedNextHand ?? [];

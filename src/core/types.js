@@ -91,8 +91,10 @@
  * @property {RouteNode[]=} nodeChoices
  * @property {RouteNode | null=} currentNode
  * @property {number[]=} completedSideTiers
+ * @property {boolean=} finalSideCompleted
  * @property {number[]=} shopTiers
  * @property {number[]=} visitedShopTiers
+ * @property {boolean=} finalShopVisited
  * @property {object[]=} shopStock
  * @property {PendingDiscardPick | null=} pendingChoice
  * @property {string[]=} guaranteedNextHand
