@@ -363,6 +363,7 @@ function renderRunPanel(run) {
     renderArchetypePanel(run),
     el("div", "stat-grid", [
       stat("生命", `${run.hp}/${run.maxHp}`),
+      stat("格挡", run.combat?.block ?? 0),
       stat("能量", `${run.energy}/${run.maxEnergy}`),
       stat("牌组上限", `${run.deck.length}/${run.deckLimit ?? 30}`),
       stat("手牌", `${currentHandCount(run)}/${run.handLimit ?? 5}`),
