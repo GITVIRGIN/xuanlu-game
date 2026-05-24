@@ -1356,33 +1356,47 @@ p {
     line-height: 1.35;
   }
 
-  .combat-layout .enemy-row,
+  .combat-layout .enemy-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+    gap: 6px;
+  }
+
   .combat-layout .hand {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     overflow-x: auto;
     padding-bottom: 3px;
-    scroll-snap-type: x mandatory;
+    scroll-snap-type: x proximity;
   }
 
   .combat-layout .enemy {
-    flex: 0 0 min(82vw, 320px);
-    min-height: 138px;
-    gap: 5px;
-    padding: 9px;
-    scroll-snap-align: start;
+    min-height: 104px;
+    gap: 4px;
+    padding: 7px;
   }
 
   .combat-layout .enemy h3 {
-    font-size: 16px;
+    font-size: 15px;
+    line-height: 1.1;
+  }
+
+  .combat-layout .enemy-title {
+    gap: 6px;
+  }
+
+  .combat-layout .enemy .intent {
+    min-height: 24px;
+    padding: 2px 6px;
+    font-size: 11px;
   }
 
   .combat-layout .meter {
-    height: 19px;
+    height: 16px;
   }
 
   .combat-layout .block-meter {
-    height: 14px;
+    height: 11px;
   }
 
   .combat-layout .bar-impacts {
@@ -1391,6 +1405,13 @@ p {
 
   .combat-layout .empty-impact {
     display: none;
+  }
+
+  .combat-layout .enemy > .primary,
+  .combat-layout .enemy > .ghost {
+    min-height: 26px;
+    padding: 3px 6px;
+    font-size: 12px;
   }
 
   .combat-layout .status-chip,
@@ -1425,20 +1446,21 @@ p {
   }
 
   .combat-layout .hand-card-slot {
-    flex: 0 0 min(76vw, 300px);
-    gap: 4px;
+    flex: 0 0 120px;
+    gap: 3px;
     scroll-snap-align: start;
   }
 
   .combat-layout .game-card {
-    min-height: 128px;
-    gap: 5px;
-    padding: 9px;
+    min-height: 108px;
+    gap: 4px;
+    padding: 7px;
   }
 
   .combat-layout .game-card strong {
-    padding-right: 30px;
-    font-size: 17px;
+    padding-right: 26px;
+    font-size: 15px;
+    line-height: 1.15;
   }
 
   .combat-layout .game-card p {
@@ -1446,8 +1468,8 @@ p {
     overflow: hidden;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-    font-size: 13px;
-    line-height: 1.35;
+    font-size: 12px;
+    line-height: 1.28;
   }
 
   .combat-layout .card-rarity {
@@ -1459,15 +1481,16 @@ p {
   }
 
   .combat-layout .card-cost {
-    top: 8px;
-    right: 8px;
-    width: 24px;
-    height: 24px;
-    font-size: 13px;
+    top: 7px;
+    right: 7px;
+    width: 22px;
+    height: 22px;
+    font-size: 12px;
   }
 
   .combat-layout .discard-action {
-    min-height: 26px;
+    min-height: 24px;
+    padding: 2px 5px;
     font-size: 12px;
   }
 
