@@ -372,7 +372,11 @@ function tryChaosAttack(state, enemy, rawDamage) {
   if (!run || !combat || statusStacks(enemy, "chaos") <= 0) return false;
 
   const targets = combat.enemies.filter((item) => item.uid !== enemy.uid && item.hp > 0);
-  if (targets.length === 0) return false;
+  if (targets.length === 0) {
+    const reduced = reduceConsumableDebuff(enemy, "chaos", 1);
+    combat.log.push(`${enemy.name} 受到离间影响，却找不到同伴，空过了这一回合${reduced ? "。" : "，凝滞保留了离间。"}`);
+    return true;
+  }
 
   const target = choice(run, targets);
   const reduced = reduceConsumableDebuff(enemy, "chaos", 1);

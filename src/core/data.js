@@ -25,7 +25,7 @@ export const statusInfo = {
   poison: { label: "毒瘴", text: "回合间受到伤害，然后减少 1 层。" },
   curse: { label: "诅咒", text: "受到的卡牌伤害增加。" },
   spirit: { label: "灵气", text: "提高卡牌伤害，最多 12 层；低费牌只能承载部分灵气，战斗结束后清空。" },
-  chaos: { label: "离间", text: "敌人攻击时会优先攻击同伴，然后减少 1 层。" },
+  chaos: { label: "离间", text: "敌人攻击时会优先攻击同伴，没有同伴则空过，然后减少 1 层。" },
   stasis: { label: "凝滞", text: "流血、毒瘴、离间将要减少层数时，先消耗凝滞并保留原状态。" },
   ward: { label: "护体", text: "抵消即将受到的伤害。" },
 };
