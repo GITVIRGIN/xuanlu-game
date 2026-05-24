@@ -14,6 +14,7 @@ let selectedTargetUid = null;
 let detailInfo = null;
 let pileInfo = null;
 let progressionOpen = false;
+let cloudOpen = false;
 let cloudBusy = false;
 let cloudMessage = "";
 let cloudTimer = null;
@@ -77,6 +78,10 @@ function renderShell() {
     shell.append(renderProgressionOverlay());
   }
 
+  if (cloudOpen) {
+    shell.append(renderCloudOverlay());
+  }
+
   if (state.run?.pendingChoice?.type === "discardPick") {
     shell.append(renderDiscardPickPanel(state.run));
   }
@@ -91,10 +96,16 @@ function renderHeader() {
       image("./assets/seal.svg", "玄箓印"),
       el("div", "", [el("h1", "", "玄箓行"), el("p", "", `神话杂糅文字肉鸽 · v${gameVersion.app}`)]),
     ]),
-    el("div", "meta", [
-      stat("残魂", state.meta.soul),
-      stat("行旅", state.meta.totalRuns),
-      stat("通关", state.meta.wins),
+    el("div", "topbar-actions", [
+      el("div", "meta", [
+        stat("残魂", state.meta.soul),
+        stat("行旅", state.meta.totalRuns),
+        stat("通关", state.meta.wins),
+      ]),
+      button("云存档", "ghost small cloud-shortcut", () => {
+        cloudOpen = true;
+        render();
+      }),
     ]),
   );
   return header;
@@ -327,6 +338,19 @@ function renderCloudPanel() {
       }),
     ]),
     el("p", "cloud-note", "云端使用玩家自己的 GitHub Token 和私有 Gist；不同玩家ID对应不同存档。"),
+  ]);
+}
+
+function renderCloudOverlay() {
+  return el("aside", "cloud-overlay", [
+    el("div", "detail-head", [
+      el("div", "", [el("span", "muted", "本地与云端"), el("h2", "", "云存档")]),
+      button("关闭", "ghost small", () => {
+        cloudOpen = false;
+        render();
+      }),
+    ]),
+    renderCloudPanel(),
   ]);
 }
 

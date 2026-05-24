@@ -97,6 +97,13 @@ p {
   color: var(--muted);
 }
 
+.topbar-actions {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
 .meta,
 .stat-grid,
 .summary {
@@ -364,6 +371,11 @@ p {
   min-height: 30px;
   padding: 5px 10px;
   font-size: 13px;
+}
+
+.cloud-shortcut {
+  min-height: 54px;
+  white-space: nowrap;
 }
 
 .combat-layout {
@@ -1035,7 +1047,8 @@ p {
 }
 
 .progression-overlay,
-.pile-panel {
+.pile-panel,
+.cloud-overlay {
   position: fixed;
   right: 20px;
   bottom: 20px;
@@ -1052,7 +1065,20 @@ p {
   box-shadow: 0 20px 60px rgba(55, 41, 24, 0.3);
 }
 
+.cloud-overlay {
+  z-index: 13;
+  width: min(560px, calc(100vw - 24px));
+  border-color: var(--blue);
+}
+
 .progression-overlay .progression-panel {
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+.cloud-overlay .cloud-panel {
   padding: 0;
   border: 0;
   box-shadow: none;
@@ -1180,6 +1206,27 @@ p {
     align-items: start;
   }
 
+  .topbar-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .topbar-actions .meta {
+    flex: 1;
+  }
+
+  .cloud-shortcut {
+    min-width: 92px;
+  }
+
+  .cloud-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .cloud-actions button {
+    flex: 1 1 calc(50% - 6px);
+  }
+
   .brand h1 {
     font-size: 24px;
   }
@@ -1207,7 +1254,8 @@ p {
   }
 
   .progression-overlay,
-  .pile-panel {
+  .pile-panel,
+  .cloud-overlay {
     right: 12px;
     bottom: 12px;
     width: calc(100vw - 24px);
