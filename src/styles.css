@@ -639,20 +639,31 @@ p {
   height: 100%;
 }
 
+.card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.play-action,
 .discard-action {
   width: 100%;
   min-height: 30px;
+}
+
+.play-action.disabled,
+.discard-action.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.discard-action {
   border-style: dashed;
   color: var(--muted);
 }
 
 .discard-action:not(.disabled):hover {
   color: var(--ink);
-}
-
-.discard-action.disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
 }
 
 .enemy,
@@ -884,6 +895,27 @@ p {
 .hand-head > div {
   display: grid;
   gap: 6px;
+}
+
+.mobile-player-strip {
+  display: none;
+}
+
+.mobile-vitals,
+.mobile-status-line {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.mobile-vitals span {
+  min-height: 22px;
+  padding: 2px 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 250, 240, 0.88);
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .pile-strip {
@@ -1389,11 +1421,11 @@ p {
   }
 
   .combat-layout .hand {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 6px;
-    overflow-x: auto;
+    overflow: visible;
     padding-bottom: 3px;
-    scroll-snap-type: x proximity;
   }
 
   .combat-layout .enemy {
@@ -1471,31 +1503,48 @@ p {
     font-size: 18px;
   }
 
+  .combat-layout .mobile-player-strip,
+  .discard-pick-panel .mobile-player-strip {
+    display: grid;
+    gap: 4px;
+  }
+
+  .combat-layout .mobile-vitals,
+  .discard-pick-panel .mobile-vitals {
+    flex-wrap: wrap;
+  }
+
+  .combat-layout .mobile-status-line,
+  .discard-pick-panel .mobile-status-line {
+    min-width: 0;
+  }
+
+  .combat-layout .mobile-status-line .status-chips,
+  .discard-pick-panel .mobile-status-line .status-chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+
   .combat-layout .hand-card-slot {
-    flex: 0 0 120px;
+    min-width: 0;
     gap: 3px;
-    scroll-snap-align: start;
   }
 
   .combat-layout .game-card {
-    min-height: 108px;
+    min-height: 72px;
     gap: 4px;
     padding: 7px;
+    grid-template-rows: auto 1fr auto;
   }
 
   .combat-layout .game-card strong {
-    padding-right: 26px;
+    padding-right: 24px;
     font-size: 15px;
     line-height: 1.15;
   }
 
   .combat-layout .game-card p {
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    font-size: 12px;
-    line-height: 1.28;
+    display: none;
   }
 
   .combat-layout .card-rarity {
@@ -1503,6 +1552,10 @@ p {
   }
 
   .combat-layout .myth-tags {
+    display: none;
+  }
+
+  .combat-layout .style-badges {
     display: none;
   }
 
@@ -1520,6 +1573,17 @@ p {
     font-size: 12px;
   }
 
+  .combat-layout .card-actions {
+    gap: 4px;
+  }
+
+  .combat-layout .play-action,
+  .combat-layout .discard-action {
+    min-height: 24px;
+    padding: 2px 4px;
+    font-size: 11px;
+  }
+
   .combat-layout .log {
     display: none;
   }
@@ -1531,7 +1595,24 @@ p {
   }
 
   .discard-pick-panel {
-    inset: auto 12px 12px 12px;
+    inset: 12px;
+    max-height: calc(100vh - 24px);
+  }
+
+  .discard-pick-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .discard-pick-grid .game-card {
+    min-height: 78px;
+    padding: 7px;
+  }
+
+  .discard-pick-grid .game-card p,
+  .discard-pick-grid .style-badges,
+  .discard-pick-grid .myth-tags {
+    display: none;
   }
 
   .progression-overlay,

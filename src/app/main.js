@@ -406,6 +406,24 @@ function currentHandCount(run) {
   return run.combat?.hand.length ?? run.retainedHand?.length ?? 0;
 }
 
+function sortCardInstancesByFunction(cardInstances) {
+  return [...cardInstances].sort((left, right) => compareCardDefinitions(cards[left.cardId], cards[right.cardId]));
+}
+
+function compareCardDefinitions(left, right) {
+  return cardFunctionRank(left) - cardFunctionRank(right) || left.cost - right.cost || left.name.localeCompare(right.name, "zh-Hans");
+}
+
+function cardFunctionRank(definition) {
+  const effects = definition.effects ?? [];
+  if (effects.some((effect) => effect.type === "block" || effect.type === "shellReflect" || effect.status === "ward")) return 0;
+  if (effects.some((effect) => effect.type === "damage" || effect.type === "execute")) return 1;
+  if (effects.some((effect) => ["status", "amplifyDebuffs", "thunderMark", "bleedSiphon"].includes(effect.type))) return 2;
+  if (effects.some((effect) => ["draw", "gainEnergy", "recoverDiscard"].includes(effect.type))) return 3;
+  if (effects.some((effect) => ["heal", "cleanse"].includes(effect.type))) return 4;
+  return 5;
+}
+
 function renderEnemy(enemy) {
   const isSelected = enemy.uid === selectedTargetUid;
   const card = el("article", `enemy ${isSelected ? "selected" : ""}`);
@@ -434,11 +452,11 @@ function renderHand(run, combat) {
   const area = el("section", "hand-area");
   const cardsNode = el("div", "hand");
 
-  for (const cardInstance of combat.hand) {
+  for (const cardInstance of sortCardInstancesByFunction(combat.hand)) {
     const definition = cards[cardInstance.cardId];
     const canPlay = canPlayCard(definition, run);
     const canDiscard = !combat.flags.discardedThisTurn && !run.pendingChoice;
-    const node = renderCard(definition, () => {
+    const play = () => {
       if (canPlay) {
         dispatch({
           type: "playCard",
@@ -446,7 +464,8 @@ function renderHand(run, combat) {
           targetUid: selectedTargetUid,
         });
       }
-    });
+    };
+    const node = renderCard(definition, () => showDetail(detailForCard(definition)));
 
     if (!canPlay) {
       node.classList.add("disabled");
@@ -454,22 +473,36 @@ function renderHand(run, combat) {
 
     const slot = el("div", "hand-card-slot", [
       node,
-      button(canDiscard ? "弃置并抽 1" : "本回合已弃", canDiscard ? "ghost small discard-action" : "ghost small discard-action disabled", () => {
-        if (canDiscard) dispatch({ type: "discardHandCard", cardUid: cardInstance.uid });
-      }),
+      el("div", "card-actions", [
+        button(canPlay ? "打出" : "不可出", canPlay ? "primary small play-action" : "primary small play-action disabled", play),
+        button(canDiscard ? "弃置+抽" : "已弃", canDiscard ? "ghost small discard-action" : "ghost small discard-action disabled", () => {
+          if (canDiscard) dispatch({ type: "discardHandCard", cardUid: cardInstance.uid });
+        }),
+      ]),
     ]);
     cardsNode.append(slot);
   }
 
   area.append(
     el("div", "hand-head", [
-      el("div", "", [el("h2", "", `手牌 ${combat.hand.length}/${run.handLimit ?? 5}`), renderPileStrip(run, combat)]),
+      el("div", "", [el("h2", "", `手牌 ${combat.hand.length}/${run.handLimit ?? 5}`), renderPileStrip(run, combat), renderMobilePlayerStrip(run)]),
       button("结束回合", "danger", () => dispatch({ type: "endTurn" })),
     ]),
     cardsNode,
   );
 
   return area;
+}
+
+function renderMobilePlayerStrip(run) {
+  return el("div", "mobile-player-strip", [
+    el("div", "mobile-vitals", [
+      el("span", "", `命 ${run.hp}/${run.maxHp}`),
+      el("span", "", `挡 ${run.combat?.block ?? 0}`),
+      el("span", "", `气 ${run.energy}/${run.maxEnergy}`),
+    ]),
+    el("div", "mobile-status-line", [el("span", "muted", "自身"), renderStatusChips(run.statuses)]),
+  ]);
 }
 
 function renderCard(definition, onClick) {
@@ -486,6 +519,25 @@ function renderCard(definition, onClick) {
     el("span", "myth-tags", definition.mythTags.join(" / ")),
   );
   return node;
+}
+
+function detailForCard(definition) {
+  const style = definition.style ? styleInfo[definition.style]?.label ?? definition.style : "通用";
+  const grade = definition.grade ? gradeInfo[definition.grade] ?? `${definition.grade} 阶` : "无阶";
+  return {
+    key: `card:${definition.id}`,
+    type: "卡牌详情",
+    title: definition.name,
+    main: definition.text,
+    lines: [
+      `费用：${definition.cost}`,
+      `品级：${rarityInfo[definition.rarity].label}`,
+      `流派：${style} / ${grade}`,
+      `功能：${cardFunctionLabel(definition)}`,
+      `效果：${cardEffectLabels(definition).join("，") || "无"}`,
+      `神话标签：${definition.mythTags.join(" / ")}`,
+    ],
+  };
 }
 
 function renderCardStyle(definition) {
@@ -627,18 +679,19 @@ function groupCardIds(cardIds) {
 
   return [...counts.entries()]
     .map(([cardId, count]) => ({ cardId, count }))
-    .sort((left, right) => cards[left.cardId].name.localeCompare(cards[right.cardId].name, "zh-Hans"));
+    .sort((left, right) => compareCardDefinitions(cards[left.cardId], cards[right.cardId]));
 }
 
 function renderDiscardPickPanel(run) {
   const choice = run.pendingChoice;
   const combat = run.combat;
-  const options = combat.discardPile.filter((card) => card.uid !== choice.sourceUid);
+  const options = sortCardInstancesByFunction(combat.discardPile.filter((card) => canRecoverDiscardCard(card, choice)));
   return el("aside", "discard-pick-panel", [
     el("div", "detail-head", [
       el("div", "", [el("span", "muted", "弃牌回收"), el("h2", "", choice.title)]),
       button("跳过", "ghost small", () => dispatch({ type: "cancelDiscardPick" })),
     ]),
+    renderMobilePlayerStrip(run),
     el("p", "detail-main", "弃牌堆不是永久废弃，它会洗回牌库，也可以被归藏类卡牌主动取回。"),
     el(
       "div",
@@ -651,6 +704,13 @@ function renderDiscardPickPanel(run) {
       }),
     ),
   ]);
+}
+
+function canRecoverDiscardCard(cardInstance, choice) {
+  if (cardInstance.uid === choice.sourceUid) return false;
+  const excluded = new Set(choice.excludeStyles ?? []);
+  const style = cards[cardInstance.cardId]?.style;
+  return !style || !excluded.has(style);
 }
 
 function renderStatusChips(statuses) {
@@ -679,6 +739,10 @@ function blockMeter(value) {
 }
 
 function renderEffectBadges(definition) {
+  return el("div", "effect-badges", cardEffectLabels(definition).slice(0, 3).map((label) => el("span", "", label)));
+}
+
+function cardEffectLabels(definition) {
   const labels = [];
   for (const effect of definition.effects) {
     if (effect.type === "damage") labels.push(`伤害 ${effect.value}`);
@@ -696,7 +760,12 @@ function renderEffectBadges(definition) {
     if (effect.type === "loseHp") labels.push(`失血 ${effect.value}`);
   }
 
-  return el("div", "effect-badges", labels.slice(0, 3).map((label) => el("span", "", label)));
+  return labels;
+}
+
+function cardFunctionLabel(definition) {
+  const labels = ["格挡", "攻击", "状态", "运转", "回复", "其他"];
+  return labels[cardFunctionRank(definition)] ?? "其他";
 }
 
 function renderIntentButton(enemy) {
