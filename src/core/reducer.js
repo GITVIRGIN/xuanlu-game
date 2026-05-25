@@ -15,8 +15,18 @@ export function reduceGame(state, action) {
   }
 
   if (action.type === "abandonRun") {
-    next.message = "你折断残箓，重新入山。";
-    return startRun(next);
+    if (!next.run || next.run.finished) return next;
+
+    const soulGain = Math.max(3, next.run.floor * 2);
+    next.run.finished = true;
+    next.run.combat = null;
+    next.run.rewards = [];
+    next.run.pendingChoice = null;
+    next.phase = "gameOver";
+    next.meta.soul += soulGain;
+    next.meta.lossStreak = (next.meta.lossStreak ?? 0) + 1;
+    next.message = `你主动放弃本局，收拢残魂 +${soulGain}。`;
+    return next;
   }
 
   if (action.type === "playCard") {

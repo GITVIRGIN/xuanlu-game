@@ -381,7 +381,7 @@ function renderRunPanel(run) {
         progressionOpen = true;
         render();
       }),
-      button("放弃并重开", "danger small", () => dispatch({ type: "abandonRun" })),
+      button("放弃并结算", "danger small", () => dispatch({ type: "abandonRun" })),
     ]),
   );
   return panel;
