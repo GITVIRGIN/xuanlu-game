@@ -16,7 +16,7 @@ import {
 } from "./status.js";
 import { MAX_FLOOR, TIER_SIZE } from "./types.js";
 
-const ROUND_DECAY_STATUSES = ["curse", "spirit", "battleIntent", "ward", "stasis"];
+const ROUND_DECAY_STATUSES = ["curse", "spirit", "battleIntent", "ward", "stasis", "brittle"];
 const ROUND_DECAY_CONSUMABLE_DEBUFFS = ["chaos"];
 
 export function startCombat(state) {
@@ -370,6 +370,21 @@ function resolveEnemyIntent(state, enemy) {
     return;
   }
 
+  if (statusStacks(enemy, "bind") > 0) {
+    if (intent.type === "attack" || intent.type === "status") {
+      skipEnemyByBind(combat, enemy);
+      return;
+    }
+
+    if (intent.type === "block") {
+      const blockValue = (intent.value ?? 0) + enemyIntentBonus(run);
+      enemy.block += blockValue;
+      reduceStatus(enemy, "bind", 1);
+      combat.log.push(`${enemy.name} 被禁锢压住攻势，但仍获得 ${blockValue} 点格挡。`);
+      return;
+    }
+  }
+
   if (intent.type === "attack") {
     combat.log.push(`${enemy.name} 攻击。`);
     applyIncomingDamage(state, enemyRawAttackDamage(run, enemy, intent));
@@ -401,6 +416,11 @@ function tryChaosAttack(state, enemy, rawDamage) {
   const reduced = reduceConsumableDebuff(enemy, "chaos", 1);
 
   let damage = rawDamage + statusStacks(target, "curse");
+  if (statusStacks(target, "brittle") > 0) {
+    const before = damage;
+    damage = Math.ceil(damage * 1.5);
+    combat.log.push(`${target.name} 脆化承伤，伤害 ${before} -> ${damage}。`);
+  }
   const blocked = Math.min(target.block, damage);
   target.block -= blocked;
   damage -= blocked;
@@ -422,6 +442,11 @@ function skipEnemyByChaos(combat, enemy) {
 function skipEnemyByStun(combat, enemy) {
   reduceStatus(enemy, "stun", 1);
   combat.log.push(`${enemy.name} 被眩晕压制，空过了这一回合。`);
+}
+
+function skipEnemyByBind(combat, enemy) {
+  reduceStatus(enemy, "bind", 1);
+  combat.log.push(`${enemy.name} 被禁锢封住攻击和术法，空过了这一回合。`);
 }
 
 function createEnemiesForFloor(run) {

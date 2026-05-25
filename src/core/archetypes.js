@@ -72,6 +72,8 @@ export function shouldGuaranteeArchetype(run, tier) {
           ? 10
           : dominant.style === "poison" || dominant.style === "spell"
             ? 8
+            : dominant.style === "control"
+              ? 10
             : 9;
   return tier >= 2 && dominant.score >= threshold;
 }
@@ -118,6 +120,15 @@ function styleBaseRewardWeight(run, styleId, dominant, score, floor) {
 
     if (score >= 5) return floor >= 7 ? 0.84 : 0.64;
     return 0.62;
+  }
+
+  if (styleId === "control") {
+    if (dominant?.style === "control" && score >= 10) {
+      return floor >= 13 ? 1.08 : floor >= 7 ? 0.96 : 0.52;
+    }
+
+    if (score >= 5) return floor >= 7 ? 0.72 : 0.48;
+    return 0.45;
   }
 
   if (styleId !== "bleed") return 1;

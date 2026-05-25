@@ -30,7 +30,7 @@ function runOne(seed) {
   const metrics = {
     cardPlays: emptyStyleMap(),
     rewardPicks: emptyStyleMap(),
-    maxStatuses: { bleed: 0, poison: 0, burn: 0, thunderMark: 0, stun: 0, battleIntent: 0, spirit: 0 },
+    maxStatuses: { bleed: 0, poison: 0, burn: 0, chaos: 0, bind: 0, brittle: 0, thunderMark: 0, stun: 0, battleIntent: 0, spirit: 0 },
     finalRoute: { shopSeen: false, sideSeen: false, shopVisited: false, sideVisited: false },
     maxBlock: 0,
     minHp: Infinity,
@@ -156,20 +156,24 @@ function combatScore(run, card) {
   const target = preferredTarget(run);
   const targetBleed = statusValue(target, "bleed");
   const targetThunder = statusValue(target, "thunderMark");
+  const targetControl = controlPressure(target);
+  const targetBrittle = statusValue(target, "brittle");
   const lowHp = run.hp <= run.maxHp * 0.35;
   const block = run.combat?.block ?? 0;
   let score = profileScore(card, 18);
 
   if (effectType(card, "damage") || effectType(card, "execute")) score += 20;
   if (effectType(card, "status")) score += 16;
+  if (targetBrittle > 0 && (effectType(card, "damage") || effectType(card, "shellReflect"))) score += 32;
   if (effectType(card, "thunderMark")) score += targetThunder >= 6 ? 46 : targetThunder >= 3 ? 30 : 20;
+  if (profile === "control" && card.effects.some((effect) => ["chaos", "bind", "stun"].includes(effect.status))) score += targetControl >= 4 ? 48 : 34;
   if (effectType(card, "amplifyDebuffs")) score += targetHasDebuff(target) ? 36 : -12;
   if (effectType(card, "block")) score += lowHp ? 42 : 8;
   if (profile === "shell" && effectType(card, "block")) score += 42;
   if (effectType(card, "heal")) score += lowHp ? 55 : 8;
   if (effectType(card, "draw")) score += 10;
   if (effectType(card, "gainEnergy")) score += run.energy < run.maxEnergy ? 22 : -20;
-  if (effectType(card, "recoverDiscard")) score += run.combat.discardPile.length > 0 ? 18 : -8;
+  if (effectType(card, "recoverDiscard")) score += recoverScore(run, card);
   if (effectType(card, "loseHp")) score += lowHp ? -70 : -10;
   if (effectType(card, "bleedSiphon")) score += targetBleed >= 5 ? 70 : targetBleed >= 3 ? 25 : -25;
   if (effectType(card, "shellReflect")) score += block >= 18 ? 72 : block >= 8 ? 38 : profile === "shell" ? 12 : -8;
@@ -192,6 +196,8 @@ function rewardScore(run, reward) {
   if (profile === "shell" && effectType(card, "shellReflect")) score += 55;
   if (profile === "poison" && card.effects.some((effect) => effect.status === "poison")) score += 42;
   if (profile === "spell" && effectType(card, "thunderMark")) score += 55;
+  if (profile === "control" && card.effects.some((effect) => ["chaos", "bind", "stun"].includes(effect.status))) score += 52;
+  if (profile === "control" && effectType(card, "recoverDiscard")) score += card.effects.some((effect) => effect.excludeStyles?.includes("control")) ? 8 : 36;
   return score;
 }
 
@@ -219,6 +225,9 @@ function preferredTarget(run) {
   if (profile === "spell") {
     return enemies.sort((left, right) => statusValue(right, "thunderMark") - statusValue(left, "thunderMark") || left.hp - right.hp)[0];
   }
+  if (profile === "control") {
+    return enemies.sort((left, right) => statusValue(right, "brittle") - statusValue(left, "brittle") || controlPressure(right) - controlPressure(left) || left.hp - right.hp)[0];
+  }
   return enemies.sort((left, right) => left.hp - right.hp)[0];
 }
 
@@ -242,6 +251,9 @@ function collectMetrics(state, metrics) {
     metrics.maxStatuses.bleed = Math.max(metrics.maxStatuses.bleed, statusValue(enemy, "bleed"));
     metrics.maxStatuses.poison = Math.max(metrics.maxStatuses.poison, statusValue(enemy, "poison"));
     metrics.maxStatuses.burn = Math.max(metrics.maxStatuses.burn, statusValue(enemy, "burn"));
+    metrics.maxStatuses.chaos = Math.max(metrics.maxStatuses.chaos, statusValue(enemy, "chaos"));
+    metrics.maxStatuses.bind = Math.max(metrics.maxStatuses.bind, statusValue(enemy, "bind"));
+    metrics.maxStatuses.brittle = Math.max(metrics.maxStatuses.brittle, statusValue(enemy, "brittle"));
     metrics.maxStatuses.thunderMark = Math.max(metrics.maxStatuses.thunderMark, statusValue(enemy, "thunderMark"));
     metrics.maxStatuses.stun = Math.max(metrics.maxStatuses.stun, statusValue(enemy, "stun"));
   }
@@ -292,6 +304,9 @@ function summarize(items) {
       bleed: avg(items.map((item) => item.maxStatuses.bleed)),
       poison: avg(items.map((item) => item.maxStatuses.poison)),
       burn: avg(items.map((item) => item.maxStatuses.burn)),
+      chaos: avg(items.map((item) => item.maxStatuses.chaos)),
+      bind: avg(items.map((item) => item.maxStatuses.bind)),
+      brittle: avg(items.map((item) => item.maxStatuses.brittle)),
       thunderMark: avg(items.map((item) => item.maxStatuses.thunderMark)),
       stun: avg(items.map((item) => item.maxStatuses.stun)),
       battleIntent: avg(items.map((item) => item.maxStatuses.battleIntent)),
@@ -313,7 +328,7 @@ function printSummary(summary) {
   console.log(`胜率 ${pct(summary.winRate)}，Boss 通关 ${pct(summary.bossWinRate)}，特殊通关 ${pct(summary.specialWinRate)}，失败 ${pct(summary.lossRate)}`);
   console.log(`平均层数 ${summary.avgFinalFloor}，平均牌组 ${summary.avgDeckSize}，平均遗物 ${summary.avgRelics}，平均能量上限 ${summary.avgMaxEnergy}`);
   console.log(`平均最大格挡 ${summary.avgMaxBlock}，平均最低生命 ${summary.avgMinHp}`);
-  console.log(`状态峰值均值：流血 ${summary.maxStatuses.bleed}，毒瘴 ${summary.maxStatuses.poison}，灼烧 ${summary.maxStatuses.burn}，雷痕 ${summary.maxStatuses.thunderMark}，眩晕 ${summary.maxStatuses.stun}，战意 ${summary.maxStatuses.battleIntent}，灵气 ${summary.maxStatuses.spirit}`);
+  console.log(`状态峰值均值：流血 ${summary.maxStatuses.bleed}，毒瘴 ${summary.maxStatuses.poison}，灼烧 ${summary.maxStatuses.burn}，离间 ${summary.maxStatuses.chaos}，禁锢 ${summary.maxStatuses.bind}，脆化 ${summary.maxStatuses.brittle}，雷痕 ${summary.maxStatuses.thunderMark}，眩晕 ${summary.maxStatuses.stun}，战意 ${summary.maxStatuses.battleIntent}，灵气 ${summary.maxStatuses.spirit}`);
   console.log(`终局路线检查：商店出现 ${summary.finalRoute.shopSeen}/${summary.runs}，支线出现 ${summary.finalRoute.sideSeen}/${summary.runs}，商店进入 ${summary.finalRoute.shopVisited}/${summary.runs}，支线进入 ${summary.finalRoute.sideVisited}/${summary.runs}`);
   console.log(`出牌分布：${styleLine(summary.cardPlays)}`);
   console.log(`奖励选择：${styleLine(summary.rewardPicks)}`);
@@ -349,7 +364,25 @@ function statusValue(fighter, statusId) {
 }
 
 function targetHasDebuff(target) {
-  return ["burn", "bleed", "poison", "curse", "chaos", "stasis", "thunderMark", "stun"].some((status) => statusValue(target, status) > 0);
+  return ["burn", "bleed", "poison", "curse", "chaos", "bind", "brittle", "stasis", "thunderMark", "stun"].some((status) => statusValue(target, status) > 0);
+}
+
+function controlPressure(target) {
+  return statusValue(target, "chaos") + statusValue(target, "bind") + statusValue(target, "stun");
+}
+
+function recoverScore(run, card) {
+  const effects = card.effects.filter((effect) => effect.type === "recoverDiscard");
+  if (run.combat.discardPile.length === 0) return -8;
+
+  let score = 18;
+  if (profile !== "control") return score;
+
+  const canRecoverControl = effects.some((effect) => !effect.excludeStyles?.includes("control"));
+  const hasControlInDiscard = run.combat.discardPile.some((item) => cards[item.cardId]?.style === "control");
+  if (canRecoverControl && hasControlInDiscard) score += 38;
+  if (!canRecoverControl) score -= 6;
+  return score;
 }
 
 function effectType(card, type) {

@@ -845,6 +845,18 @@ p {
   background: #eee7ff;
 }
 
+.status-bind {
+  color: #155e75;
+  border-color: #0891b2;
+  background: #e0f7fb;
+}
+
+.status-brittle {
+  color: #9f1239;
+  border-color: #e11d48;
+  background: #ffe4ec;
+}
+
 .status-ward {
   color: #8a5a0a;
   border-color: #b87916;

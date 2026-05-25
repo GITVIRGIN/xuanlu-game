@@ -10,6 +10,7 @@
     "sim:physical": "node scripts/simulate-runs.mjs --runs=100 --profile=physical",
     "sim:spell": "node scripts/simulate-runs.mjs --runs=100 --profile=spell",
     "sim:shell": "node scripts/simulate-runs.mjs --runs=100 --profile=shell",
-    "sim:poison": "node scripts/simulate-runs.mjs --runs=100 --profile=poison"
+    "sim:poison": "node scripts/simulate-runs.mjs --runs=100 --profile=poison",
+    "sim:control": "node scripts/simulate-runs.mjs --runs=100 --profile=control"
   }
 }

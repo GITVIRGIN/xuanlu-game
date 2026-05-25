@@ -692,7 +692,7 @@ function renderEffectBadges(definition) {
     if (effect.type === "amplifyDebuffs") labels.push(`状态 +${effect.value}`);
     if (effect.type === "bleedSiphon") labels.push(`汲血 /${effect.ratio ?? 3}`);
     if (effect.type === "shellReflect") labels.push(`反震 ${Math.round((effect.ratio ?? 0.5) * 100)}%`);
-    if (effect.type === "recoverDiscard") labels.push(`回收 ${effect.value}`);
+    if (effect.type === "recoverDiscard") labels.push(effect.excludeStyles?.includes("control") ? `回收非控 ${effect.value}` : `回收 ${effect.value}`);
     if (effect.type === "loseHp") labels.push(`失血 ${effect.value}`);
   }
 
@@ -716,6 +716,11 @@ function intentButtonText(enemy) {
   if (chaos > 0) {
     const hasAlly = state.run?.combat?.enemies.some((item) => item.uid !== enemy.uid && item.hp > 0);
     return enemy.intent.type === "attack" && hasAlly ? "离间转火" : "离间空过";
+  }
+
+  const bind = statusValue(enemy, "bind");
+  if (bind > 0) {
+    return enemy.intent.type === "block" ? "禁锢格挡" : "禁锢空过";
   }
 
   const preview = previewEnemyIntent(state.run, enemy);
@@ -771,8 +776,14 @@ function impactLabels(statuses, owner) {
     if (status.id === "chaos") {
       result.push({ status, kind: "impact-debuff", label: `内斗 ${status.stacks} 次` });
     }
+    if (status.id === "bind") {
+      result.push({ status, kind: "impact-debuff", label: `禁攻禁法 ${status.stacks} 次` });
+    }
     if (status.id === "stun") {
       result.push({ status, kind: "impact-debuff", label: `跳过行动 ${status.stacks} 次` });
+    }
+    if (status.id === "brittle") {
+      result.push({ status, kind: "impact-debuff", label: `承伤 x1.5 / ${status.stacks}` });
     }
     if (status.id === "thunderMark") {
       result.push({ status, kind: "impact-debuff", label: `雷痕 ${status.stacks}/8` });
@@ -888,7 +899,9 @@ function detailForStatus(status) {
     battleIntent: [`当前数值 ${stacks} 表示：物理牌造成伤害时额外 +${stacks}。`, "每打出一张物理伤害牌后，战意会继续增加 3 层；它会随回合逐步减少，战斗结束后清空。"],
     ward: [`当前数值 ${stacks} 表示：下次受到伤害前，先抵消 ${stacks} 点。`, "它会优先保护血条，作用类似一层可消耗的小格挡。"],
     chaos: [`当前数值 ${stacks} 表示：敌人接下来 ${stacks} 次行动会被离间干扰。`, "如果本次是攻击且有同伴，会转而攻击同伴；否则会直接空过，不会攻击、格挡或施加状态。"],
+    bind: [`当前数值 ${stacks} 表示：敌人接下来 ${stacks} 次行动会受禁锢影响。`, "攻击和施法会被封住并空过；如果本来要格挡，则仍可格挡，但禁锢会减少 1 层。"],
     stun: [`当前数值 ${stacks} 表示：敌人接下来 ${stacks} 次行动会被眩晕跳过。`, "眩晕会先于离间结算；被眩晕的敌人不会攻击、格挡或施加状态。"],
+    brittle: [`当前数值 ${stacks} 表示：敌人处于脆化窗口，受到伤害变为 1.5 倍。`, "离间、禁锢、眩晕合计达到 6 层会触发心防崩裂：清空敌人格挡，并获得脆化。"],
     thunderMark: [`当前数值 ${stacks} 表示：敌人身上已积累 ${stacks} 层雷痕。`, `每满 8 层会立刻触发天劫，造成 32 点无视格挡雷伤，并施加 1 次眩晕。当前还差 ${Math.max(0, 8 - (stacks % 8 || 8))} 层。`],
     stasis: [`当前数值 ${stacks} 表示：流血、毒瘴、离间将要减少层数时，先消耗凝滞。`, "它会让核心 debuff 不掉层，适合把流血、中毒、控制不断堆高。"],
     curse: [`当前数值 ${stacks} 表示：受到卡牌伤害时额外 +${stacks}。`, "如果在敌人身上，它会让敌人血条掉得更快；如果在你身上，敌人攻击会更痛。"],
@@ -936,6 +949,22 @@ function detailForIntent(enemy) {
         `离间层数：${chaos}`,
         willTurn ? "它会优先攻击同伴，而不是攻击你。" : "它不会攻击、格挡或施加状态，会直接空过这一回合。",
         "结算后离间减少 1 层；如果有凝滞，则消耗凝滞并保留离间。",
+      ],
+    };
+  }
+
+  const bind = statusValue(enemy, "bind");
+  if (bind > 0) {
+    const willBlock = intent.type === "block";
+    return {
+      key: `intent:${enemy.uid}:bind:${bind}:${intent.text}`,
+      type: "敌人意图",
+      title: willBlock ? "禁锢格挡" : "禁锢空过",
+      main: `${enemy.name} 当前受到禁锢影响，本次行动会先检查是否为攻击或施法。`,
+      lines: [
+        `禁锢层数：${bind}`,
+        willBlock ? "它本次原本要格挡，所以仍会获得格挡，但禁锢减少 1 层。" : "它本次原本要攻击或施法，会直接空过，不会伤害你或施加状态。",
+        "离间、禁锢、眩晕合计达到 6 层时，会触发心防崩裂，清空格挡并获得脆化。",
       ],
     };
   }

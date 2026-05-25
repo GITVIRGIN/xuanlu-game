@@ -41,6 +41,7 @@ node scripts/simulate-runs.mjs --runs=100 --profile=bleed
 node scripts/simulate-runs.mjs --runs=100 --profile=poison
 node scripts/simulate-runs.mjs --runs=100 --profile=shell
 node scripts/simulate-runs.mjs --runs=100 --profile=spell
+node scripts/simulate-runs.mjs --runs=100 --profile=control
 ```
 
 连续失败补偿类改动需要额外指定失败次数，例如：

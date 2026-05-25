@@ -6,6 +6,9 @@ const SPIRIT_BONUS_PER_COST = 4;
 const PHYSICAL_INTENT_GAIN = 3;
 const THUNDER_TRIBULATION_THRESHOLD = 8;
 const THUNDER_TRIBULATION_DAMAGE = 32;
+const CONTROL_BREAK_THRESHOLD = 6;
+const BRITTLE_STACKS = 2;
+const BRITTLE_MULTIPLIER = 1.5;
 
 function combatLog(state, text) {
   state.run?.combat?.log.push(text);
@@ -48,7 +51,7 @@ export function applyEffect(state, effect, targetUid) {
   }
 
   if (effect.type === "recoverDiscard") {
-    startDiscardPick(state, effect.value ?? 1, effect.sourceUid);
+    startDiscardPick(state, effect.value ?? 1, effect.sourceUid, effect);
     return finishCombatIfWon(state);
   }
 
@@ -96,6 +99,7 @@ export function applyEffect(state, effect, targetUid) {
     if (effect.type === "status" && effect.status) {
       addStatus(target, effect.status, effect.stacks ?? 0);
       combatLog(state, `${target.uid === "player" ? "你" : target.name} 获得 ${statusLabel(effect.status)} ${effect.stacks}。`);
+      triggerControlBreak(state, target);
     }
 
     if (effect.type === "amplifyDebuffs") {
@@ -104,6 +108,7 @@ export function applyEffect(state, effect, targetUid) {
         combatLog(state, `${target.uid === "player" ? "你" : target.name} 的负面状态增长 ${added} 层。`);
       }
       triggerThunderTribulations(state, target, effect);
+      triggerControlBreak(state, target);
     }
 
     if (effect.type === "thunderMark") {
@@ -140,16 +145,18 @@ export function applyCardDamage(state, target, baseDamage, cardCost = 1, cardSty
     combatLog(state, `${relics.thunderSeal.name} 追加 4 点雷伤。`);
   }
 
+  damage = applyBrittleDamage(state, target, damage);
   damage = applyBlock(target, damage);
   target.hp = Math.max(0, target.hp - damage);
   combatLog(state, `对 ${target.name} 造成 ${damage} 点伤害。`);
 
   const bleed = statusStacks(target, "bleed");
   if (bleed > 0 && target.hp > 0) {
-    const bleedDamage = applyBlock(target, bleed);
+    const rawBleedDamage = applyBrittleDamage(state, target, bleed);
+    const bleedDamage = applyBlock(target, rawBleedDamage);
     target.hp = Math.max(0, target.hp - bleedDamage);
     const reduced = reduceConsumableDebuff(target, "bleed", 1);
-    combatLog(state, `${target.name} 流血爆开，格挡抵消 ${bleed - bleedDamage} 点，额外受到 ${bleedDamage} 点伤害${reduced ? "。" : "，凝滞保留了流血。"}`);
+    combatLog(state, `${target.name} 流血爆开，格挡抵消 ${rawBleedDamage - bleedDamage} 点，额外受到 ${bleedDamage} 点伤害${reduced ? "。" : "，凝滞保留了流血。"}`);
   }
 
   if (target.hp <= 0) {
@@ -204,9 +211,10 @@ export function tickDamageStatus(state, fighter, statusId) {
   const stacks = statusStacks(fighter, statusId);
   if (stacks <= 0) return;
 
-  const damage = applyBlock(fighter, stacks);
+  const rawDamage = applyBrittleDamage(state, fighter, stacks);
+  const damage = applyBlock(fighter, rawDamage);
   fighter.hp = Math.max(0, fighter.hp - damage);
-  const blocked = stacks - damage;
+  const blocked = rawDamage - damage;
   combatLog(state, `${fighter.uid === "player" ? "你" : fighter.name} 受到 ${statusLabel(statusId)} ${damage} 点伤害${blocked > 0 ? `，格挡抵消 ${blocked} 点` : ""}。`);
 
   if (["bleed", "poison"].includes(statusId)) {
@@ -254,7 +262,11 @@ export function pickDiscardCard(state, cardUid) {
   const choice = run?.pendingChoice;
   if (!run || !combat || choice?.type !== "discardPick") return state;
 
-  const index = combat.discardPile.findIndex((card) => card.uid === cardUid && card.uid !== choice.sourceUid);
+  const availableCards = recoverableDiscardCards(combat, choice);
+  const allowed = availableCards.some((card) => card.uid === cardUid);
+  if (!allowed) return state;
+
+  const index = combat.discardPile.findIndex((card) => card.uid === cardUid);
   if (index < 0) return state;
 
   const [card] = combat.discardPile.splice(index, 1);
@@ -278,7 +290,7 @@ export function cancelDiscardPick(state) {
   return state;
 }
 
-function startDiscardPick(state, count, sourceUid) {
+function startDiscardPick(state, count, sourceUid, effect = {}) {
   const run = state.run;
   const combat = run?.combat;
   if (!run || !combat) return;
@@ -287,7 +299,8 @@ function startDiscardPick(state, count, sourceUid) {
     type: "discardPick",
     count,
     sourceUid,
-    title: `从弃牌堆选择 ${count} 张牌加入手牌`,
+    excludeStyles: effect.excludeStyles ?? [],
+    title: effect.excludeStyles?.includes("control") ? `从弃牌堆选择 ${count} 张非控制牌加入手牌` : `从弃牌堆选择 ${count} 张牌加入手牌`,
   };
 
   if (recoverableDiscardCards(combat, choice).length === 0) {
@@ -300,7 +313,12 @@ function startDiscardPick(state, count, sourceUid) {
 }
 
 function recoverableDiscardCards(combat, choice) {
-  return combat.discardPile.filter((card) => card.uid !== choice.sourceUid);
+  const excluded = new Set(choice.excludeStyles ?? []);
+  return combat.discardPile.filter((card) => {
+    if (card.uid === choice.sourceUid) return false;
+    const style = cards[card.cardId]?.style;
+    return !style || !excluded.has(style);
+  });
 }
 
 function resolveTargets(run, targetType, targetUid) {
@@ -320,7 +338,7 @@ function resolveTargets(run, targetType, targetUid) {
 }
 
 function amplifyDebuffs(target, statuses, value) {
-  const debuffs = statuses ?? ["burn", "bleed", "poison", "curse", "chaos", "stasis", "thunderMark"];
+  const debuffs = statuses ?? ["burn", "bleed", "poison", "curse", "chaos", "bind", "stun", "stasis", "thunderMark", "brittle"];
   let added = 0;
 
   for (const statusId of debuffs) {
@@ -361,6 +379,7 @@ function triggerThunderTribulations(state, target, effect = {}) {
     const finalDamage = damage + statusStacks(target, "curse");
     target.hp = Math.max(0, target.hp - finalDamage);
     addStatus(target, "stun", stun);
+    triggerControlBreak(state, target);
     combatLog(state, `天劫降下，${target.name} 无视格挡受到 ${finalDamage} 点雷伤，并眩晕 ${stun} 次。`);
     if (target.hp <= 0) {
       onEnemyKilled(state, target);
@@ -413,7 +432,8 @@ function applyShellReflect(state, targets, effect) {
 
   for (const target of targets) {
     if (target.hp <= 0) continue;
-    const damage = applyBlock(target, rawDamage);
+    const finalRawDamage = applyBrittleDamage(state, target, rawDamage);
+    const damage = applyBlock(target, finalRawDamage);
     target.hp = Math.max(0, target.hp - damage);
     combatLog(state, `以 ${block} 点格挡反震 ${target.name}，造成 ${damage} 点伤害。`);
     if (target.hp <= 0) {
@@ -433,6 +453,46 @@ function applyBlock(fighter, rawDamage) {
   const blocked = Math.min(fighter.block, rawDamage);
   fighter.block -= blocked;
   return rawDamage - blocked;
+}
+
+function applyBrittleDamage(state, target, rawDamage) {
+  if (rawDamage <= 0 || target.uid === "player" || statusStacks(target, "brittle") <= 0) {
+    return rawDamage;
+  }
+
+  const amplified = Math.ceil(rawDamage * BRITTLE_MULTIPLIER);
+  combatLog(state, `${target.name} 脆化承伤，伤害 ${rawDamage} -> ${amplified}。`);
+  return amplified;
+}
+
+function triggerControlBreak(state, target) {
+  const combat = state.run?.combat;
+  if (!combat || target.uid === "player" || target.hp <= 0) return;
+
+  while (controlPressure(target) >= CONTROL_BREAK_THRESHOLD) {
+    consumeControlPressure(target, CONTROL_BREAK_THRESHOLD);
+    const clearedBlock = target.block ?? 0;
+    target.block = 0;
+    addStatus(target, "brittle", BRITTLE_STACKS);
+    combatLog(state, `${target.name} 心防崩裂，清空 ${clearedBlock} 点格挡，获得脆化 ${BRITTLE_STACKS}。`);
+  }
+}
+
+function controlPressure(target) {
+  return statusStacks(target, "chaos") + statusStacks(target, "bind") + statusStacks(target, "stun");
+}
+
+function consumeControlPressure(target, amount) {
+  let remaining = amount;
+  for (const statusId of ["chaos", "bind", "stun"]) {
+    if (remaining <= 0) return;
+    const stacks = statusStacks(target, statusId);
+    const spent = Math.min(stacks, remaining);
+    if (spent > 0) {
+      reduceStatus(target, statusId, spent);
+      remaining -= spent;
+    }
+  }
 }
 
 function onEnemyKilled(state, enemy) {
