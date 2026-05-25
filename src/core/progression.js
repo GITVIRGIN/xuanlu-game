@@ -38,6 +38,7 @@ export function migrateMeta(meta = {}) {
   next.soul = next.soul ?? 0;
   next.totalRuns = next.totalRuns ?? 0;
   next.wins = next.wins ?? 0;
+  next.lossStreak = next.lossStreak ?? 0;
   next.talents = next.talents ?? {};
 
   for (const id of Object.keys(talentDefinitions)) {

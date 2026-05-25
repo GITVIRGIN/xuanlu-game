@@ -690,6 +690,7 @@ function renderEffectBadges(definition) {
     if (effect.type === "status") labels.push(`${statusInfo[effect.status]?.label ?? effect.status} ${effect.stacks}`);
     if (effect.type === "amplifyDebuffs") labels.push(`状态 +${effect.value}`);
     if (effect.type === "bleedSiphon") labels.push(`汲血 /${effect.ratio ?? 3}`);
+    if (effect.type === "shellReflect") labels.push(`反震 ${Math.round((effect.ratio ?? 0.5) * 100)}%`);
     if (effect.type === "recoverDiscard") labels.push(`回收 ${effect.value}`);
     if (effect.type === "loseHp") labels.push(`失血 ${effect.value}`);
   }

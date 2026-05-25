@@ -34,3 +34,9 @@ node scripts/build-release.mjs
 ```bash
 node scripts/simulate-runs.mjs --runs=100 --profile=bleed
 ```
+
+连续失败补偿类改动需要额外指定失败次数，例如：
+
+```bash
+node scripts/simulate-runs.mjs --runs=100 --profile=shell --lossStreak=3
+```

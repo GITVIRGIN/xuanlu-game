@@ -57,6 +57,11 @@ export function applyEffect(state, effect, targetUid) {
     return finishCombatIfWon(state);
   }
 
+  if (effect.type === "shellReflect") {
+    applyShellReflect(state, targets, effect);
+    return finishCombatIfWon(state);
+  }
+
   for (const target of targets) {
     if (effect.type === "damage") {
       applyCardDamage(state, target, effect.value ?? 0, effect.cardCost ?? 1, effect.cardStyle);
@@ -347,6 +352,42 @@ function applyBleedSiphon(state, targets, effect) {
   combatLog(state, `血魔汲血：${source}，回复 ${actual} 点生命。`);
 }
 
+function applyShellReflect(state, targets, effect) {
+  const run = state.run;
+  const combat = run?.combat;
+  if (!run || !combat || targets.length === 0) return;
+
+  const block = combat.block ?? 0;
+  if (block <= 0) {
+    combatLog(state, "没有格挡可用于反震。");
+    return;
+  }
+
+  const ratio = Math.max(0, effect.ratio ?? 0.5);
+  const rawDamage = Math.floor(block * ratio) + (effect.value ?? 0);
+  if (rawDamage <= 0) {
+    combatLog(state, "反震力道不足。");
+    return;
+  }
+
+  for (const target of targets) {
+    if (target.hp <= 0) continue;
+    const damage = applyBlock(target, rawDamage);
+    target.hp = Math.max(0, target.hp - damage);
+    combatLog(state, `以 ${block} 点格挡反震 ${target.name}，造成 ${damage} 点伤害。`);
+    if (target.hp <= 0) {
+      onEnemyKilled(state, target);
+    }
+  }
+
+  const consumeRatio = Math.max(0, effect.consumeRatio ?? 0);
+  const consumed = Math.min(combat.block, Math.ceil(block * consumeRatio));
+  if (consumed > 0) {
+    combat.block -= consumed;
+    combatLog(state, `反震消耗 ${consumed} 点格挡。`);
+  }
+}
+
 function applyBlock(fighter, rawDamage) {
   const blocked = Math.min(fighter.block, rawDamage);
   fighter.block -= blocked;
@@ -385,4 +426,5 @@ function finishDefeat(state, message) {
   state.phase = "gameOver";
   state.message = message;
   state.meta.soul += Math.max(3, run.floor * 2);
+  state.meta.lossStreak = (state.meta.lossStreak ?? 0) + 1;
 }

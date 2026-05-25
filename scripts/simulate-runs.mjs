@@ -4,11 +4,12 @@ import { prepareRouteChoice } from "../src/core/nodes.js";
 import { reduceGame } from "../src/core/reducer.js";
 import { createInitialState, startRun } from "../src/core/state.js";
 
-const STYLE_IDS = ["physical", "spell", "bleed", "poison", "control"];
+const STYLE_IDS = ["physical", "spell", "bleed", "shell", "poison", "control"];
 const args = parseArgs(process.argv.slice(2));
 const runCount = Number(args.runs ?? args.n ?? 100);
 const baseSeed = Number(args.seed ?? 2026052500);
 const profile = String(args.profile ?? "balanced");
+const lossStreak = Number(args.lossStreak ?? 0);
 
 if (!Number.isFinite(runCount) || runCount <= 0) {
   throw new Error("runs must be a positive number");
@@ -30,6 +31,7 @@ function runOne(seed) {
     cardPlays: emptyStyleMap(),
     rewardPicks: emptyStyleMap(),
     maxStatuses: { bleed: 0, poison: 0, burn: 0, battleIntent: 0, spirit: 0 },
+    maxBlock: 0,
     minHp: Infinity,
     maxEnergy: state.run.maxEnergy,
     combats: 0,
@@ -89,7 +91,9 @@ function runOne(seed) {
 
 function seededRun(seed) {
   const state = startRun(createInitialState());
+  state.meta.lossStreak = Number.isFinite(lossStreak) ? Math.max(0, lossStreak) : 0;
   state.run.seed = seed;
+  state.run.lossStreak = state.meta.lossStreak;
   state.run.goal = createRunGoal(seed);
   markSpecialGoalBaseline(state.run);
   return prepareRouteChoice(state);
@@ -149,18 +153,21 @@ function combatScore(run, card) {
   const target = preferredTarget(run);
   const targetBleed = statusValue(target, "bleed");
   const lowHp = run.hp <= run.maxHp * 0.35;
+  const block = run.combat?.block ?? 0;
   let score = profileScore(card, 18);
 
   if (effectType(card, "damage") || effectType(card, "execute")) score += 20;
   if (effectType(card, "status")) score += 16;
   if (effectType(card, "amplifyDebuffs")) score += targetHasDebuff(target) ? 36 : -12;
   if (effectType(card, "block")) score += lowHp ? 42 : 8;
+  if (profile === "shell" && effectType(card, "block")) score += 42;
   if (effectType(card, "heal")) score += lowHp ? 55 : 8;
   if (effectType(card, "draw")) score += 10;
   if (effectType(card, "gainEnergy")) score += run.energy < run.maxEnergy ? 22 : -20;
   if (effectType(card, "recoverDiscard")) score += run.combat.discardPile.length > 0 ? 18 : -8;
   if (effectType(card, "loseHp")) score += lowHp ? -70 : -10;
   if (effectType(card, "bleedSiphon")) score += targetBleed >= 5 ? 70 : targetBleed >= 3 ? 25 : -25;
+  if (effectType(card, "shellReflect")) score += block >= 18 ? 72 : block >= 8 ? 38 : profile === "shell" ? 12 : -8;
   if (card.id === "meditate" && run.energy >= run.maxEnergy) score -= 999;
   return score - card.cost * 3;
 }
@@ -174,6 +181,7 @@ function rewardScore(run, reward) {
   let score = profileScore(card, 36) + rarityScore(card.rarity) + (card.grade ?? 1) * 10;
   if (effectType(card, "draw") || effectType(card, "gainEnergy")) score += 8;
   if (profile === "bleed" && effectType(card, "bleedSiphon")) score += 45;
+  if (profile === "shell" && effectType(card, "shellReflect")) score += 55;
   return score;
 }
 
@@ -212,6 +220,7 @@ function collectMetrics(state, metrics) {
 
   metrics.minHp = Math.min(metrics.minHp, run.hp);
   metrics.maxEnergy = Math.max(metrics.maxEnergy, run.maxEnergy);
+  metrics.maxBlock = Math.max(metrics.maxBlock, run.combat?.block ?? 0);
   metrics.maxStatuses.battleIntent = Math.max(metrics.maxStatuses.battleIntent, statusValue({ statuses: run.statuses }, "battleIntent"));
   metrics.maxStatuses.spirit = Math.max(metrics.maxStatuses.spirit, statusValue({ statuses: run.statuses }, "spirit"));
 
@@ -251,6 +260,7 @@ function summarize(items) {
     avgCombats: avg(items.map((item) => item.combats)),
     avgTurnsEnded: avg(items.map((item) => item.turns)),
     avgMinHp: avg(items.map((item) => Number.isFinite(item.minHp) ? item.minHp : 0)),
+    avgMaxBlock: avg(items.map((item) => item.maxBlock)),
     maxStatuses: {
       bleed: avg(items.map((item) => item.maxStatuses.bleed)),
       poison: avg(items.map((item) => item.maxStatuses.poison)),
@@ -267,6 +277,7 @@ function printSummary(summary) {
   console.log(`玄箓行发布前模拟：${summary.runs} 局 / profile=${summary.profile} / seed=${summary.seed}`);
   console.log(`胜率 ${pct(summary.winRate)}，Boss 通关 ${pct(summary.bossWinRate)}，特殊通关 ${pct(summary.specialWinRate)}，失败 ${pct(summary.lossRate)}`);
   console.log(`平均层数 ${summary.avgFinalFloor}，平均牌组 ${summary.avgDeckSize}，平均遗物 ${summary.avgRelics}，平均能量上限 ${summary.avgMaxEnergy}`);
+  console.log(`平均最大格挡 ${summary.avgMaxBlock}，平均最低生命 ${summary.avgMinHp}`);
   console.log(`状态峰值均值：流血 ${summary.maxStatuses.bleed}，毒瘴 ${summary.maxStatuses.poison}，灼烧 ${summary.maxStatuses.burn}，战意 ${summary.maxStatuses.battleIntent}，灵气 ${summary.maxStatuses.spirit}`);
   console.log(`出牌分布：${styleLine(summary.cardPlays)}`);
   console.log(`奖励选择：${styleLine(summary.rewardPicks)}`);

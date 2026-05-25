@@ -38,6 +38,7 @@ function migrateGame(state) {
   run.energy = run.energy ?? run.maxEnergy;
   run.nodeChoices = run.nodeChoices ?? [];
   run.currentNode = run.currentNode ?? null;
+  run.lossStreak = run.lossStreak ?? state.meta.lossStreak ?? 0;
   run.completedSideTiers = run.completedSideTiers ?? [];
   run.finalSideCompleted = Boolean(run.finalSideCompleted);
   run.visitedShopTiers = run.visitedShopTiers ?? [];

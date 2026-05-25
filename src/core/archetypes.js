@@ -55,7 +55,7 @@ export function archetypeRewardWeight(run, card) {
   const floor = run.floor ?? 1;
   const pressure = floor >= 13 ? 0.18 : floor >= 7 ? 0.1 : 0.035;
   const dominantBonus = dominant?.style === card.style ? (floor >= 13 ? 1.32 : floor >= 7 ? 1.16 : 1.04) : 1;
-  const baseWeight = styleBaseRewardWeight(card.style, dominant, score, floor);
+  const baseWeight = styleBaseRewardWeight(run, card.style, dominant, score, floor);
 
   return Math.min(4.2, baseWeight * (1 + score * pressure) * dominantBonus);
 }
@@ -63,7 +63,7 @@ export function archetypeRewardWeight(run, card) {
 export function shouldGuaranteeArchetype(run, tier) {
   const dominant = dominantArchetype(run);
   if (!dominant) return false;
-  const threshold = dominant.style === "bleed" ? 8 : dominant.style === "physical" ? 7 : 9;
+  const threshold = dominant.style === "bleed" ? 8 : dominant.style === "physical" ? 7 : dominant.style === "shell" ? 10 : 9;
   return tier >= 2 && dominant.score >= threshold;
 }
 
@@ -71,7 +71,7 @@ export function styleLabel(styleId) {
   return styleInfo[styleId]?.label ?? styleId;
 }
 
-function styleBaseRewardWeight(styleId, dominant, score, floor) {
+function styleBaseRewardWeight(run, styleId, dominant, score, floor) {
   if (styleId === "physical") {
     if (dominant?.style === "physical" && score >= 9) {
       return floor >= 13 ? 1.22 : floor >= 7 ? 1.16 : 1.08;
@@ -79,6 +79,18 @@ function styleBaseRewardWeight(styleId, dominant, score, floor) {
 
     if (score >= 5) return 1.08;
     return 1;
+  }
+
+  if (styleId === "shell") {
+    const lossStreak = run.lossStreak ?? 0;
+    if (lossStreak >= 3) return floor >= 7 ? 0.94 : 0.72;
+
+    if (dominant?.style === "shell" && score >= 10) {
+      return floor >= 13 ? 0.92 : floor >= 7 ? 0.78 : 0.5;
+    }
+
+    if (score >= 6) return floor >= 7 ? 0.55 : 0.42;
+    return 0.28;
   }
 
   if (styleId !== "bleed") return 1;

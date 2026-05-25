@@ -77,6 +77,7 @@ export function completeRunVictory(state, completedBy, message) {
   state.message = message;
   state.meta.wins += 1;
   state.meta.soul += completedBy === "special" ? 22 : 30;
+  state.meta.lossStreak = 0;
   return state;
 }
 
