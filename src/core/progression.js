@@ -1,3 +1,5 @@
+import { migrateMythMastery } from "./myth.js";
+
 export const talentDefinitions = {
   body: {
     id: "body",
@@ -40,6 +42,7 @@ export function migrateMeta(meta = {}) {
   next.wins = next.wins ?? 0;
   next.lossStreak = next.lossStreak ?? 0;
   next.talents = next.talents ?? {};
+  migrateMythMastery(next);
 
   for (const id of Object.keys(talentDefinitions)) {
     next.talents[id] = next.talents[id] ?? 0;

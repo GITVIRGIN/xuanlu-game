@@ -1,4 +1,5 @@
 import { MAX_FLOOR, TARGET_MINUTES } from "./types.js";
+import { awardMythMasteryForVictory, mythAwardText } from "./myth.js";
 
 const SPECIAL_GOAL_CHANCE = 10;
 
@@ -69,12 +70,13 @@ export function completeRunVictory(state, completedBy, message) {
   const run = state.run;
   if (!run || run.finished) return state;
 
+  const mythAward = awardMythMasteryForVictory(state);
   run.finished = true;
   migrateRunGoal(run);
   run.goal.completedBy = completedBy;
   run.combat = null;
   state.phase = "gameOver";
-  state.message = message;
+  state.message = mythAward ? `${message} ${mythAwardText(mythAward)}` : message;
   state.meta.wins += 1;
   state.meta.soul += completedBy === "special" ? 22 : 30;
   state.meta.lossStreak = 0;

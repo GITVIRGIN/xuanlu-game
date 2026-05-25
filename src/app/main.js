@@ -7,6 +7,7 @@ import { MAX_FLOOR } from "../core/types.js";
 import { gameVersion } from "../core/version.js";
 import { createRunGoal, goalProgress } from "../core/goals.js";
 import { talentCost, talentDefinitions, talentLevel } from "../core/progression.js";
+import { MYTH_FACTIONS, MYTH_MASTERY_MAX, cardMythBoost } from "../core/myth.js";
 import { clearCloudConfig, connectCloud, downloadCloudSave, loadCloudConfig, saveCloudConfig, uploadCloudSave } from "../core/cloud.js";
 
 const app = document.querySelector("#app");
@@ -289,6 +290,7 @@ function renderProgression({ readonly = false } = {}) {
       stat("残魂", state.meta.soul),
     ]),
     el("div", "talent-grid", talents.map((definition) => renderTalent(definition, readonly))),
+    renderMythMastery(),
   ]);
 }
 
@@ -313,6 +315,32 @@ function renderTalent(definition, readonly = false) {
   node.append(...children);
 
   return node;
+}
+
+function renderMythMastery() {
+  return el("section", "myth-mastery-panel", [
+    el("div", "progression-head slim-head", [
+      el("div", "", [
+        el("h2", "", "派系箓印"),
+        el("p", "muted", "通关时按本局实际打出的主力派系自动提升；下局同派系牌获得数值和叠层加成。"),
+      ]),
+    ]),
+    el(
+      "div",
+      "talent-grid myth-grid",
+      MYTH_FACTIONS.map((tag) => renderMythMasteryItem(tag)),
+    ),
+  ]);
+}
+
+function renderMythMasteryItem(tag) {
+  const level = state.meta.mythMastery?.[tag] ?? 0;
+  const statusBonus = Math.floor(level / 2);
+  return el("article", `talent myth-talent ${level >= MYTH_MASTERY_MAX ? "maxed" : ""}`, [
+    el("div", "talent-title", [el("strong", "", `${tag}箓印`), el("span", "", `${level}/${MYTH_MASTERY_MAX}`)]),
+    el("p", "", level > 0 ? `同派系牌：伤害、格挡、治疗 +${level}；状态叠层 +${statusBonus}。` : "尚未刻入。用这个派系作为主力通关后点亮。"),
+    el("span", "talent-cost", level > 0 ? "自动生效" : "通关解锁"),
+  ]);
 }
 
 function renderCloudPanel() {
@@ -559,6 +587,12 @@ function renderCard(definition, onClick) {
 function detailForCard(definition) {
   const style = definition.style ? styleInfo[definition.style]?.label ?? definition.style : "通用";
   const grade = definition.grade ? gradeInfo[definition.grade] ?? `${definition.grade} 阶` : "无阶";
+  const mythBoost = cardMythBoost(state.run, definition, state.meta);
+  const mythLine = mythBoost.active
+    ? `箓印：${mythBoost.tag} ${mythBoost.level}/${MYTH_MASTERY_MAX}，数值 +${mythBoost.numericBonus}，状态 +${mythBoost.statusBonus}`
+    : mythBoost.level > 0
+      ? `箓印：${mythBoost.tag} ${mythBoost.level}/${MYTH_MASTERY_MAX}，此牌没有可加成的战斗数值`
+    : "箓印：当前未生效";
   return {
     key: `card:${definition.id}`,
     type: "卡牌详情",
@@ -570,6 +604,7 @@ function detailForCard(definition) {
       `流派：${style} / ${grade}`,
       `功能：${cardFunctionLabel(definition)}`,
       `效果：${cardEffectLabels(definition).join("，") || "无"}`,
+      mythLine,
       `神话标签：${definition.mythTags.join(" / ")}`,
     ],
   };
@@ -779,6 +814,10 @@ function renderEffectBadges(definition) {
 
 function cardEffectLabels(definition) {
   const labels = [];
+  const mythBoost = cardMythBoost(state.run, definition, state.meta);
+  if (mythBoost.active) {
+    labels.push(`${mythBoost.tag}箓印 +${mythBoost.level}`);
+  }
   for (const effect of definition.effects) {
     if (effect.type === "damage") labels.push(`伤害 ${effect.value}`);
     if (effect.type === "execute") labels.push(`斩杀 ${effect.threshold ?? 35}%`);

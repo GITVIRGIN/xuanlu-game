@@ -1,5 +1,6 @@
 import { cards, relics } from "./data.js";
 import { drawCards, finishCombatIfWon } from "./combat.js";
+import { cardMythBoost } from "./myth.js";
 import { addStatus, reduceConsumableDebuff, reduceStatus, statusLabel, statusStacks } from "./status.js";
 
 const SPIRIT_BONUS_PER_COST = 4;
@@ -69,7 +70,7 @@ export function applyEffect(state, effect, targetUid) {
 
   for (const target of targets) {
     if (effect.type === "damage") {
-      applyCardDamage(state, target, effect.value ?? 0, effect.cardCost ?? 1, effect.cardStyle);
+      applyCardDamage(state, target, boostedValue(effect), effect.cardCost ?? 1, effect.cardStyle);
     }
 
     if (effect.type === "execute") {
@@ -77,13 +78,15 @@ export function applyEffect(state, effect, targetUid) {
     }
 
     if (effect.type === "block") {
-      target.block += effect.value ?? 0;
-      combatLog(state, `获得 ${effect.value} 点格挡。`);
+      const amount = boostedValue(effect);
+      target.block += amount;
+      combatLog(state, `获得 ${amount} 点格挡。`);
     }
 
     if (effect.type === "heal") {
-      target.hp = Math.min(target.maxHp, target.hp + (effect.value ?? 0));
-      combatLog(state, `回复 ${effect.value} 点生命。`);
+      const amount = boostedValue(effect);
+      target.hp = Math.min(target.maxHp, target.hp + amount);
+      combatLog(state, `回复 ${amount} 点生命。`);
     }
 
     if (effect.type === "loseHp") {
@@ -97,13 +100,14 @@ export function applyEffect(state, effect, targetUid) {
     }
 
     if (effect.type === "status" && effect.status) {
-      addStatus(target, effect.status, effect.stacks ?? 0);
-      combatLog(state, `${target.uid === "player" ? "你" : target.name} 获得 ${statusLabel(effect.status)} ${effect.stacks}。`);
+      const stacks = boostedStacks(effect);
+      addStatus(target, effect.status, stacks);
+      combatLog(state, `${target.uid === "player" ? "你" : target.name} 获得 ${statusLabel(effect.status)} ${stacks}。`);
       triggerControlBreak(state, target);
     }
 
     if (effect.type === "amplifyDebuffs") {
-      const added = amplifyDebuffs(target, effect.statuses, effect.value ?? 0);
+      const added = amplifyDebuffs(target, effect.statuses, (effect.value ?? 0) + (effect.cardMythStatusBonus ?? 0));
       if (added > 0) {
         combatLog(state, `${target.uid === "player" ? "你" : target.name} 的负面状态增长 ${added} 层。`);
       }
@@ -178,7 +182,7 @@ function applyExecute(state, target, effect) {
     return;
   }
 
-  applyCardDamage(state, target, effect.fallbackDamage ?? 0, effect.cardCost ?? 1, effect.cardStyle);
+  applyCardDamage(state, target, (effect.fallbackDamage ?? 0) + (effect.cardMythBonus ?? 0), effect.cardCost ?? 1, effect.cardStyle);
 }
 
 export function applyIncomingDamage(state, rawDamage) {
@@ -242,9 +246,24 @@ export function tickDamageStatus(state, fighter, statusId) {
 
 export function applyCardEffects(state, cardInstance, targetUid) {
   const card = cards[cardInstance.cardId];
+  const mythBoost = cardMythBoost(state.run, card);
   const growsBattleIntent = card.style === "physical" && card.effects.some((effect) => ["damage", "execute"].includes(effect.type));
+  if (mythBoost.active) {
+    combatLog(state, `${mythBoost.tag}箓印 ${mythBoost.level} 生效。`);
+  }
   for (const effect of card.effects) {
-    applyEffect(state, { ...effect, sourceUid: cardInstance.uid, cardCost: card.cost, cardStyle: card.style }, targetUid);
+    applyEffect(
+      state,
+      {
+        ...effect,
+        sourceUid: cardInstance.uid,
+        cardCost: card.cost,
+        cardStyle: card.style,
+        cardMythBonus: mythBoost.numericBonus,
+        cardMythStatusBonus: mythBoost.statusBonus,
+      },
+      targetUid,
+    );
     if (state.phase !== "combat") {
       break;
     }
@@ -357,7 +376,7 @@ function applyThunderMark(state, target, effect) {
   const combat = run?.combat;
   if (!run || !combat || target.hp <= 0) return;
 
-  const stacks = effect.stacks ?? effect.value ?? 0;
+  const stacks = (effect.stacks ?? effect.value ?? 0) + (effect.cardMythStatusBonus ?? 0);
   if (stacks <= 0) return;
 
   addStatus(target, "thunderMark", stacks);
@@ -399,7 +418,7 @@ function applyBleedSiphon(state, targets, effect) {
   }
 
   const ratio = Math.max(1, effect.ratio ?? 3);
-  const heal = Math.floor(totalBleed / ratio) + (effect.value ?? 0);
+  const heal = Math.floor(totalBleed / ratio) + (effect.value ?? 0) + (effect.cardMythBonus ?? 0);
   if (heal <= 0) {
     combatLog(state, `流血不足 ${ratio} 层，未能回血。`);
     return;
@@ -424,7 +443,7 @@ function applyShellReflect(state, targets, effect) {
   }
 
   const ratio = Math.max(0, effect.ratio ?? 0.5);
-  const rawDamage = Math.floor(block * ratio) + (effect.value ?? 0);
+  const rawDamage = Math.floor(block * ratio) + (effect.value ?? 0) + (effect.cardMythBonus ?? 0);
   if (rawDamage <= 0) {
     combatLog(state, "反震力道不足。");
     return;
@@ -453,6 +472,14 @@ function applyBlock(fighter, rawDamage) {
   const blocked = Math.min(fighter.block, rawDamage);
   fighter.block -= blocked;
   return rawDamage - blocked;
+}
+
+function boostedValue(effect) {
+  return (effect.value ?? 0) + (effect.cardMythBonus ?? 0);
+}
+
+function boostedStacks(effect) {
+  return (effect.stacks ?? 0) + (effect.cardMythStatusBonus ?? 0);
 }
 
 function applyBrittleDamage(state, target, rawDamage) {

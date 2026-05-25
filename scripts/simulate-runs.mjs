@@ -3,6 +3,7 @@ import { createRunGoal, markSpecialGoalBaseline } from "../src/core/goals.js";
 import { prepareRouteChoice } from "../src/core/nodes.js";
 import { reduceGame } from "../src/core/reducer.js";
 import { createInitialState, startRun } from "../src/core/state.js";
+import { MYTH_FACTIONS } from "../src/core/myth.js";
 
 const STYLE_IDS = ["physical", "spell", "bleed", "shell", "poison", "control"];
 const args = parseArgs(process.argv.slice(2));
@@ -84,6 +85,7 @@ function runOne(seed) {
     floor: state.run?.floor ?? 0,
     won: Boolean(state.run?.goal?.completedBy),
     completedBy: state.run?.goal?.completedBy ?? "loss",
+    mythAward: state.run?.mythStats?.lastAward?.tag ?? null,
     deckSize: state.run?.deck.length ?? 0,
     relics: state.run?.relics.length ?? 0,
     maxEnergy: metrics.maxEnergy,
@@ -320,6 +322,7 @@ function summarize(items) {
     },
     cardPlays: mergeStyleMaps(items.map((item) => item.cardPlays)),
     rewardPicks: mergeStyleMaps(items.map((item) => item.rewardPicks)),
+    mythAwards: mergeMythAwards(items.map((item) => item.mythAward)),
   };
 }
 
@@ -332,6 +335,7 @@ function printSummary(summary) {
   console.log(`终局路线检查：商店出现 ${summary.finalRoute.shopSeen}/${summary.runs}，支线出现 ${summary.finalRoute.sideSeen}/${summary.runs}，商店进入 ${summary.finalRoute.shopVisited}/${summary.runs}，支线进入 ${summary.finalRoute.sideVisited}/${summary.runs}`);
   console.log(`出牌分布：${styleLine(summary.cardPlays)}`);
   console.log(`奖励选择：${styleLine(summary.rewardPicks)}`);
+  console.log(`派系箓印结算：${mythLine(summary.mythAwards)}`);
 }
 
 function parseArgs(argv) {
@@ -355,6 +359,14 @@ function mergeStyleMaps(maps) {
     for (const [style, value] of Object.entries(map)) {
       result[style] = (result[style] ?? 0) + value;
     }
+  }
+  return result;
+}
+
+function mergeMythAwards(tags) {
+  const result = Object.fromEntries([...MYTH_FACTIONS, "none"].map((tag) => [tag, 0]));
+  for (const tag of tags) {
+    result[tag ?? "none"] = (result[tag ?? "none"] ?? 0) + 1;
   }
   return result;
 }
@@ -407,4 +419,8 @@ function pct(value) {
 
 function styleLine(map) {
   return [...STYLE_IDS, "neutral"].map((style) => `${style} ${map[style] ?? 0}`).join(" / ");
+}
+
+function mythLine(map) {
+  return [...MYTH_FACTIONS, "none"].map((tag) => `${tag} ${map[tag] ?? 0}`).join(" / ");
 }

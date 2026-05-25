@@ -4,6 +4,7 @@ import { generateRewards, rollRelicReward } from "./rewards.js";
 import { grantGoldDrop } from "./economy.js";
 import { completeRunVictory } from "./goals.js";
 import { choice, randomInt, shuffle } from "./rng.js";
+import { recordMythCardPlay } from "./myth.js";
 import {
   addStatus,
   clearStatus,
@@ -90,6 +91,7 @@ export function playCard(state, cardUid, targetUid) {
   combat.hand.splice(cardIndex, 1);
   combat.discardPile.push(cardInstance);
   combat.log.push(`你打出 ${card.name}。`);
+  recordMythCardPlay(run, card);
   applyCardEffects(state, cardInstance, targetUid);
 
   return state;

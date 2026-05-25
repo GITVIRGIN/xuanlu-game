@@ -19,6 +19,8 @@
  * @property {StatusId[]=} statuses
  * @property {string[]=} excludeStyles
  * @property {number=} stacks
+ * @property {number=} cardMythBonus
+ * @property {number=} cardMythStatusBonus
  *
  * @typedef {object} CardDefinition
  * @property {string} id
@@ -91,6 +93,8 @@
  * @property {number} floor
  * @property {object=} goal
  * @property {Record<string, number>=} archetypeAffinity
+ * @property {Record<string, number>=} mythMastery
+ * @property {{plays: Record<string, number>, lastAward: object | null}=} mythStats
  * @property {RouteNode[]=} nodeChoices
  * @property {RouteNode | null=} currentNode
  * @property {number[]=} completedSideTiers
@@ -123,6 +127,7 @@
  * @property {number} wins
  * @property {number=} lossStreak
  * @property {Record<string, number>=} talents
+ * @property {Record<string, number>=} mythMastery
  *
  * @typedef {object} GameState
  * @property {Phase} phase

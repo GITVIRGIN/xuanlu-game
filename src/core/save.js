@@ -3,6 +3,7 @@ import { migrateArchetypes } from "./archetypes.js";
 import { createRunGoal, migrateRunGoal } from "./goals.js";
 import { ensureShopTiers, prepareRouteChoice } from "./nodes.js";
 import { migrateMeta } from "./progression.js";
+import { ensureMythStats, snapshotMythMastery } from "./myth.js";
 
 const SAVE_KEY = "xuanlu-game-state";
 
@@ -48,6 +49,8 @@ function migrateGame(state) {
   run.guaranteedNextHand = run.guaranteedNextHand ?? [];
   run.retainedHand = run.retainedHand ?? [];
   run.lastGoldDrop = run.lastGoldDrop ?? 0;
+  run.mythMastery = run.mythMastery ?? snapshotMythMastery(state.meta);
+  ensureMythStats(run);
   migrateArchetypes(run);
   ensureShopTiers(run);
 
