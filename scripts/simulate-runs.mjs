@@ -30,7 +30,8 @@ function runOne(seed) {
   const metrics = {
     cardPlays: emptyStyleMap(),
     rewardPicks: emptyStyleMap(),
-    maxStatuses: { bleed: 0, poison: 0, burn: 0, battleIntent: 0, spirit: 0 },
+    maxStatuses: { bleed: 0, poison: 0, burn: 0, thunderMark: 0, stun: 0, battleIntent: 0, spirit: 0 },
+    finalRoute: { shopSeen: false, sideSeen: false, shopVisited: false, sideVisited: false },
     maxBlock: 0,
     minHp: Infinity,
     maxEnergy: state.run.maxEnergy,
@@ -43,7 +44,9 @@ function runOne(seed) {
     collectMetrics(state, metrics);
 
     if (state.phase === "route") {
+      recordFinalRouteSeen(state.run, metrics);
       const node = chooseRouteNode(state.run);
+      recordFinalRouteVisit(node, metrics);
       state = reduceGame(state, { type: "chooseNode", nodeId: node.id });
       if (state.phase === "combat") metrics.combats += 1;
       continue;
@@ -152,12 +155,14 @@ function chooseCombatAction(run) {
 function combatScore(run, card) {
   const target = preferredTarget(run);
   const targetBleed = statusValue(target, "bleed");
+  const targetThunder = statusValue(target, "thunderMark");
   const lowHp = run.hp <= run.maxHp * 0.35;
   const block = run.combat?.block ?? 0;
   let score = profileScore(card, 18);
 
   if (effectType(card, "damage") || effectType(card, "execute")) score += 20;
   if (effectType(card, "status")) score += 16;
+  if (effectType(card, "thunderMark")) score += targetThunder >= 6 ? 46 : targetThunder >= 3 ? 30 : 20;
   if (effectType(card, "amplifyDebuffs")) score += targetHasDebuff(target) ? 36 : -12;
   if (effectType(card, "block")) score += lowHp ? 42 : 8;
   if (profile === "shell" && effectType(card, "block")) score += 42;
@@ -169,6 +174,8 @@ function combatScore(run, card) {
   if (effectType(card, "bleedSiphon")) score += targetBleed >= 5 ? 70 : targetBleed >= 3 ? 25 : -25;
   if (effectType(card, "shellReflect")) score += block >= 18 ? 72 : block >= 8 ? 38 : profile === "shell" ? 12 : -8;
   if (profile === "poison" && card.effects.some((effect) => effect.status === "poison")) score += 34;
+  if (profile === "spell" && effectType(card, "thunderMark")) score += 48;
+  if (profile === "spell" && effectType(card, "gainEnergy")) score += 12;
   if (card.id === "meditate" && run.energy >= run.maxEnergy) score -= 999;
   return score - card.cost * 3;
 }
@@ -184,6 +191,7 @@ function rewardScore(run, reward) {
   if (profile === "bleed" && effectType(card, "bleedSiphon")) score += 45;
   if (profile === "shell" && effectType(card, "shellReflect")) score += 55;
   if (profile === "poison" && card.effects.some((effect) => effect.status === "poison")) score += 42;
+  if (profile === "spell" && effectType(card, "thunderMark")) score += 55;
   return score;
 }
 
@@ -208,12 +216,15 @@ function preferredTarget(run) {
     const statusId = profile === "bleed" ? "bleed" : "poison";
     return enemies.sort((left, right) => statusValue(right, statusId) - statusValue(left, statusId) || left.hp - right.hp)[0];
   }
+  if (profile === "spell") {
+    return enemies.sort((left, right) => statusValue(right, "thunderMark") - statusValue(left, "thunderMark") || left.hp - right.hp)[0];
+  }
   return enemies.sort((left, right) => left.hp - right.hp)[0];
 }
 
 function profileScore(card, weight) {
   if (!card?.style) return 0;
-  if (profile === "balanced") return ["physical", "bleed", "poison"].includes(card.style) ? weight * 0.25 : weight * 0.15;
+  if (profile === "balanced") return ["physical", "spell", "bleed", "poison"].includes(card.style) ? weight * 0.23 : weight * 0.13;
   return card.style === profile ? weight : 0;
 }
 
@@ -231,7 +242,20 @@ function collectMetrics(state, metrics) {
     metrics.maxStatuses.bleed = Math.max(metrics.maxStatuses.bleed, statusValue(enemy, "bleed"));
     metrics.maxStatuses.poison = Math.max(metrics.maxStatuses.poison, statusValue(enemy, "poison"));
     metrics.maxStatuses.burn = Math.max(metrics.maxStatuses.burn, statusValue(enemy, "burn"));
+    metrics.maxStatuses.thunderMark = Math.max(metrics.maxStatuses.thunderMark, statusValue(enemy, "thunderMark"));
+    metrics.maxStatuses.stun = Math.max(metrics.maxStatuses.stun, statusValue(enemy, "stun"));
   }
+}
+
+function recordFinalRouteSeen(run, metrics) {
+  const choices = run.nodeChoices ?? [];
+  if (choices.some((node) => node.id === "shop_final")) metrics.finalRoute.shopSeen = true;
+  if (choices.some((node) => node.id === "side_final")) metrics.finalRoute.sideSeen = true;
+}
+
+function recordFinalRouteVisit(node, metrics) {
+  if (node?.id === "shop_final") metrics.finalRoute.shopVisited = true;
+  if (node?.id === "side_final") metrics.finalRoute.sideVisited = true;
 }
 
 function recordCardPlay(metrics, card) {
@@ -268,8 +292,16 @@ function summarize(items) {
       bleed: avg(items.map((item) => item.maxStatuses.bleed)),
       poison: avg(items.map((item) => item.maxStatuses.poison)),
       burn: avg(items.map((item) => item.maxStatuses.burn)),
+      thunderMark: avg(items.map((item) => item.maxStatuses.thunderMark)),
+      stun: avg(items.map((item) => item.maxStatuses.stun)),
       battleIntent: avg(items.map((item) => item.maxStatuses.battleIntent)),
       spirit: avg(items.map((item) => item.maxStatuses.spirit)),
+    },
+    finalRoute: {
+      shopSeen: count((item) => item.finalRoute.shopSeen),
+      sideSeen: count((item) => item.finalRoute.sideSeen),
+      shopVisited: count((item) => item.finalRoute.shopVisited),
+      sideVisited: count((item) => item.finalRoute.sideVisited),
     },
     cardPlays: mergeStyleMaps(items.map((item) => item.cardPlays)),
     rewardPicks: mergeStyleMaps(items.map((item) => item.rewardPicks)),
@@ -281,7 +313,8 @@ function printSummary(summary) {
   console.log(`胜率 ${pct(summary.winRate)}，Boss 通关 ${pct(summary.bossWinRate)}，特殊通关 ${pct(summary.specialWinRate)}，失败 ${pct(summary.lossRate)}`);
   console.log(`平均层数 ${summary.avgFinalFloor}，平均牌组 ${summary.avgDeckSize}，平均遗物 ${summary.avgRelics}，平均能量上限 ${summary.avgMaxEnergy}`);
   console.log(`平均最大格挡 ${summary.avgMaxBlock}，平均最低生命 ${summary.avgMinHp}`);
-  console.log(`状态峰值均值：流血 ${summary.maxStatuses.bleed}，毒瘴 ${summary.maxStatuses.poison}，灼烧 ${summary.maxStatuses.burn}，战意 ${summary.maxStatuses.battleIntent}，灵气 ${summary.maxStatuses.spirit}`);
+  console.log(`状态峰值均值：流血 ${summary.maxStatuses.bleed}，毒瘴 ${summary.maxStatuses.poison}，灼烧 ${summary.maxStatuses.burn}，雷痕 ${summary.maxStatuses.thunderMark}，眩晕 ${summary.maxStatuses.stun}，战意 ${summary.maxStatuses.battleIntent}，灵气 ${summary.maxStatuses.spirit}`);
+  console.log(`终局路线检查：商店出现 ${summary.finalRoute.shopSeen}/${summary.runs}，支线出现 ${summary.finalRoute.sideSeen}/${summary.runs}，商店进入 ${summary.finalRoute.shopVisited}/${summary.runs}，支线进入 ${summary.finalRoute.sideVisited}/${summary.runs}`);
   console.log(`出牌分布：${styleLine(summary.cardPlays)}`);
   console.log(`奖励选择：${styleLine(summary.rewardPicks)}`);
 }
@@ -316,7 +349,7 @@ function statusValue(fighter, statusId) {
 }
 
 function targetHasDebuff(target) {
-  return ["burn", "bleed", "poison", "curse", "chaos", "stasis"].some((status) => statusValue(target, status) > 0);
+  return ["burn", "bleed", "poison", "curse", "chaos", "stasis", "thunderMark", "stun"].some((status) => statusValue(target, status) > 0);
 }
 
 function effectType(card, type) {

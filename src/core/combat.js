@@ -8,6 +8,7 @@ import {
   addStatus,
   clearStatus,
   reduceConsumableDebuff,
+  reduceStatus,
   reduceNaturalConsumableDebuff,
   reduceNaturalStatus,
   statusLabel,
@@ -353,6 +354,11 @@ function resolveEnemyIntent(state, enemy) {
 
   const intent = enemy.intent;
 
+  if (statusStacks(enemy, "stun") > 0) {
+    skipEnemyByStun(combat, enemy);
+    return;
+  }
+
   if (statusStacks(enemy, "chaos") > 0) {
     if (intent.type === "attack") {
       if (tryChaosAttack(state, enemy, enemyRawAttackDamage(run, enemy, intent))) {
@@ -411,6 +417,11 @@ function tryChaosAttack(state, enemy, rawDamage) {
 function skipEnemyByChaos(combat, enemy) {
   const reduced = reduceConsumableDebuff(enemy, "chaos", 1);
   combat.log.push(`${enemy.name} 受到离间影响，空过了这一回合${reduced ? "。" : "，凝滞保留了离间。"}`);
+}
+
+function skipEnemyByStun(combat, enemy) {
+  reduceStatus(enemy, "stun", 1);
+  combat.log.push(`${enemy.name} 被眩晕压制，空过了这一回合。`);
 }
 
 function createEnemiesForFloor(run) {

@@ -7,10 +7,10 @@
  * @typedef {"home" | "route" | "combat" | "reward" | "shop" | "gameOver"} Phase
  * @typedef {"common" | "rare" | "epic" | "legendary"} Rarity
  * @typedef {"self" | "enemy" | "allEnemies"} Target
- * @typedef {"burn" | "bleed" | "poison" | "curse" | "spirit" | "battleIntent" | "chaos" | "stasis" | "ward"} StatusId
+ * @typedef {"burn" | "bleed" | "poison" | "curse" | "spirit" | "battleIntent" | "chaos" | "stasis" | "ward" | "thunderMark" | "stun"} StatusId
  *
  * @typedef {object} Effect
- * @property {"damage" | "execute" | "block" | "heal" | "loseHp" | "draw" | "gainEnergy" | "status" | "amplifyDebuffs" | "bleedSiphon" | "shellReflect" | "recoverDiscard" | "maxEnergy" | "maxHp" | "cleanse" | "rareCard" | "handLimit" | "deckLimit" | "gold" | "relic"} type
+ * @property {"damage" | "execute" | "block" | "heal" | "loseHp" | "draw" | "gainEnergy" | "status" | "amplifyDebuffs" | "thunderMark" | "bleedSiphon" | "shellReflect" | "recoverDiscard" | "maxEnergy" | "maxHp" | "cleanse" | "rareCard" | "handLimit" | "deckLimit" | "gold" | "relic"} type
  * @property {Target=} target
  * @property {number=} value
  * @property {number=} ratio

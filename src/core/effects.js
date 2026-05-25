@@ -4,6 +4,8 @@ import { addStatus, reduceConsumableDebuff, reduceStatus, statusLabel, statusSta
 
 const SPIRIT_BONUS_PER_COST = 4;
 const PHYSICAL_INTENT_GAIN = 3;
+const THUNDER_TRIBULATION_THRESHOLD = 8;
+const THUNDER_TRIBULATION_DAMAGE = 32;
 
 function combatLog(state, text) {
   state.run?.combat?.log.push(text);
@@ -101,6 +103,11 @@ export function applyEffect(state, effect, targetUid) {
       if (added > 0) {
         combatLog(state, `${target.uid === "player" ? "你" : target.name} 的负面状态增长 ${added} 层。`);
       }
+      triggerThunderTribulations(state, target, effect);
+    }
+
+    if (effect.type === "thunderMark") {
+      applyThunderMark(state, target, effect);
     }
 
     if (target.uid === "player") {
@@ -313,7 +320,7 @@ function resolveTargets(run, targetType, targetUid) {
 }
 
 function amplifyDebuffs(target, statuses, value) {
-  const debuffs = statuses ?? ["burn", "bleed", "poison", "curse", "chaos", "stasis"];
+  const debuffs = statuses ?? ["burn", "bleed", "poison", "curse", "chaos", "stasis", "thunderMark"];
   let added = 0;
 
   for (const statusId of debuffs) {
@@ -325,6 +332,40 @@ function amplifyDebuffs(target, statuses, value) {
   }
 
   return added;
+}
+
+function applyThunderMark(state, target, effect) {
+  const run = state.run;
+  const combat = run?.combat;
+  if (!run || !combat || target.hp <= 0) return;
+
+  const stacks = effect.stacks ?? effect.value ?? 0;
+  if (stacks <= 0) return;
+
+  addStatus(target, "thunderMark", stacks);
+  combatLog(state, `${target.name} 雷痕 +${stacks}。`);
+  triggerThunderTribulations(state, target, effect);
+}
+
+function triggerThunderTribulations(state, target, effect = {}) {
+  const run = state.run;
+  const combat = run?.combat;
+  if (!run || !combat || target.hp <= 0) return;
+
+  const threshold = effect.threshold ?? THUNDER_TRIBULATION_THRESHOLD;
+  const damage = effect.damage ?? THUNDER_TRIBULATION_DAMAGE;
+  const stun = effect.stun ?? 1;
+
+  while (target.hp > 0 && statusStacks(target, "thunderMark") >= threshold) {
+    reduceStatus(target, "thunderMark", threshold);
+    const finalDamage = damage + statusStacks(target, "curse");
+    target.hp = Math.max(0, target.hp - finalDamage);
+    addStatus(target, "stun", stun);
+    combatLog(state, `天劫降下，${target.name} 无视格挡受到 ${finalDamage} 点雷伤，并眩晕 ${stun} 次。`);
+    if (target.hp <= 0) {
+      onEnemyKilled(state, target);
+    }
+  }
 }
 
 function applyBleedSiphon(state, targets, effect) {

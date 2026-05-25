@@ -833,6 +833,18 @@ p {
   background: #e1f3f8;
 }
 
+.status-thunderMark {
+  color: #6b4c00;
+  border-color: #c28a00;
+  background: #fff6cc;
+}
+
+.status-stun {
+  color: #52388f;
+  border-color: #8b5cf6;
+  background: #eee7ff;
+}
+
 .status-ward {
   color: #8a5a0a;
   border-color: #b87916;

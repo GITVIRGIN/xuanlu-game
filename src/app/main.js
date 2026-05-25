@@ -688,6 +688,7 @@ function renderEffectBadges(definition) {
     if (effect.type === "draw") labels.push(`抽牌 ${effect.value}`);
     if (effect.type === "gainEnergy") labels.push(`能量 ${effect.value}`);
     if (effect.type === "status") labels.push(`${statusInfo[effect.status]?.label ?? effect.status} ${effect.stacks}`);
+    if (effect.type === "thunderMark") labels.push(`雷痕 ${effect.stacks ?? effect.value}`);
     if (effect.type === "amplifyDebuffs") labels.push(`状态 +${effect.value}`);
     if (effect.type === "bleedSiphon") labels.push(`汲血 /${effect.ratio ?? 3}`);
     if (effect.type === "shellReflect") labels.push(`反震 ${Math.round((effect.ratio ?? 0.5) * 100)}%`);
@@ -706,6 +707,11 @@ function renderIntentButton(enemy) {
 }
 
 function intentButtonText(enemy) {
+  const stun = statusValue(enemy, "stun");
+  if (stun > 0) {
+    return "眩晕空过";
+  }
+
   const chaos = statusValue(enemy, "chaos");
   if (chaos > 0) {
     const hasAlly = state.run?.combat?.enemies.some((item) => item.uid !== enemy.uid && item.hp > 0);
@@ -764,6 +770,12 @@ function impactLabels(statuses, owner) {
     }
     if (status.id === "chaos") {
       result.push({ status, kind: "impact-debuff", label: `内斗 ${status.stacks} 次` });
+    }
+    if (status.id === "stun") {
+      result.push({ status, kind: "impact-debuff", label: `跳过行动 ${status.stacks} 次` });
+    }
+    if (status.id === "thunderMark") {
+      result.push({ status, kind: "impact-debuff", label: `雷痕 ${status.stacks}/8` });
     }
     if (status.id === "stasis") {
       result.push({ status, kind: "impact-debuff", label: `保留状态 ${status.stacks} 次` });
@@ -876,6 +888,8 @@ function detailForStatus(status) {
     battleIntent: [`当前数值 ${stacks} 表示：物理牌造成伤害时额外 +${stacks}。`, "每打出一张物理伤害牌后，战意会继续增加 3 层；它会随回合逐步减少，战斗结束后清空。"],
     ward: [`当前数值 ${stacks} 表示：下次受到伤害前，先抵消 ${stacks} 点。`, "它会优先保护血条，作用类似一层可消耗的小格挡。"],
     chaos: [`当前数值 ${stacks} 表示：敌人接下来 ${stacks} 次行动会被离间干扰。`, "如果本次是攻击且有同伴，会转而攻击同伴；否则会直接空过，不会攻击、格挡或施加状态。"],
+    stun: [`当前数值 ${stacks} 表示：敌人接下来 ${stacks} 次行动会被眩晕跳过。`, "眩晕会先于离间结算；被眩晕的敌人不会攻击、格挡或施加状态。"],
+    thunderMark: [`当前数值 ${stacks} 表示：敌人身上已积累 ${stacks} 层雷痕。`, `每满 8 层会立刻触发天劫，造成 32 点无视格挡雷伤，并施加 1 次眩晕。当前还差 ${Math.max(0, 8 - (stacks % 8 || 8))} 层。`],
     stasis: [`当前数值 ${stacks} 表示：流血、毒瘴、离间将要减少层数时，先消耗凝滞。`, "它会让核心 debuff 不掉层，适合把流血、中毒、控制不断堆高。"],
     curse: [`当前数值 ${stacks} 表示：受到卡牌伤害时额外 +${stacks}。`, "如果在敌人身上，它会让敌人血条掉得更快；如果在你身上，敌人攻击会更痛。"],
     burn: [`当前数值 ${stacks} 表示：回合结算时受到 ${stacks} 点伤害。`, "造成伤害后会消退一半，至少减少 1 层，不会一直滚到无解。"],
@@ -894,6 +908,21 @@ function detailForStatus(status) {
 
 function detailForIntent(enemy) {
   const intent = enemy.intent;
+  const stun = statusValue(enemy, "stun");
+  if (stun > 0) {
+    return {
+      key: `intent:${enemy.uid}:stun:${stun}:${intent.text}`,
+      type: "敌人意图",
+      title: "眩晕空过",
+      main: `${enemy.name} 当前被眩晕压制，本次不会执行原意图。`,
+      lines: [
+        `眩晕层数：${stun}`,
+        "它不会攻击、格挡或施加状态，会直接空过这一回合。",
+        "结算后眩晕减少 1 层。",
+      ],
+    };
+  }
+
   const chaos = statusValue(enemy, "chaos");
   if (chaos > 0) {
     const hasAlly = state.run?.combat?.enemies.some((item) => item.uid !== enemy.uid && item.hp > 0);
