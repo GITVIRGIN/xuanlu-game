@@ -168,6 +168,7 @@ function combatScore(run, card) {
   if (effectType(card, "loseHp")) score += lowHp ? -70 : -10;
   if (effectType(card, "bleedSiphon")) score += targetBleed >= 5 ? 70 : targetBleed >= 3 ? 25 : -25;
   if (effectType(card, "shellReflect")) score += block >= 18 ? 72 : block >= 8 ? 38 : profile === "shell" ? 12 : -8;
+  if (profile === "poison" && card.effects.some((effect) => effect.status === "poison")) score += 34;
   if (card.id === "meditate" && run.energy >= run.maxEnergy) score -= 999;
   return score - card.cost * 3;
 }
@@ -182,6 +183,7 @@ function rewardScore(run, reward) {
   if (effectType(card, "draw") || effectType(card, "gainEnergy")) score += 8;
   if (profile === "bleed" && effectType(card, "bleedSiphon")) score += 45;
   if (profile === "shell" && effectType(card, "shellReflect")) score += 55;
+  if (profile === "poison" && card.effects.some((effect) => effect.status === "poison")) score += 42;
   return score;
 }
 
@@ -202,15 +204,16 @@ function shopScore(item) {
 
 function preferredTarget(run) {
   const enemies = run.combat?.enemies.filter((enemy) => enemy.hp > 0) ?? [];
-  if (profile === "bleed") {
-    return enemies.sort((left, right) => statusValue(right, "bleed") - statusValue(left, "bleed") || left.hp - right.hp)[0];
+  if (profile === "bleed" || profile === "poison") {
+    const statusId = profile === "bleed" ? "bleed" : "poison";
+    return enemies.sort((left, right) => statusValue(right, statusId) - statusValue(left, statusId) || left.hp - right.hp)[0];
   }
   return enemies.sort((left, right) => left.hp - right.hp)[0];
 }
 
 function profileScore(card, weight) {
   if (!card?.style) return 0;
-  if (profile === "balanced") return card.style === "physical" || card.style === "bleed" ? weight * 0.25 : weight * 0.15;
+  if (profile === "balanced") return ["physical", "bleed", "poison"].includes(card.style) ? weight * 0.25 : weight * 0.15;
   return card.style === profile ? weight : 0;
 }
 

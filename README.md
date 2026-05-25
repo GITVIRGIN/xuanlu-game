@@ -35,6 +35,13 @@ node scripts/build-release.mjs
 node scripts/simulate-runs.mjs --runs=100 --profile=bleed
 ```
 
+中毒、龟壳等专项也可以指定对应 profile：
+
+```bash
+node scripts/simulate-runs.mjs --runs=100 --profile=poison
+node scripts/simulate-runs.mjs --runs=100 --profile=shell
+```
+
 连续失败补偿类改动需要额外指定失败次数，例如：
 
 ```bash

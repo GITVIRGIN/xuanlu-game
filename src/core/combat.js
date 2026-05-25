@@ -470,14 +470,17 @@ export function previewEnemyIntent(run, enemy) {
   if (intent.type === "attack") {
     const base = intent.value ?? 0;
     const bonus = enemyAttackBonus(run, enemy);
+    const poisonWeakness = poisonAttackReduction(enemy);
     const curse = statusStacks(playerAsFighter(run), "curse");
+    const rawDamage = Math.max(0, base + bonus - poisonWeakness);
     return {
       type: "attack",
       base,
       bonus,
+      poisonWeakness,
       curse,
-      rawDamage: base + bonus,
-      expectedDamage: base + bonus + curse,
+      rawDamage,
+      expectedDamage: rawDamage + curse,
     };
   }
 
@@ -499,7 +502,13 @@ export function previewEnemyIntent(run, enemy) {
 }
 
 function enemyRawAttackDamage(run, enemy, intent) {
-  return (intent.value ?? 0) + enemyAttackBonus(run, enemy);
+  return Math.max(0, (intent.value ?? 0) + enemyAttackBonus(run, enemy) - poisonAttackReduction(enemy));
+}
+
+function poisonAttackReduction(enemy) {
+  const poison = statusStacks(enemy, "poison");
+  if (poison <= 0) return 0;
+  return Math.min(5, Math.floor(poison / 4));
 }
 
 function enemyAttackBonus(run, enemy) {

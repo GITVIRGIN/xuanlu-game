@@ -775,7 +775,8 @@ function impactLabels(statuses, owner) {
       result.push({ status, kind: "impact-debuff", label: `回合掉血 ${status.stacks}` });
     }
     if (status.id === "poison") {
-      result.push({ status, kind: "impact-debuff", label: `回合掉血 ${status.stacks}` });
+      const weakness = owner === "enemy" ? ` / 攻击 -${Math.min(5, Math.floor(status.stacks / 4))}` : "";
+      result.push({ status, kind: "impact-debuff", label: `回合掉血 ${status.stacks}${weakness}` });
     }
     if (status.id === "bleed") {
       result.push({ status, kind: "impact-debuff", label: `流血压制 ${status.stacks}` });
@@ -878,7 +879,7 @@ function detailForStatus(status) {
     stasis: [`当前数值 ${stacks} 表示：流血、毒瘴、离间将要减少层数时，先消耗凝滞。`, "它会让核心 debuff 不掉层，适合把流血、中毒、控制不断堆高。"],
     curse: [`当前数值 ${stacks} 表示：受到卡牌伤害时额外 +${stacks}。`, "如果在敌人身上，它会让敌人血条掉得更快；如果在你身上，敌人攻击会更痛。"],
     burn: [`当前数值 ${stacks} 表示：回合结算时受到 ${stacks} 点伤害。`, "造成伤害后会消退一半，至少减少 1 层，不会一直滚到无解。"],
-    poison: [`当前数值 ${stacks} 表示：回合结算时受到 ${stacks} 点伤害，然后减少 1 层。`, "它会直接压低血条，适合拖回合滚雪球。"],
+    poison: [`当前数值 ${stacks} 表示：回合结算时受到 ${stacks} 点伤害，然后减少 1 层。`, `如果在敌人身上，它攻击时会被虚弱 ${Math.min(5, Math.floor(stacks / 4))} 点；适合拖回合削弱高伤敌人。`],
     bleed: [`当前数值 ${stacks} 表示：回合间会先扣格挡再造成伤害；被攻击时也会额外爆开。`, "血魔牌会先付出生命，再按敌人流血层数回血。层数堆高后，流血会从风险变成续航和爆发来源。"],
   };
 
@@ -920,6 +921,7 @@ function detailForIntent(enemy) {
       lines: [
         `基础伤害：${preview?.base ?? intent.value}`,
         `难度/ Boss 加成：${preview?.bonus ?? 0}`,
+        `毒瘴虚弱：-${preview?.poisonWeakness ?? 0}`,
         `你身上的诅咒加成：${preview?.curse ?? 0}`,
         `预计未被护体和格挡抵消前伤害：${preview?.expectedDamage ?? intent.value}`,
         "伤害会先被你的护体和格挡抵消。",

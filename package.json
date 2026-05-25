@@ -8,6 +8,7 @@
     "sim:100": "node scripts/simulate-runs.mjs --runs=100",
     "sim:bleed": "node scripts/simulate-runs.mjs --runs=100 --profile=bleed",
     "sim:physical": "node scripts/simulate-runs.mjs --runs=100 --profile=physical",
-    "sim:shell": "node scripts/simulate-runs.mjs --runs=100 --profile=shell"
+    "sim:shell": "node scripts/simulate-runs.mjs --runs=100 --profile=shell",
+    "sim:poison": "node scripts/simulate-runs.mjs --runs=100 --profile=poison"
   }
 }
