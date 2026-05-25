@@ -682,6 +682,7 @@ function renderEffectBadges(definition) {
   const labels = [];
   for (const effect of definition.effects) {
     if (effect.type === "damage") labels.push(`伤害 ${effect.value}`);
+    if (effect.type === "execute") labels.push(`斩杀 ${effect.threshold ?? 35}%`);
     if (effect.type === "block") labels.push(`格挡 ${effect.value}`);
     if (effect.type === "heal") labels.push(`回复 ${effect.value}`);
     if (effect.type === "draw") labels.push(`抽牌 ${effect.value}`);
@@ -752,6 +753,9 @@ function impactLabels(statuses, owner) {
   for (const status of statuses.filter((item) => item.stacks > 0)) {
     if (status.id === "spirit") {
       result.push({ status, kind: "impact-buff", label: `出牌伤害 +${status.stacks}` });
+    }
+    if (status.id === "battleIntent") {
+      result.push({ status, kind: "impact-buff", label: `物理伤害 +${status.stacks}` });
     }
     if (status.id === "ward") {
       result.push({ status, kind: "impact-buff", label: `先抵消 ${status.stacks}` });
@@ -866,6 +870,7 @@ function detailForStatus(status) {
   const stacks = status.stacks;
   const map = {
     spirit: [`当前数值 ${stacks} 表示：你用卡牌造成伤害时，会按卡牌费用获得部分伤害加成。`, "低费牌只能承载部分灵气，高费牌更容易吃满收益；战斗结束后清空。"],
+    battleIntent: [`当前数值 ${stacks} 表示：物理牌造成伤害时额外 +${stacks}。`, "每打出一张物理伤害牌后，战意会继续增加 3 层；它会随回合逐步减少，战斗结束后清空。"],
     ward: [`当前数值 ${stacks} 表示：下次受到伤害前，先抵消 ${stacks} 点。`, "它会优先保护血条，作用类似一层可消耗的小格挡。"],
     chaos: [`当前数值 ${stacks} 表示：敌人接下来 ${stacks} 次行动会被离间干扰。`, "如果本次是攻击且有同伴，会转而攻击同伴；否则会直接空过，不会攻击、格挡或施加状态。"],
     stasis: [`当前数值 ${stacks} 表示：流血、毒瘴、离间将要减少层数时，先消耗凝滞。`, "它会让核心 debuff 不掉层，适合把流血、中毒、控制不断堆高。"],

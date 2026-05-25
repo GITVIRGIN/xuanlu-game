@@ -7,10 +7,10 @@
  * @typedef {"home" | "route" | "combat" | "reward" | "shop" | "gameOver"} Phase
  * @typedef {"common" | "rare" | "epic" | "legendary"} Rarity
  * @typedef {"self" | "enemy" | "allEnemies"} Target
- * @typedef {"burn" | "bleed" | "poison" | "curse" | "spirit" | "chaos" | "stasis" | "ward"} StatusId
+ * @typedef {"burn" | "bleed" | "poison" | "curse" | "spirit" | "battleIntent" | "chaos" | "stasis" | "ward"} StatusId
  *
  * @typedef {object} Effect
- * @property {"damage" | "block" | "heal" | "loseHp" | "draw" | "gainEnergy" | "status" | "amplifyDebuffs" | "recoverDiscard" | "maxEnergy" | "maxHp" | "cleanse" | "rareCard" | "handLimit" | "deckLimit" | "gold" | "relic"} type
+ * @property {"damage" | "execute" | "block" | "heal" | "loseHp" | "draw" | "gainEnergy" | "status" | "amplifyDebuffs" | "recoverDiscard" | "maxEnergy" | "maxHp" | "cleanse" | "rareCard" | "handLimit" | "deckLimit" | "gold" | "relic"} type
  * @property {Target=} target
  * @property {number=} value
  * @property {StatusId=} status

@@ -2,6 +2,7 @@ import { statusInfo } from "./data.js";
 
 const STATUS_CAPS = {
   spirit: 12,
+  battleIntent: 36,
 };
 
 export function statusLabel(statusId) {

@@ -3,6 +3,7 @@ import { drawCards, finishCombatIfWon } from "./combat.js";
 import { addStatus, reduceConsumableDebuff, reduceStatus, statusLabel, statusStacks } from "./status.js";
 
 const SPIRIT_BONUS_PER_COST = 4;
+const PHYSICAL_INTENT_GAIN = 3;
 
 function combatLog(state, text) {
   state.run?.combat?.log.push(text);
@@ -53,7 +54,11 @@ export function applyEffect(state, effect, targetUid) {
 
   for (const target of targets) {
     if (effect.type === "damage") {
-      applyCardDamage(state, target, effect.value ?? 0, effect.cardCost ?? 1);
+      applyCardDamage(state, target, effect.value ?? 0, effect.cardCost ?? 1, effect.cardStyle);
+    }
+
+    if (effect.type === "execute") {
+      applyExecute(state, target, effect);
     }
 
     if (effect.type === "block") {
@@ -91,15 +96,21 @@ export function applyEffect(state, effect, targetUid) {
   return finishCombatIfWon(state);
 }
 
-export function applyCardDamage(state, target, baseDamage, cardCost = 1) {
+export function applyCardDamage(state, target, baseDamage, cardCost = 1, cardStyle = null) {
   const run = state.run;
   const combat = run?.combat;
   if (!run || !combat || target.hp <= 0) return;
 
-  const spirit = statusStacks(playerFighter(run), "spirit");
+  const player = playerFighter(run);
+  const spirit = statusStacks(player, "spirit");
+  const battleIntent = cardStyle === "physical" ? statusStacks(player, "battleIntent") : 0;
   const curse = statusStacks(target, "curse");
   const spiritBonus = Math.min(spirit, Math.max(1, cardCost) * SPIRIT_BONUS_PER_COST);
-  let damage = baseDamage + spiritBonus + curse;
+  let damage = baseDamage + spiritBonus + battleIntent + curse;
+
+  if (battleIntent > 0) {
+    combatLog(state, `战意追加 ${battleIntent} 点物理伤害。`);
+  }
 
   if (run.relics.includes("thunderSeal") && !combat.flags.thunderSealUsed) {
     damage += 4;
@@ -122,6 +133,23 @@ export function applyCardDamage(state, target, baseDamage, cardCost = 1) {
   if (target.hp <= 0) {
     onEnemyKilled(state, target);
   }
+}
+
+function applyExecute(state, target, effect) {
+  const run = state.run;
+  const combat = run?.combat;
+  if (!run || !combat || target.hp <= 0) return;
+
+  const threshold = effect.threshold ?? 35;
+  const hpPercent = (target.hp / target.maxHp) * 100;
+  if (hpPercent <= threshold) {
+    target.hp = 0;
+    combatLog(state, `${target.name} 血线低于 ${threshold}%，被无视格挡斩杀。`);
+    onEnemyKilled(state, target);
+    return;
+  }
+
+  applyCardDamage(state, target, effect.fallbackDamage ?? 0, effect.cardCost ?? 1, effect.cardStyle);
 }
 
 export function applyIncomingDamage(state, rawDamage) {
@@ -184,11 +212,17 @@ export function tickDamageStatus(state, fighter, statusId) {
 
 export function applyCardEffects(state, cardInstance, targetUid) {
   const card = cards[cardInstance.cardId];
+  const growsBattleIntent = card.style === "physical" && card.effects.some((effect) => ["damage", "execute"].includes(effect.type));
   for (const effect of card.effects) {
-    applyEffect(state, { ...effect, sourceUid: cardInstance.uid, cardCost: card.cost }, targetUid);
+    applyEffect(state, { ...effect, sourceUid: cardInstance.uid, cardCost: card.cost, cardStyle: card.style }, targetUid);
     if (state.phase !== "combat") {
       break;
     }
+  }
+
+  if (state.phase === "combat" && growsBattleIntent && statusStacks(playerFighter(state.run), "battleIntent") > 0) {
+    addStatus({ statuses: state.run.statuses }, "battleIntent", PHYSICAL_INTENT_GAIN);
+    combatLog(state, `物理攻势推进，战意 +${PHYSICAL_INTENT_GAIN}。`);
   }
 }
 
