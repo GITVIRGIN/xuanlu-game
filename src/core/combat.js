@@ -1,6 +1,6 @@
 import { cards, enemies, relics } from "./data.js";
 import { applyCardEffects, applyIncomingDamage, tickDamageStatus } from "./effects.js";
-import { generateRewards } from "./rewards.js";
+import { generateRewards, rollRelicReward } from "./rewards.js";
 import { grantGoldDrop } from "./economy.js";
 import { completeRunVictory } from "./goals.js";
 import { choice, randomInt, shuffle } from "./rng.js";
@@ -241,7 +241,9 @@ export function finishCombatIfWon(state) {
   if (hasAliveEnemy) return state;
 
   if (run.floor >= MAX_FLOOR) {
-    return completeRunVictory(state, "boss", "黑山崩裂，残箓归一。你击败了关底 Boss。");
+    const bossRelic = grantFinalBossRelic(run, combat);
+    const relicMessage = bossRelic ? `终局遗物：${bossRelic.name}。` : "你已集齐所有遗物。";
+    return completeRunVictory(state, "boss", `黑山崩裂，残箓归一。你击败了关底 Boss。${relicMessage}`);
   }
 
   retainCombatHand(run, combat);
@@ -252,6 +254,15 @@ export function finishCombatIfWon(state) {
   state.phase = "reward";
   state.message = "战斗胜利，择一份机缘。";
   return state;
+}
+
+function grantFinalBossRelic(run, combat) {
+  const relic = rollRelicReward(run);
+  if (!relic) return null;
+
+  run.relics.push(relic.id);
+  combat.log.push(`关底 Boss 掉落遗物：${relic.name}。`);
+  return relic;
 }
 
 function retainCombatHand(run, combat) {

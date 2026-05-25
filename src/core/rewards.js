@@ -184,7 +184,7 @@ function rewardWeight(run, card) {
   return rarityInfo[card.rarity].weight * archetypeRewardWeight(run, card);
 }
 
-function rollRelicReward(run) {
+export function rollRelicReward(run) {
   const available = Object.values(relics).filter((relic) => !run.relics.includes(relic.id));
   if (available.length === 0) return null;
   return weightedChoice(run, available, (relic) => rarityInfo[relic.rarity].weight);
