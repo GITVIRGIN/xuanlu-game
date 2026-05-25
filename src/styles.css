@@ -1527,20 +1527,20 @@ p {
 
   .combat-layout .hand-card-slot {
     min-width: 0;
-    gap: 3px;
+    gap: 2px;
   }
 
   .combat-layout .game-card {
-    min-height: 72px;
-    gap: 4px;
-    padding: 7px;
-    grid-template-rows: auto 1fr auto;
+    min-height: 54px;
+    gap: 3px;
+    padding: 6px 7px;
+    grid-template-rows: 1fr auto;
   }
 
   .combat-layout .game-card strong {
-    padding-right: 24px;
-    font-size: 15px;
-    line-height: 1.15;
+    padding-right: 22px;
+    font-size: 17px;
+    line-height: 1.05;
   }
 
   .combat-layout .game-card p {
@@ -1548,7 +1548,7 @@ p {
   }
 
   .combat-layout .card-rarity {
-    font-size: 10px;
+    display: none;
   }
 
   .combat-layout .myth-tags {
@@ -1559,11 +1559,19 @@ p {
     display: none;
   }
 
+  .combat-layout .effect-badges {
+    gap: 3px;
+  }
+
+  .combat-layout .effect-badges span:nth-child(n+3) {
+    display: none;
+  }
+
   .combat-layout .card-cost {
-    top: 7px;
-    right: 7px;
-    width: 22px;
-    height: 22px;
+    top: 6px;
+    right: 6px;
+    width: 21px;
+    height: 21px;
     font-size: 12px;
   }
 
@@ -1574,13 +1582,12 @@ p {
   }
 
   .combat-layout .card-actions {
-    gap: 4px;
+    display: block;
   }
 
-  .combat-layout .play-action,
   .combat-layout .discard-action {
-    min-height: 24px;
-    padding: 2px 4px;
+    min-height: 21px;
+    padding: 1px 4px;
     font-size: 11px;
   }
 

@@ -465,7 +465,8 @@ function renderHand(run, combat) {
         });
       }
     };
-    const node = renderCard(definition, () => showDetail(detailForCard(definition)));
+    const node = renderCard(definition, play);
+    attachLongPressDetail(node, definition);
 
     if (!canPlay) {
       node.classList.add("disabled");
@@ -473,12 +474,9 @@ function renderHand(run, combat) {
 
     const slot = el("div", "hand-card-slot", [
       node,
-      el("div", "card-actions", [
-        button(canPlay ? "打出" : "不可出", canPlay ? "primary small play-action" : "primary small play-action disabled", play),
-        button(canDiscard ? "弃置+抽" : "已弃", canDiscard ? "ghost small discard-action" : "ghost small discard-action disabled", () => {
-          if (canDiscard) dispatch({ type: "discardHandCard", cardUid: cardInstance.uid });
-        }),
-      ]),
+      button(canDiscard ? "弃置+抽" : "已弃", canDiscard ? "ghost small discard-action" : "ghost small discard-action disabled", () => {
+        if (canDiscard) dispatch({ type: "discardHandCard", cardUid: cardInstance.uid });
+      }),
     ]);
     cardsNode.append(slot);
   }
@@ -492,6 +490,43 @@ function renderHand(run, combat) {
   );
 
   return area;
+}
+
+function attachLongPressDetail(node, definition) {
+  let timer = null;
+  let longPressed = false;
+  const clearTimer = () => {
+    if (timer) {
+      window.clearTimeout(timer);
+      timer = null;
+    }
+  };
+
+  node.addEventListener("pointerdown", () => {
+    longPressed = false;
+    clearTimer();
+    timer = window.setTimeout(() => {
+      longPressed = true;
+      showDetail(detailForCard(definition));
+    }, 520);
+  });
+  node.addEventListener("pointerup", clearTimer);
+  node.addEventListener("pointerleave", clearTimer);
+  node.addEventListener("pointercancel", clearTimer);
+  node.addEventListener(
+    "click",
+    (event) => {
+      if (!longPressed) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      longPressed = false;
+    },
+    true,
+  );
+  node.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
+    showDetail(detailForCard(definition));
+  });
 }
 
 function renderMobilePlayerStrip(run) {
