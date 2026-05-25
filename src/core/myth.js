@@ -3,6 +3,13 @@ export const MYTH_MASTERY_MAX = 5;
 
 const MIN_DOMINANT_SCORE = 3;
 const BOOSTED_EFFECT_TYPES = new Set(["damage", "execute", "block", "heal", "status", "amplifyDebuffs", "thunderMark", "bleedSiphon", "shellReflect"]);
+const STARTER_IMPRINT_CARD_IDS = new Set(["strike", "guard", "meditate"]);
+const RARITY_IMPRINT_WEIGHT = {
+  common: 0.35,
+  rare: 1.1,
+  epic: 1.6,
+  legendary: 2.3,
+};
 
 export function createMythMastery() {
   return Object.fromEntries(MYTH_FACTIONS.map((tag) => [tag, 0]));
@@ -33,7 +40,9 @@ export function recordMythCardPlay(run, card) {
   if (!run || !card?.mythTags?.length) return;
 
   const stats = ensureMythStats(run);
-  const weight = round(1 + Math.max(0, card.cost ?? 0) * 0.35 + Math.max(0, (card.grade ?? 1) - 1) * 0.25);
+  const weight = mythPlayWeight(card);
+  if (weight <= 0) return;
+
   for (const tag of card.mythTags) {
     stats.plays[tag] = round((stats.plays[tag] ?? 0) + weight);
   }
@@ -105,6 +114,16 @@ export function mythAwardText(award) {
     return `${award.tag}箓印已满，本局主修权重 ${award.score}。`;
   }
   return `${award.tag}箓印 +1（${award.after}/${MYTH_MASTERY_MAX}），下局同派系牌数值 +${award.after}，状态 +${Math.floor(award.after / 2)}。`;
+}
+
+function mythPlayWeight(card) {
+  if (STARTER_IMPRINT_CARD_IDS.has(card.id)) return 0;
+
+  const rarityWeight = RARITY_IMPRINT_WEIGHT[card.rarity] ?? 0.3;
+  const styleWeight = card.style ? 0.45 : 0;
+  const gradeWeight = Math.max(0, (card.grade ?? 1) - 1) * 0.55;
+  const costWeight = Math.max(0, card.cost ?? 0) * 0.2;
+  return round(rarityWeight + styleWeight + gradeWeight + costWeight);
 }
 
 function clampLevel(value) {

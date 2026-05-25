@@ -243,7 +243,7 @@ export function finishCombatIfWon(state) {
   const hasAliveEnemy = combat.enemies.some((enemy) => enemy.hp > 0);
   if (hasAliveEnemy) return state;
 
-  if (run.floor >= MAX_FLOOR) {
+  if (isFinalBossCombat(run)) {
     const bossRelic = grantFinalBossRelic(run, combat);
     const relicMessage = bossRelic ? `终局遗物：${bossRelic.name}。` : "你已集齐所有遗物。";
     return completeRunVictory(state, "boss", `黑山崩裂，残箓归一。你击败了关底 Boss。${relicMessage}`);
@@ -257,6 +257,10 @@ export function finishCombatIfWon(state) {
   state.phase = "reward";
   state.message = "战斗胜利，择一份机缘。";
   return state;
+}
+
+function isFinalBossCombat(run) {
+  return run.floor >= MAX_FLOOR && run.currentNode?.type === "main";
 }
 
 function grantFinalBossRelic(run, combat) {

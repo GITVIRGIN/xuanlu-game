@@ -4,7 +4,7 @@ import { cardMythBoost } from "./myth.js";
 import { addStatus, reduceConsumableDebuff, reduceStatus, statusLabel, statusStacks } from "./status.js";
 
 const SPIRIT_BONUS_PER_COST = 4;
-const PHYSICAL_INTENT_GAIN = 3;
+const PHYSICAL_INTENT_GAIN = 7;
 const THUNDER_TRIBULATION_THRESHOLD = 8;
 const THUNDER_TRIBULATION_DAMAGE = 32;
 const CONTROL_BREAK_THRESHOLD = 6;
