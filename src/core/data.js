@@ -39,6 +39,8 @@ export const cards = {
     cost: 1,
     text: "造成 7 点伤害。",
     mythTags: ["人间"],
+    style: "physical",
+    grade: 1,
     effects: [{ type: "damage", target: "enemy", value: 7 }],
   },
   guard: {
@@ -235,6 +237,17 @@ export const cards = {
     style: "physical",
     grade: 1,
     effects: [{ type: "damage", target: "enemy", value: 10 }],
+  },
+  readyStance: {
+    id: "readyStance",
+    name: "开山架势",
+    rarity: "common",
+    cost: 0,
+    text: "获得 2 层战意。战意存在时，物理牌伤害 +战意；每打出一张物理伤害牌后战意 +3。",
+    mythTags: ["人间"],
+    style: "physical",
+    grade: 1,
+    effects: [{ type: "status", target: "self", status: "battleIntent", stacks: 2 }],
   },
   chainBlade: {
     id: "chainBlade",
