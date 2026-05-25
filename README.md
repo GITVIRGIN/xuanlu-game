@@ -25,5 +25,12 @@ node scripts/serve.mjs 5173
 ## 打包
 
 ```bash
+node scripts/simulate-runs.mjs --runs=100
 node scripts/build-release.mjs
+```
+
+发布前必须先跑 100 局自动模拟，并根据胜率、平均层数、流派出牌和状态峰值做一次节奏评估；流派专项变更还要追加对应 profile，例如：
+
+```bash
+node scripts/simulate-runs.mjs --runs=100 --profile=bleed
 ```

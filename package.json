@@ -4,6 +4,9 @@
   "type": "module",
   "scripts": {
     "serve": "node scripts/serve.mjs 5173",
-    "build:release": "node scripts/build-release.mjs"
+    "build:release": "node scripts/build-release.mjs",
+    "sim:100": "node scripts/simulate-runs.mjs --runs=100",
+    "sim:bleed": "node scripts/simulate-runs.mjs --runs=100 --profile=bleed",
+    "sim:physical": "node scripts/simulate-runs.mjs --runs=100 --profile=physical"
   }
 }
