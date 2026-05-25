@@ -689,6 +689,7 @@ function renderEffectBadges(definition) {
     if (effect.type === "gainEnergy") labels.push(`能量 ${effect.value}`);
     if (effect.type === "status") labels.push(`${statusInfo[effect.status]?.label ?? effect.status} ${effect.stacks}`);
     if (effect.type === "amplifyDebuffs") labels.push(`状态 +${effect.value}`);
+    if (effect.type === "bleedSiphon") labels.push(`汲血 /${effect.ratio ?? 3}`);
     if (effect.type === "recoverDiscard") labels.push(`回收 ${effect.value}`);
     if (effect.type === "loseHp") labels.push(`失血 ${effect.value}`);
   }
@@ -877,7 +878,7 @@ function detailForStatus(status) {
     curse: [`当前数值 ${stacks} 表示：受到卡牌伤害时额外 +${stacks}。`, "如果在敌人身上，它会让敌人血条掉得更快；如果在你身上，敌人攻击会更痛。"],
     burn: [`当前数值 ${stacks} 表示：回合结算时受到 ${stacks} 点伤害。`, "造成伤害后会消退一半，至少减少 1 层，不会一直滚到无解。"],
     poison: [`当前数值 ${stacks} 表示：回合结算时受到 ${stacks} 点伤害，然后减少 1 层。`, "它会直接压低血条，适合拖回合滚雪球。"],
-    bleed: [`当前数值 ${stacks} 表示：回合间会先扣格挡再造成伤害；被攻击时也会额外爆开。`, "它现在既能压格挡，也能在你攻击时打出爆发，但每次结算会减少层数。"],
+    bleed: [`当前数值 ${stacks} 表示：回合间会先扣格挡再造成伤害；被攻击时也会额外爆开。`, "血魔牌会先付出生命，再按敌人流血层数回血。层数堆高后，流血会从风险变成续航和爆发来源。"],
   };
 
   return {

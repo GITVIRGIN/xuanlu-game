@@ -52,6 +52,11 @@ export function applyEffect(state, effect, targetUid) {
 
   const targets = resolveTargets(run, effect.target, targetUid);
 
+  if (effect.type === "bleedSiphon") {
+    applyBleedSiphon(state, targets, effect);
+    return finishCombatIfWon(state);
+  }
+
   for (const target of targets) {
     if (effect.type === "damage") {
       applyCardDamage(state, target, effect.value ?? 0, effect.cardCost ?? 1, effect.cardStyle);
@@ -74,6 +79,11 @@ export function applyEffect(state, effect, targetUid) {
     if (effect.type === "loseHp") {
       target.hp = Math.max(0, target.hp - (effect.value ?? 0));
       combatLog(state, `失去 ${effect.value} 点生命。`);
+      if (target.uid === "player" && target.hp <= 0) {
+        syncPlayerFighter(run, target);
+        finishDefeat(state, "血誓反噬，残箓染赤。");
+        return state;
+      }
     }
 
     if (effect.type === "status" && effect.status) {
@@ -310,6 +320,31 @@ function amplifyDebuffs(target, statuses, value) {
   }
 
   return added;
+}
+
+function applyBleedSiphon(state, targets, effect) {
+  const run = state.run;
+  const combat = run?.combat;
+  if (!run || !combat || targets.length === 0) return;
+
+  const totalBleed = targets.reduce((sum, target) => sum + statusStacks(target, "bleed"), 0);
+  if (totalBleed <= 0) {
+    combatLog(state, "没有可汲取的流血。");
+    return;
+  }
+
+  const ratio = Math.max(1, effect.ratio ?? 3);
+  const heal = Math.floor(totalBleed / ratio) + (effect.value ?? 0);
+  if (heal <= 0) {
+    combatLog(state, `流血不足 ${ratio} 层，未能回血。`);
+    return;
+  }
+
+  const before = run.hp;
+  run.hp = Math.min(run.maxHp, run.hp + heal);
+  const actual = run.hp - before;
+  const source = targets.length > 1 ? `敌方流血合计 ${totalBleed} 层` : `${targets[0].name} 流血 ${totalBleed} 层`;
+  combatLog(state, `血魔汲血：${source}，回复 ${actual} 点生命。`);
 }
 
 function applyBlock(fighter, rawDamage) {

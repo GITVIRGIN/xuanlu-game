@@ -10,9 +10,10 @@
  * @typedef {"burn" | "bleed" | "poison" | "curse" | "spirit" | "battleIntent" | "chaos" | "stasis" | "ward"} StatusId
  *
  * @typedef {object} Effect
- * @property {"damage" | "execute" | "block" | "heal" | "loseHp" | "draw" | "gainEnergy" | "status" | "amplifyDebuffs" | "recoverDiscard" | "maxEnergy" | "maxHp" | "cleanse" | "rareCard" | "handLimit" | "deckLimit" | "gold" | "relic"} type
+ * @property {"damage" | "execute" | "block" | "heal" | "loseHp" | "draw" | "gainEnergy" | "status" | "amplifyDebuffs" | "bleedSiphon" | "recoverDiscard" | "maxEnergy" | "maxHp" | "cleanse" | "rareCard" | "handLimit" | "deckLimit" | "gold" | "relic"} type
  * @property {Target=} target
  * @property {number=} value
+ * @property {number=} ratio
  * @property {StatusId=} status
  * @property {StatusId[]=} statuses
  * @property {number=} stacks

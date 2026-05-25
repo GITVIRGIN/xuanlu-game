@@ -8,7 +8,7 @@ export const rarityInfo = {
 export const styleInfo = {
   physical: { label: "物理", text: "直接伤害、连击、破防，成型后靠大数字爽杀。" },
   spell: { label: "法术", text: "灵气、抽牌、群体伤害，成型后连发大法术。" },
-  bleed: { label: "流血", text: "叠流血后用攻击引爆，适合打 Boss。" },
+  bleed: { label: "流血", text: "中期转为血魔流：自损换流血，再按敌人流血层数回血，成型后高爆发高回复。" },
   poison: { label: "中毒", text: "叠毒瘴拖回合，敌人自己掉血。" },
   control: { label: "控制", text: "离间敌人，让敌人互相攻击。" },
 };
@@ -21,7 +21,7 @@ export const gradeInfo = {
 
 export const statusInfo = {
   burn: { label: "灼烧", text: "回合间受到伤害，结算后消退一半。" },
-  bleed: { label: "流血", text: "回合间和受到攻击时都会额外受伤，伤害先扣格挡，然后减少 1 层。" },
+  bleed: { label: "流血", text: "回合间和受到攻击时都会额外受伤，伤害先扣格挡，然后减少 1 层；血魔牌可按层数汲血回血。" },
   poison: { label: "毒瘴", text: "回合间受到伤害，然后减少 1 层。" },
   curse: { label: "诅咒", text: "受到的卡牌伤害增加。" },
   spirit: { label: "灵气", text: "提高卡牌伤害，最多 12 层；低费牌只能承载部分灵气，战斗结束后清空。" },
@@ -104,6 +104,8 @@ export const cards = {
     cost: 1,
     text: "造成 4 点伤害，施加 5 层流血。",
     mythTags: ["幽冥"],
+    style: "bleed",
+    grade: 1,
     effects: [
       { type: "damage", target: "enemy", value: 4 },
       { type: "status", target: "enemy", status: "bleed", stacks: 5 },
@@ -149,6 +151,8 @@ export const cards = {
     cost: 2,
     text: "造成 10 点伤害，施加 6 层流血和 3 层诅咒。",
     mythTags: ["幽冥"],
+    style: "bleed",
+    grade: 2,
     effects: [
       { type: "damage", target: "enemy", value: 10 },
       { type: "status", target: "enemy", status: "bleed", stacks: 6 },
@@ -397,6 +401,22 @@ export const cards = {
     grade: 2,
     effects: [{ type: "status", target: "allEnemies", status: "bleed", stacks: 5 }],
   },
+  bloodOath: {
+    id: "bloodOath",
+    name: "血魔小誓",
+    rarity: "rare",
+    cost: 1,
+    text: "失去 4 点生命。施加 6 层流血，然后每 2 层目标流血回复 1 点生命，再造成 8 点伤害。目标原有 4 层流血起血量正收益。",
+    mythTags: ["幽冥"],
+    style: "bleed",
+    grade: 2,
+    effects: [
+      { type: "loseHp", target: "self", value: 4 },
+      { type: "status", target: "enemy", status: "bleed", stacks: 6 },
+      { type: "bleedSiphon", target: "enemy", ratio: 2 },
+      { type: "damage", target: "enemy", value: 8 },
+    ],
+  },
   bloodRiver: {
     id: "bloodRiver",
     name: "血河倒卷",
@@ -412,19 +432,37 @@ export const cards = {
       { type: "status", target: "enemy", status: "curse", stacks: 3 },
     ],
   },
+  bloodDemonLoop: {
+    id: "bloodDemonLoop",
+    name: "血魔回环",
+    rarity: "rare",
+    cost: 1,
+    text: "失去 5 点生命。若目标已有流血，流血 +8；然后每 2 层目标流血回复 1 点生命，抽 1 张牌并获得 1 点能量。目标原有 5 层流血起可循环正收益。",
+    mythTags: ["幽冥"],
+    style: "bleed",
+    grade: 2,
+    effects: [
+      { type: "loseHp", target: "self", value: 5 },
+      { type: "amplifyDebuffs", target: "enemy", statuses: ["bleed"], value: 8 },
+      { type: "bleedSiphon", target: "enemy", ratio: 2 },
+      { type: "draw", value: 1 },
+      { type: "gainEnergy", value: 1 },
+    ],
+  },
   asuraBlood: {
     id: "asuraBlood",
     name: "阿修罗血誓",
     rarity: "legendary",
     cost: 2,
-    text: "失去 4 点生命。对所有敌人造成 10 点伤害，施加 12 层流血。",
+    text: "失去 8 点生命。对所有敌人施加 16 层流血；每 2 层敌方流血回复 1 点生命，再造成 14 点群体伤害。",
     mythTags: ["幽冥"],
     style: "bleed",
     grade: 3,
     effects: [
-      { type: "loseHp", target: "self", value: 4 },
-      { type: "damage", target: "allEnemies", value: 10 },
-      { type: "status", target: "allEnemies", status: "bleed", stacks: 12 },
+      { type: "loseHp", target: "self", value: 8 },
+      { type: "status", target: "allEnemies", status: "bleed", stacks: 16 },
+      { type: "bleedSiphon", target: "allEnemies", ratio: 2 },
+      { type: "damage", target: "allEnemies", value: 14 },
     ],
   },
   poisonPowder: {
