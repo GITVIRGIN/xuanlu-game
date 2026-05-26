@@ -322,7 +322,7 @@ function renderMythMastery() {
     el("div", "progression-head slim-head", [
       el("div", "", [
         el("h2", "", "派系箓印"),
-        el("p", "muted", "通关时按本局实际打出的主力派系自动提升；下局同派系牌获得数值和叠层加成。"),
+        el("p", "muted", "深入失败可获得 1 点箓印，通关获得 2 点；优先本局主修派系，溢出会补最低派系。"),
       ]),
     ]),
     el(

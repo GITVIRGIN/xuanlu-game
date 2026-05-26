@@ -1,6 +1,6 @@
 import { cards, relics } from "./data.js";
 import { drawCards, finishCombatIfWon } from "./combat.js";
-import { cardMythBoost } from "./myth.js";
+import { awardMythMasteryForRunEnd, cardMythBoost, mythAwardText } from "./myth.js";
 import { addStatus, reduceConsumableDebuff, reduceStatus, statusLabel, statusStacks } from "./status.js";
 
 const SPIRIT_BONUS_PER_COST = 4;
@@ -550,9 +550,10 @@ function finishDefeat(state, message) {
   const run = state.run;
   if (!run || run.finished) return;
 
+  const mythAward = awardMythMasteryForRunEnd(state, "defeat");
   run.finished = true;
   state.phase = "gameOver";
-  state.message = message;
+  state.message = mythAward ? `${message} ${mythAwardText(mythAward)}` : message;
   state.meta.soul += Math.max(3, run.floor * 2);
   state.meta.lossStreak = (state.meta.lossStreak ?? 0) + 1;
 }

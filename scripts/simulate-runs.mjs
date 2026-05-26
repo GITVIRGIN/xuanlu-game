@@ -3,7 +3,7 @@ import { createRunGoal, markSpecialGoalBaseline } from "../src/core/goals.js";
 import { prepareRouteChoice } from "../src/core/nodes.js";
 import { reduceGame } from "../src/core/reducer.js";
 import { createInitialState, startRun } from "../src/core/state.js";
-import { MYTH_FACTIONS } from "../src/core/myth.js";
+import { MYTH_FACTIONS, MYTH_MASTERY_TOTAL } from "../src/core/myth.js";
 
 const STYLE_IDS = ["physical", "spell", "bleed", "shell", "poison", "control"];
 const args = parseArgs(process.argv.slice(2));
@@ -85,7 +85,8 @@ function runOne(seed) {
     floor: state.run?.floor ?? 0,
     won: Boolean(state.run?.goal?.completedBy),
     completedBy: state.run?.goal?.completedBy ?? "loss",
-    mythAward: state.run?.mythStats?.lastAward?.tag ?? null,
+    mythAwardTags: state.run?.mythStats?.lastAward?.allocations?.map((item) => item.tag) ?? [],
+    mythAwardPoints: state.run?.mythStats?.lastAward?.allocations?.length ?? 0,
     deckSize: state.run?.deck.length ?? 0,
     relics: state.run?.relics.length ?? 0,
     maxEnergy: metrics.maxEnergy,
@@ -322,7 +323,9 @@ function summarize(items) {
     },
     cardPlays: mergeStyleMaps(items.map((item) => item.cardPlays)),
     rewardPicks: mergeStyleMaps(items.map((item) => item.rewardPicks)),
-    mythAwards: mergeMythAwards(items.map((item) => item.mythAward)),
+    mythAwards: mergeMythAwards(items.map((item) => item.mythAwardTags)),
+    avgMythPoints: avg(items.map((item) => item.mythAwardPoints)),
+    estimatedRunsToMaxMyth: round(MYTH_MASTERY_TOTAL / Math.max(0.001, avg(items.map((item) => item.mythAwardPoints)))),
   };
 }
 
@@ -336,6 +339,7 @@ function printSummary(summary) {
   console.log(`出牌分布：${styleLine(summary.cardPlays)}`);
   console.log(`奖励选择：${styleLine(summary.rewardPicks)}`);
   console.log(`派系箓印结算：${mythLine(summary.mythAwards)}`);
+  console.log(`平均箓印点 ${summary.avgMythPoints}，全派系满级估算 ${summary.estimatedRunsToMaxMyth} 局`);
 }
 
 function parseArgs(argv) {
@@ -363,10 +367,16 @@ function mergeStyleMaps(maps) {
   return result;
 }
 
-function mergeMythAwards(tags) {
+function mergeMythAwards(tagGroups) {
   const result = Object.fromEntries([...MYTH_FACTIONS, "none"].map((tag) => [tag, 0]));
-  for (const tag of tags) {
-    result[tag ?? "none"] = (result[tag ?? "none"] ?? 0) + 1;
+  for (const tags of tagGroups) {
+    if (tags.length === 0) {
+      result.none += 1;
+      continue;
+    }
+    for (const tag of tags) {
+      result[tag] = (result[tag] ?? 0) + 1;
+    }
   }
   return result;
 }

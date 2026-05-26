@@ -1,5 +1,6 @@
 export const MYTH_FACTIONS = ["人间", "昆仑", "妖", "幽冥", "山海", "龙宫", "天庭", "洪荒"];
 export const MYTH_MASTERY_MAX = 5;
+export const MYTH_MASTERY_TOTAL = MYTH_FACTIONS.length * MYTH_MASTERY_MAX;
 
 const MIN_DOMINANT_SCORE = 3;
 const BOOSTED_EFFECT_TYPES = new Set(["damage", "execute", "block", "heal", "status", "amplifyDebuffs", "thunderMark", "bleedSiphon", "shellReflect"]);
@@ -59,22 +60,40 @@ export function dominantMythFaction(run) {
 }
 
 export function awardMythMasteryForVictory(state) {
+  return awardMythMasteryForRunEnd(state, "boss");
+}
+
+export function awardMythMasteryForRunEnd(state, result) {
   const run = state.run;
   if (!run) return null;
 
   const dominant = dominantMythFaction(run);
-  if (!dominant) return null;
+  const points = mythMasteryPoints(run, result);
+  if (points <= 0) return null;
 
   const mastery = migrateMythMastery(state.meta);
-  const before = clampLevel(mastery[dominant.tag] ?? 0);
-  const after = Math.min(MYTH_MASTERY_MAX, before + 1);
-  mastery[dominant.tag] = after;
+  const allocations = [];
+
+  for (let index = 0; index < points; index += 1) {
+    const preferred = index === 0 ? dominant?.tag : null;
+    const tag = chooseAwardTarget(mastery, preferred, (run.seed ?? 0) + (run.floor ?? 0) + index);
+    if (!tag) break;
+
+    const before = clampLevel(mastery[tag] ?? 0);
+    const after = Math.min(MYTH_MASTERY_MAX, before + 1);
+    mastery[tag] = after;
+    allocations.push({ tag, before, after });
+  }
+
+  if (allocations.length === 0) return null;
 
   const award = {
-    ...dominant,
-    before,
-    after,
-    maxed: before >= MYTH_MASTERY_MAX,
+    result,
+    points,
+    dominant,
+    allocations,
+    tag: allocations[0].tag,
+    score: dominant?.score ?? 0,
   };
   ensureMythStats(run).lastAward = award;
   run.mythMastery = { ...mastery };
@@ -110,10 +129,14 @@ export function cardReceivesMythBoost(card) {
 
 export function mythAwardText(award) {
   if (!award) return "";
-  if (award.maxed) {
-    return `${award.tag}箓印已满，本局主修权重 ${award.score}。`;
+  if (!award.allocations?.length) {
+    return "派系箓印已全满。";
   }
-  return `${award.tag}箓印 +1（${award.after}/${MYTH_MASTERY_MAX}），下局同派系牌数值 +${award.after}，状态 +${Math.floor(award.after / 2)}。`;
+
+  const changes = award.allocations
+    .map((item) => `${item.tag} +1（${item.after}/${MYTH_MASTERY_MAX}）`)
+    .join("，");
+  return `派系箓印：${changes}。`;
 }
 
 function mythPlayWeight(card) {
@@ -124,6 +147,26 @@ function mythPlayWeight(card) {
   const gradeWeight = Math.max(0, (card.grade ?? 1) - 1) * 0.55;
   const costWeight = Math.max(0, card.cost ?? 0) * 0.2;
   return round(rarityWeight + styleWeight + gradeWeight + costWeight);
+}
+
+function mythMasteryPoints(run, result) {
+  if (result === "boss" || result === "special") return 2;
+  if (result === "defeat" && (run.floor ?? 0) >= 6) return 1;
+  if (result === "abandon" && (run.floor ?? 0) >= 10) return 1;
+  return 0;
+}
+
+function chooseAwardTarget(mastery, preferred, salt = 0) {
+  if (preferred && clampLevel(mastery[preferred] ?? 0) < MYTH_MASTERY_MAX) {
+    return preferred;
+  }
+
+  const candidates = MYTH_FACTIONS.filter((tag) => clampLevel(mastery[tag] ?? 0) < MYTH_MASTERY_MAX);
+  if (candidates.length === 0) return null;
+
+  const minLevel = Math.min(...candidates.map((tag) => clampLevel(mastery[tag] ?? 0)));
+  const lowest = candidates.filter((tag) => clampLevel(mastery[tag] ?? 0) === minLevel);
+  return lowest[Math.abs(salt) % lowest.length];
 }
 
 function clampLevel(value) {

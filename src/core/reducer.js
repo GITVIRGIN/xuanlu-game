@@ -4,6 +4,7 @@ import { selectNode } from "./nodes.js";
 import { buyShopItem, enterShop, leaveShop } from "./shop.js";
 import { chooseReward } from "./rewards.js";
 import { cancelDiscardPick, pickDiscardCard } from "./effects.js";
+import { awardMythMasteryForRunEnd, mythAwardText } from "./myth.js";
 import { purchaseTalent } from "./progression.js";
 import { cloneState, createInitialState, startRun } from "./state.js";
 
@@ -18,6 +19,7 @@ export function reduceGame(state, action) {
     if (!next.run || next.run.finished) return next;
 
     const soulGain = Math.max(3, next.run.floor * 2);
+    const mythAward = awardMythMasteryForRunEnd(next, "abandon");
     next.run.finished = true;
     next.run.combat = null;
     next.run.rewards = [];
@@ -25,7 +27,7 @@ export function reduceGame(state, action) {
     next.phase = "gameOver";
     next.meta.soul += soulGain;
     next.meta.lossStreak = (next.meta.lossStreak ?? 0) + 1;
-    next.message = `你主动放弃本局，收拢残魂 +${soulGain}。`;
+    next.message = `你主动放弃本局，收拢残魂 +${soulGain}。${mythAward ? ` ${mythAwardText(mythAward)}` : ""}`;
     return next;
   }
 
