@@ -1,6 +1,16 @@
 export const MYTH_FACTIONS = ["人间", "昆仑", "妖", "幽冥", "山海", "龙宫", "天庭", "洪荒"];
 export const MYTH_MASTERY_MAX = 5;
 export const MYTH_MASTERY_TOTAL = MYTH_FACTIONS.length * MYTH_MASTERY_MAX;
+export const MYTH_MASTERY_PERKS = {
+  天庭: { tag: "天庭", text: "满级：每场战斗开局获得 3 层灵气。" },
+  人间: { tag: "人间", text: "满级：开局最大生命 +12。" },
+  昆仑: { tag: "昆仑", text: "满级：手牌上限 +2。" },
+  幽冥: { tag: "幽冥", text: "满级：敌方流血和毒瘴伤害 +3。" },
+  山海: { tag: "山海", text: "满级：每场战斗开局获得 5 点格挡。" },
+  洪荒: { tag: "洪荒", text: "满级：洪荒牌费用 -1，每场战斗首张洪荒牌免费。" },
+  龙宫: { tag: "龙宫", text: "满级：开局金币 +45。" },
+  妖: { tag: "妖", text: "满级：每场战斗首次卡牌伤害 +12。" },
+};
 
 const MIN_DOMINANT_SCORE = 3;
 const BOOSTED_EFFECT_TYPES = new Set(["damage", "execute", "block", "heal", "status", "amplifyDebuffs", "thunderMark", "bleedSiphon", "shellReflect"]);
@@ -123,6 +133,92 @@ export function cardMythBoost(runOrMeta, card, fallbackMeta = null) {
   };
 }
 
+export function mythMasteryLevel(runOrMeta, tag, fallbackMeta = null) {
+  const mastery = runOrMeta?.mythMastery ?? fallbackMeta?.mythMastery ?? {};
+  return clampLevel(mastery[tag] ?? 0);
+}
+
+export function hasMythMasteryPerk(runOrMeta, tag, fallbackMeta = null) {
+  return mythMasteryLevel(runOrMeta, tag, fallbackMeta) >= MYTH_MASTERY_MAX;
+}
+
+export function activeMythMasteryPerkTexts(runOrMeta, fallbackMeta = null) {
+  return MYTH_FACTIONS.filter((tag) => hasMythMasteryPerk(runOrMeta, tag, fallbackMeta)).map((tag) => MYTH_MASTERY_PERKS[tag].text);
+}
+
+export function applyMythRunStartBonuses(run) {
+  if (hasMythMasteryPerk(run, "人间")) {
+    run.maxHp += 12;
+    run.hp += 12;
+  }
+
+  if (hasMythMasteryPerk(run, "昆仑")) {
+    run.handLimit += 2;
+  }
+
+  if (hasMythMasteryPerk(run, "龙宫")) {
+    run.gold += 45;
+  }
+}
+
+export function applyMythCombatStartBonuses(run) {
+  const combat = run?.combat;
+  if (!run || !combat || combat.flags.mythStartPerksApplied) return;
+
+  combat.flags.mythStartPerksApplied = true;
+
+  if (hasMythMasteryPerk(run, "天庭")) {
+    addCombatStatus(run, "spirit", 3);
+    combat.log.push("天庭箓印满级：开局灵气 +3。");
+  }
+
+  if (hasMythMasteryPerk(run, "山海")) {
+    combat.block += 5;
+    combat.log.push("山海箓印满级：开局格挡 +5。");
+  }
+}
+
+export function effectiveCardCost(run, card) {
+  const baseCost = card?.cost ?? 0;
+  const isHonghuangCard = card?.mythTags?.includes("洪荒");
+  const combat = run?.combat;
+
+  if (!isHonghuangCard || !hasMythMasteryPerk(run, "洪荒")) {
+    return { cost: baseCost, baseCost, reduced: 0, firstFree: false };
+  }
+
+  if (combat && !combat.flags.honghuangFirstFreeUsed && baseCost > 0) {
+    return { cost: 0, baseCost, reduced: baseCost, firstFree: true };
+  }
+
+  const cost = Math.max(0, baseCost - 1);
+  return { cost, baseCost, reduced: baseCost - cost, firstFree: false };
+}
+
+export function commitEffectiveCardCost(run, costInfo) {
+  if (costInfo?.firstFree && run?.combat) {
+    run.combat.flags.honghuangFirstFreeUsed = true;
+  }
+}
+
+export function mythStatusDamageBonus(run, fighter, statusId) {
+  if (fighter?.uid === "player") return 0;
+  if (!["bleed", "poison"].includes(statusId)) return 0;
+  return hasMythMasteryPerk(run, "幽冥") ? 3 : 0;
+}
+
+export function mythFirstStrikeDamageBonus(run, target) {
+  const combat = run?.combat;
+  if (!combat || target?.uid === "player" || combat.flags.demonFirstStrikeUsed) return 0;
+  return hasMythMasteryPerk(run, "妖") ? 12 : 0;
+}
+
+export function consumeMythFirstStrike(run, bonus) {
+  if (bonus > 0 && run?.combat) {
+    run.combat.flags.demonFirstStrikeUsed = true;
+  }
+}
+
 export function cardReceivesMythBoost(card) {
   return (card?.effects ?? []).some((effect) => BOOSTED_EFFECT_TYPES.has(effect.type));
 }
@@ -167,6 +263,18 @@ function chooseAwardTarget(mastery, preferred, salt = 0) {
   const minLevel = Math.min(...candidates.map((tag) => clampLevel(mastery[tag] ?? 0)));
   const lowest = candidates.filter((tag) => clampLevel(mastery[tag] ?? 0) === minLevel);
   return lowest[Math.abs(salt) % lowest.length];
+}
+
+function addCombatStatus(run, statusId, stacks) {
+  const cap = { spirit: 12 }[statusId] ?? Infinity;
+  const existing = run.statuses.find((status) => status.id === statusId);
+  if (existing) {
+    existing.stacks = Math.min(cap, existing.stacks + stacks);
+    existing.fresh = Math.min(existing.stacks, (existing.fresh ?? 0) + stacks);
+  } else {
+    const value = Math.min(cap, stacks);
+    run.statuses.push({ id: statusId, stacks: value, fresh: value });
+  }
 }
 
 function clampLevel(value) {

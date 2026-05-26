@@ -1,4 +1,4 @@
-import { migrateMythMastery } from "./myth.js";
+import { applyMythRunStartBonuses, migrateMythMastery } from "./myth.js";
 
 export const talentDefinitions = {
   body: {
@@ -98,4 +98,6 @@ export function applyMetaProgression(run, meta) {
   if (talents.bloodGourd > 0 && !run.relics.includes("bloodGourd")) {
     run.relics.push("bloodGourd");
   }
+
+  applyMythRunStartBonuses(run);
 }

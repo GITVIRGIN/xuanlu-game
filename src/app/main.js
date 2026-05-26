@@ -7,7 +7,7 @@ import { MAX_FLOOR } from "../core/types.js";
 import { gameVersion } from "../core/version.js";
 import { createRunGoal, goalProgress } from "../core/goals.js";
 import { talentCost, talentDefinitions, talentLevel } from "../core/progression.js";
-import { MYTH_FACTIONS, MYTH_MASTERY_MAX, cardMythBoost } from "../core/myth.js";
+import { MYTH_FACTIONS, MYTH_MASTERY_MAX, MYTH_MASTERY_PERKS, cardMythBoost, effectiveCardCost, hasMythMasteryPerk } from "../core/myth.js";
 import { clearCloudConfig, connectCloud, downloadCloudSave, loadCloudConfig, saveCloudConfig, uploadCloudSave } from "../core/cloud.js";
 
 const app = document.querySelector("#app");
@@ -337,10 +337,11 @@ function renderMythMastery() {
 function renderMythMasteryItem(tag) {
   const level = state.meta.mythMastery?.[tag] ?? 0;
   const statusBonus = Math.floor(level / 2);
+  const perk = MYTH_MASTERY_PERKS[tag]?.text ?? "";
   return el("article", `talent myth-talent ${level >= MYTH_MASTERY_MAX ? "maxed" : ""}`, [
     el("div", "talent-title", [el("strong", "", `${tag}箓印`), el("span", "", `${level}/${MYTH_MASTERY_MAX}`)]),
-    el("p", "", level > 0 ? `同派系牌：伤害、格挡、治疗 +${level}；状态叠层 +${statusBonus}。` : "尚未刻入。用这个派系作为主力通关后点亮。"),
-    el("span", "talent-cost", level > 0 ? "自动生效" : "通关解锁"),
+    el("p", "", level > 0 ? `同派系牌：伤害、格挡、治疗 +${level}；状态叠层 +${statusBonus}。${perk}` : `尚未刻入。${perk}`),
+    el("span", "talent-cost", level >= MYTH_MASTERY_MAX ? "满级质变已生效" : level > 0 ? "自动生效" : "通关解锁"),
   ]);
 }
 
@@ -483,6 +484,7 @@ function renderHand(run, combat) {
 
   for (const cardInstance of sortCardInstancesByFunction(combat.hand)) {
     const definition = cards[cardInstance.cardId];
+    const costInfo = effectiveCardCost(run, definition);
     const canPlay = canPlayCard(definition, run);
     const canDiscard = !combat.flags.discardedThisTurn && !run.pendingChoice;
     const play = () => {
@@ -494,7 +496,7 @@ function renderHand(run, combat) {
         });
       }
     };
-    const node = renderCard(definition, play);
+    const node = renderCard(definition, play, { costInfo });
     attachLongPressDetail(node, definition);
 
     if (!canPlay) {
@@ -570,7 +572,7 @@ function renderMobilePlayerStrip(run) {
   ]);
 }
 
-function renderCard(definition, onClick) {
+function renderCard(definition, onClick, options = {}) {
   const node = el("button", `game-card rarity-${definition.rarity}`);
   node.type = "button";
   node.addEventListener("click", (event) => {
@@ -580,10 +582,12 @@ function renderCard(definition, onClick) {
     }
     onClick(event);
   });
+  const displayCost = options.costInfo?.cost ?? definition.cost;
+  const costText = options.costInfo?.firstFree ? `免/${definition.cost}` : displayCost === definition.cost ? `${definition.cost}` : `${displayCost}/${definition.cost}`;
   node.append(
     el("span", "card-rarity", rarityInfo[definition.rarity].label),
     el("strong", "", definition.name),
-    el("span", "card-cost", `${definition.cost}`),
+    el("span", "card-cost", costText),
     el("p", "", definition.text),
     renderCardStyle(definition),
     renderEffectBadges(definition),
@@ -596,6 +600,16 @@ function detailForCard(definition) {
   const style = definition.style ? styleInfo[definition.style]?.label ?? definition.style : "通用";
   const grade = definition.grade ? gradeInfo[definition.grade] ?? `${definition.grade} 阶` : "无阶";
   const mythBoost = cardMythBoost(state.run, definition, state.meta);
+  const costInfo = effectiveCardCost(state.run, definition);
+  const effectiveCostLine = costInfo.firstFree
+    ? `当前费用：首张洪荒牌免费（原 ${definition.cost}）`
+    : costInfo.cost !== definition.cost
+      ? `当前费用：${costInfo.cost}/${definition.cost}`
+      : `费用：${definition.cost}`;
+  const perkLines = (definition.mythTags ?? [])
+    .filter((tag) => hasMythMasteryPerk(state.run ?? state.meta, tag, state.meta))
+    .map((tag) => MYTH_MASTERY_PERKS[tag]?.text)
+    .filter(Boolean);
   const mythLine = mythBoost.active
     ? `箓印：${mythBoost.tag} ${mythBoost.level}/${MYTH_MASTERY_MAX}，数值 +${mythBoost.numericBonus}，状态 +${mythBoost.statusBonus}`
     : mythBoost.level > 0
@@ -607,12 +621,13 @@ function detailForCard(definition) {
     title: definition.name,
     main: definition.text,
     lines: [
-      `费用：${definition.cost}`,
+      effectiveCostLine,
       `品级：${rarityInfo[definition.rarity].label}`,
       `流派：${style} / ${grade}`,
       `功能：${cardFunctionLabel(definition)}`,
       `效果：${cardEffectLabels(definition).join("，") || "无"}`,
       mythLine,
+      ...perkLines,
       `神话标签：${definition.mythTags.join(" / ")}`,
     ],
   };
@@ -630,7 +645,8 @@ function renderCardStyle(definition) {
 }
 
 function canPlayCard(definition, run) {
-  if (run.energy < definition.cost) return false;
+  const costInfo = effectiveCardCost(run, definition);
+  if (run.energy < costInfo.cost) return false;
   if (definition.id === "meditate" && run.energy >= run.maxEnergy) return false;
   return true;
 }

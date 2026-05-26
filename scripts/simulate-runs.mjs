@@ -3,7 +3,7 @@ import { createRunGoal, markSpecialGoalBaseline } from "../src/core/goals.js";
 import { prepareRouteChoice } from "../src/core/nodes.js";
 import { reduceGame } from "../src/core/reducer.js";
 import { createInitialState, startRun } from "../src/core/state.js";
-import { MYTH_FACTIONS, MYTH_MASTERY_TOTAL } from "../src/core/myth.js";
+import { effectiveCardCost, MYTH_FACTIONS, MYTH_MASTERY_MAX, MYTH_MASTERY_TOTAL } from "../src/core/myth.js";
 
 const STYLE_IDS = ["physical", "spell", "bleed", "shell", "poison", "control"];
 const args = parseArgs(process.argv.slice(2));
@@ -11,6 +11,7 @@ const runCount = Number(args.runs ?? args.n ?? 100);
 const baseSeed = Number(args.seed ?? 2026052500);
 const profile = String(args.profile ?? "balanced");
 const lossStreak = Number(args.lossStreak ?? 0);
+const mythMode = String(args.myth ?? "none");
 
 if (!Number.isFinite(runCount) || runCount <= 0) {
   throw new Error("runs must be a positive number");
@@ -96,7 +97,11 @@ function runOne(seed) {
 }
 
 function seededRun(seed) {
-  const state = startRun(createInitialState());
+  const initial = createInitialState();
+  if (mythMode === "max") {
+    initial.meta.mythMastery = Object.fromEntries(MYTH_FACTIONS.map((tag) => [tag, MYTH_MASTERY_MAX]));
+  }
+  const state = startRun(initial);
   state.meta.lossStreak = Number.isFinite(lossStreak) ? Math.max(0, lossStreak) : 0;
   state.run.seed = seed;
   state.run.lossStreak = state.meta.lossStreak;
@@ -140,7 +145,7 @@ function chooseCombatAction(run) {
 
   const playable = run.combat.hand
     .map((instance) => ({ instance, card: cards[instance.cardId] }))
-    .filter(({ card }) => run.energy >= card.cost && !(card.id === "meditate" && run.energy >= run.maxEnergy));
+    .filter(({ card }) => run.energy >= effectiveCardCost(run, card).cost && !(card.id === "meditate" && run.energy >= run.maxEnergy));
 
   if (playable.length === 0) return { type: "endTurn" };
 
@@ -184,7 +189,7 @@ function combatScore(run, card) {
   if (profile === "spell" && effectType(card, "thunderMark")) score += 48;
   if (profile === "spell" && effectType(card, "gainEnergy")) score += 12;
   if (card.id === "meditate" && run.energy >= run.maxEnergy) score -= 999;
-  return score - card.cost * 3;
+  return score - effectiveCardCost(run, card).cost * 3;
 }
 
 function rewardScore(run, reward) {
@@ -291,6 +296,7 @@ function summarize(items) {
   return {
     runs: items.length,
     profile,
+    mythMode,
     seed: baseSeed,
     winRate: ratio(count((item) => item.won), items.length),
     bossWinRate: ratio(count((item) => item.completedBy === "boss"), items.length),
@@ -331,7 +337,7 @@ function summarize(items) {
 }
 
 function printSummary(summary) {
-  console.log(`玄箓行发布前模拟：${summary.runs} 局 / profile=${summary.profile} / seed=${summary.seed}`);
+  console.log(`玄箓行发布前模拟：${summary.runs} 局 / profile=${summary.profile} / myth=${summary.mythMode} / seed=${summary.seed}`);
   console.log(`胜率 ${pct(summary.winRate)}，Boss 通关 ${pct(summary.bossWinRate)}，特殊通关 ${pct(summary.specialWinRate)}，失败 ${pct(summary.lossRate)}`);
   console.log(`平均层数 ${summary.avgFinalFloor}，平均牌组 ${summary.avgDeckSize}，平均遗物 ${summary.avgRelics}，平均能量上限 ${summary.avgMaxEnergy}`);
   console.log(`平均最大格挡 ${summary.avgMaxBlock}，平均最低生命 ${summary.avgMinHp}`);

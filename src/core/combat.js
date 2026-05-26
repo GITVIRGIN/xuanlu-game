@@ -4,7 +4,7 @@ import { generateRewards, rollRelicReward } from "./rewards.js";
 import { grantGoldDrop } from "./economy.js";
 import { completeRunVictory } from "./goals.js";
 import { choice, randomInt, shuffle } from "./rng.js";
-import { recordMythCardPlay } from "./myth.js";
+import { applyMythCombatStartBonuses, commitEffectiveCardCost, effectiveCardCost, recordMythCardPlay } from "./myth.js";
 import {
   addStatus,
   clearStatus,
@@ -75,7 +75,8 @@ export function playCard(state, cardUid, targetUid) {
   if (!cardInstance) return state;
 
   const card = cards[cardInstance.cardId];
-  const cost = card?.cost ?? 0;
+  const costInfo = effectiveCardCost(run, card);
+  const cost = costInfo.cost;
 
   if (card?.id === "meditate" && run.energy >= run.maxEnergy) {
     combat.log.push("能量已满，调息未生效。");
@@ -88,9 +89,15 @@ export function playCard(state, cardUid, targetUid) {
   }
 
   run.energy -= cost;
+  commitEffectiveCardCost(run, costInfo);
   combat.hand.splice(cardIndex, 1);
   combat.discardPile.push(cardInstance);
   combat.log.push(`你打出 ${card.name}。`);
+  if (costInfo.firstFree) {
+    combat.log.push("洪荒箓印满级：本场首张洪荒牌免费。");
+  } else if (costInfo.reduced > 0) {
+    combat.log.push(`洪荒箓印满级：费用 -${costInfo.reduced}。`);
+  }
   recordMythCardPlay(run, card);
   applyCardEffects(state, cardInstance, targetUid);
 
@@ -155,6 +162,10 @@ export function startPlayerTurn(state) {
   if (run.relics.includes("jadeRuyi")) {
     addStatus(playerAsFighter(run), "spirit", 1);
     combat.log.push(`${relics.jadeRuyi.name} 生辉，获得 灵气 1。`);
+  }
+
+  if (combat.turn === 1) {
+    applyMythCombatStartBonuses(run);
   }
 
   const handLimit = run.handLimit ?? 5;

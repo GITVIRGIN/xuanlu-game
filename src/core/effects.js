@@ -1,6 +1,6 @@
 import { cards, relics } from "./data.js";
 import { drawCards, finishCombatIfWon } from "./combat.js";
-import { awardMythMasteryForRunEnd, cardMythBoost, mythAwardText } from "./myth.js";
+import { awardMythMasteryForRunEnd, cardMythBoost, consumeMythFirstStrike, mythAwardText, mythFirstStrikeDamageBonus, mythStatusDamageBonus } from "./myth.js";
 import { addStatus, reduceConsumableDebuff, reduceStatus, statusLabel, statusStacks } from "./status.js";
 
 const SPIRIT_BONUS_PER_COST = 4;
@@ -137,10 +137,15 @@ export function applyCardDamage(state, target, baseDamage, cardCost = 1, cardSty
   const battleIntent = cardStyle === "physical" ? statusStacks(player, "battleIntent") : 0;
   const curse = statusStacks(target, "curse");
   const spiritBonus = Math.min(spirit, Math.max(1, cardCost) * SPIRIT_BONUS_PER_COST);
-  let damage = baseDamage + spiritBonus + battleIntent + curse;
+  const firstStrikeBonus = mythFirstStrikeDamageBonus(run, target);
+  let damage = baseDamage + spiritBonus + battleIntent + curse + firstStrikeBonus;
 
   if (battleIntent > 0) {
     combatLog(state, `战意追加 ${battleIntent} 点物理伤害。`);
+  }
+  if (firstStrikeBonus > 0) {
+    consumeMythFirstStrike(run, firstStrikeBonus);
+    combatLog(state, `妖箓印满级：首击追加 ${firstStrikeBonus} 点伤害。`);
   }
 
   if (run.relics.includes("thunderSeal") && !combat.flags.thunderSealUsed) {
@@ -156,7 +161,8 @@ export function applyCardDamage(state, target, baseDamage, cardCost = 1, cardSty
 
   const bleed = statusStacks(target, "bleed");
   if (bleed > 0 && target.hp > 0) {
-    const rawBleedDamage = applyBrittleDamage(state, target, bleed);
+    const bleedBonus = mythStatusDamageBonus(run, target, "bleed");
+    const rawBleedDamage = applyBrittleDamage(state, target, bleed + bleedBonus);
     const bleedDamage = applyBlock(target, rawBleedDamage);
     target.hp = Math.max(0, target.hp - bleedDamage);
     const reduced = reduceConsumableDebuff(target, "bleed", 1);
@@ -215,7 +221,8 @@ export function tickDamageStatus(state, fighter, statusId) {
   const stacks = statusStacks(fighter, statusId);
   if (stacks <= 0) return;
 
-  const rawDamage = applyBrittleDamage(state, fighter, stacks);
+  const bonus = mythStatusDamageBonus(state.run, fighter, statusId);
+  const rawDamage = applyBrittleDamage(state, fighter, stacks + bonus);
   const damage = applyBlock(fighter, rawDamage);
   fighter.hp = Math.max(0, fighter.hp - damage);
   const blocked = rawDamage - damage;
