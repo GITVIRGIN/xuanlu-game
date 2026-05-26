@@ -189,6 +189,7 @@ function combatScore(run, card) {
 
 function rewardScore(run, reward) {
   if (reward.type === "heal") return run.hp <= run.maxHp * 0.45 ? 95 : 12;
+  if (reward.type === "specialFragment") return 88;
   if (reward.type === "relic") return 74;
   if (reward.type === "gold") return 28;
 

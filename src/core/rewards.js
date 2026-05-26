@@ -7,7 +7,7 @@ import {
   shouldGuaranteeArchetype,
   styleLabel,
 } from "./archetypes.js";
-import { checkSpecialGoal } from "./goals.js";
+import { canOfferSpecialFragment, checkSpecialGoal, grantSpecialFragment } from "./goals.js";
 import { finishCurrentNode, prepareRouteChoice, tierForFloor } from "./nodes.js";
 import { weightedChoice } from "./rng.js";
 import { MAX_FLOOR } from "./types.js";
@@ -41,6 +41,11 @@ export function generateRewards(state) {
         type: "relic",
         value: relic.id,
       });
+    }
+
+    const fragment = rollSpecialFragmentReward(run, node);
+    if (fragment) {
+      rewards[2] = fragment;
     }
 
     return rewards;
@@ -80,6 +85,11 @@ export function generateRewards(state) {
     };
   }
 
+  const fragment = rollSpecialFragmentReward(run, node);
+  if (fragment) {
+    rewards[2] = fragment;
+  }
+
   return rewards;
 }
 
@@ -117,6 +127,11 @@ export function chooseReward(state, rewardId) {
       run.relics.push(reward.value);
     }
     state.message = `获得遗物：${relics[reward.value].name}`;
+  }
+
+  if (reward.type === "specialFragment") {
+    const progress = grantSpecialFragment(run);
+    state.message = `拾得玄箓残片（${progress.fragments}/${progress.required}）。`;
   }
 
   if (reward.type === "heal") {
@@ -188,4 +203,15 @@ export function rollRelicReward(run) {
   const available = Object.values(relics).filter((relic) => !run.relics.includes(relic.id));
   if (available.length === 0) return null;
   return weightedChoice(run, available, (relic) => rarityInfo[relic.rarity].weight);
+}
+
+function rollSpecialFragmentReward(run, node) {
+  if (!canOfferSpecialFragment(run)) return null;
+  if (node?.rewardKind !== "tierPremium") return null;
+
+  return {
+    id: `reward_special_fragment_${run.floor}`,
+    type: "specialFragment",
+    value: 1,
+  };
 }

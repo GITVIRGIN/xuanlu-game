@@ -75,7 +75,7 @@
  *
  * @typedef {object} Reward
  * @property {string} id
- * @property {"card" | "gold" | "relic" | "heal"} type
+ * @property {"card" | "gold" | "relic" | "heal" | "specialFragment"} type
  * @property {string | number} value
  *
  * @typedef {object} RouteNode

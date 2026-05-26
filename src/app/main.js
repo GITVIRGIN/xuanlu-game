@@ -20,6 +20,7 @@ let cloudOpen = false;
 let cloudBusy = false;
 let cloudMessage = "";
 let cloudTimer = null;
+let suppressCardClickUntil = 0;
 
 function dispatch(action) {
   state = reduceGame(state, action);
@@ -535,7 +536,8 @@ function attachLongPressDetail(node, definition) {
     clearTimer();
     timer = window.setTimeout(() => {
       longPressed = true;
-      showDetail(detailForCard(definition));
+      suppressCardClickUntil = Date.now() + 800;
+      openDetail(detailForCard(definition));
     }, 520);
   });
   node.addEventListener("pointerup", clearTimer);
@@ -544,7 +546,7 @@ function attachLongPressDetail(node, definition) {
   node.addEventListener(
     "click",
     (event) => {
-      if (!longPressed) return;
+      if (!longPressed && Date.now() >= suppressCardClickUntil) return;
       event.preventDefault();
       event.stopImmediatePropagation();
       longPressed = false;
@@ -553,7 +555,7 @@ function attachLongPressDetail(node, definition) {
   );
   node.addEventListener("contextmenu", (event) => {
     event.preventDefault();
-    showDetail(detailForCard(definition));
+    openDetail(detailForCard(definition));
   });
 }
 
@@ -571,7 +573,13 @@ function renderMobilePlayerStrip(run) {
 function renderCard(definition, onClick) {
   const node = el("button", `game-card rarity-${definition.rarity}`);
   node.type = "button";
-  node.addEventListener("click", onClick);
+  node.addEventListener("click", (event) => {
+    if (Date.now() < suppressCardClickUntil) {
+      event.preventDefault();
+      return;
+    }
+    onClick(event);
+  });
   node.append(
     el("span", "card-rarity", rarityInfo[definition.rarity].label),
     el("strong", "", definition.name),
@@ -642,6 +650,14 @@ function renderRewardChoice(reward) {
     return node;
   }
 
+  if (reward.type === "specialFragment") {
+    const node = el("button", "relic-choice rarity-legendary");
+    node.type = "button";
+    node.addEventListener("click", () => dispatch({ type: "chooseReward", rewardId: reward.id }));
+    node.append(el("span", "card-rarity", "异兆"), el("strong", "", "玄箓残片"), el("p", "", "特殊通关目标进度 +1。普通遗物不会触发特殊通关。"));
+    return node;
+  }
+
   if (reward.type === "gold") {
     return button(`获得 ${reward.value} 金`, "primary", () => dispatch({ type: "chooseReward", rewardId: reward.id }));
   }
@@ -692,7 +708,7 @@ function renderGoalPanel(run) {
   const progress = goalProgress(run);
   const goal = run.goal ?? createRunGoal(run.seed);
   const specialText = progress.specialActive
-    ? `特殊：${goal.special.title}（遗物 ${progress.special}）`
+    ? `特殊：${goal.special.title}（残片 ${progress.special}）`
     : `特殊：${goal.special.title}（本局未显，约十局一现）`;
   return el("section", "goal-panel", [
     el("div", "goal-title", [el("strong", "", "本局目标"), el("span", "", `${progress.targetMinutes} 分钟`)]),
@@ -967,6 +983,11 @@ function renderDetailPanel(info) {
 
 function showDetail(info) {
   detailInfo = detailInfo?.key && detailInfo.key === info.key ? null : info;
+  render();
+}
+
+function openDetail(info) {
+  detailInfo = info;
   render();
 }
 
