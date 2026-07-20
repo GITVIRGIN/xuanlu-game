@@ -1,0 +1,2095 @@
+{
+  "schemaVersion": 2,
+  "release": "R20",
+  "authority": "src/heishan_r20/data/assetRoles.js",
+  "generatedBy": "scripts/buildR20AssetManifest.mjs",
+  "sourcePolicy": "Qoder and DeepSeek assets are not copied; all listed R20 files are project-directed imagegen outputs, Codex-authored SVGs, or deterministic derivatives with preserved masters.",
+  "legalBoundary": "Factual provenance is recorded; external legal acceptance remains required before commercial release.",
+  "assets": [
+    {
+      "roleId": "scene.home",
+      "kind": "wide-scene",
+      "production": {
+        "path": "assets/heishan_r20/backgrounds/home/home-tavern-night.webp",
+        "bytes": 126942,
+        "sha256": "2721f9d1aeb259621795c97e52b36e780624f67d96e74c02b64e682c06bb1434"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/backgrounds/home/home-tavern-night.png",
+          "bytes": 2094132,
+          "sha256": "bb505c006f35faee4c6c007ac35a9cab6b7af5c79c5ff7607c8c82060b71c0ea"
+        },
+        {
+          "path": "art-source/heishan_r20/backgrounds/home/home-tavern-night-source.png",
+          "bytes": 2094132,
+          "sha256": "bb505c006f35faee4c6c007ac35a9cab6b7af5c79c5ff7607c8c82060b71c0ea"
+        },
+        {
+          "path": "art-source/heishan_r20/backgrounds/home/home-tavern-night-source-16x9-original.png",
+          "bytes": 2074567,
+          "sha256": "9b894451c581ed3785de2647e41a1b77bc6294602b6a291942413ec0baecd71d"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1536x1024",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen source -> imagegen 3:2 reframe/cleanup -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "scene.home",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P2_DESKTOP_MOBILE"
+    },
+    {
+      "roleId": "scene.tavern",
+      "kind": "wide-scene",
+      "production": {
+        "path": "assets/heishan_r20/backgrounds/tavern/tavern-interior.webp",
+        "bytes": 170182,
+        "sha256": "b29e125936f1c7dea52a3785f7d04f5e399078c214f2c9a1657b3a86542e1fda"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/backgrounds/tavern/tavern-interior.png",
+          "bytes": 2181994,
+          "sha256": "4b8ae9489d6bf2a6e4a288226ff295a071cf7ca5f4d5058c2e53b353e7e51cb0"
+        },
+        {
+          "path": "art-source/heishan_r20/backgrounds/tavern/tavern-interior-source.png",
+          "bytes": 2181994,
+          "sha256": "4b8ae9489d6bf2a6e4a288226ff295a071cf7ca5f4d5058c2e53b353e7e51cb0"
+        },
+        {
+          "path": "art-source/heishan_r20/backgrounds/tavern/tavern-interior-source-16x9-original.png",
+          "bytes": 2104099,
+          "sha256": "9364559d11213d9c055cbe3e49f0e5c513717f364876158862efd36170130684"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1536x1024",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen source -> imagegen 3:2 reframe/cleanup -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "scene.tavern",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P3_DESKTOP_MOBILE"
+    },
+    {
+      "roleId": "scene.combat",
+      "kind": "wide-scene",
+      "production": {
+        "path": "assets/heishan_r20/backgrounds/combat/mountain-road.webp",
+        "bytes": 227136,
+        "sha256": "32d9b94c07435b0de3108b7fa07f70c53857d7a02573ef1dbc35d4fafb9e72b2"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/backgrounds/combat/mountain-road.png",
+          "bytes": 2518095,
+          "sha256": "6afdcd1d3db1ef82bb4387522594e5b65a57c35e1f504ede1e5d1c4a0c6fc847"
+        },
+        {
+          "path": "art-source/heishan_r20/backgrounds/combat/mountain-road-source.png",
+          "bytes": 2518095,
+          "sha256": "6afdcd1d3db1ef82bb4387522594e5b65a57c35e1f504ede1e5d1c4a0c6fc847"
+        },
+        {
+          "path": "art-source/heishan_r20/backgrounds/combat/mountain-road-source-16x9-original.png",
+          "bytes": 2340534,
+          "sha256": "88952ff0249d099ebe1154ee6b05875d53e78b77492f97365198f4659be13821"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1536x1024",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen source -> imagegen 3:2 reframe/cleanup -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "scene.combat",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P3_DESKTOP_MOBILE"
+    },
+    {
+      "roleId": "scene.boss",
+      "kind": "wide-scene",
+      "production": {
+        "path": "assets/heishan_r20/backgrounds/combat/boss-summit.webp",
+        "bytes": 290838,
+        "sha256": "1682592f2bac16f7cccea5bcfbbffb26007a29b1f8ee33b1768e3f29f3be7efb"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/backgrounds/combat/boss-summit.png",
+          "bytes": 2739429,
+          "sha256": "5bb9c19b27f6ae86f4f2baff1416a53ee943ef485330653b43e27bf5f205bf01"
+        },
+        {
+          "path": "art-source/heishan_r20/backgrounds/combat/boss-summit-source.png",
+          "bytes": 2739429,
+          "sha256": "5bb9c19b27f6ae86f4f2baff1416a53ee943ef485330653b43e27bf5f205bf01"
+        },
+        {
+          "path": "art-source/heishan_r20/backgrounds/combat/boss-summit-source-16x9-original.png",
+          "bytes": 2517160,
+          "sha256": "662342585152ab11f9b19039101e5f51e5a46a21da12975a061a7a53add78196"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1536x1024",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen source -> imagegen 3:2 reframe/cleanup -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "scene.boss",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P2_DESKTOP_MOBILE"
+    },
+    {
+      "roleId": "scene.archive",
+      "kind": "wide-scene",
+      "production": {
+        "path": "assets/heishan_r20/backgrounds/story/archive-ledger-room.webp",
+        "bytes": 151876,
+        "sha256": "9bba4f5acecd0f0ae9ec33cf0cdc23eae7cae3fcbd81b80be53e886377f1fe77"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/backgrounds/story/archive-ledger-room.png",
+          "bytes": 2211117,
+          "sha256": "e6193afd7b3b40efd91c82d8065f546ddb8545d16f742beb1dc083376957111d"
+        },
+        {
+          "path": "art-source/heishan_r20/backgrounds/story/archive-ledger-room-source.png",
+          "bytes": 2211117,
+          "sha256": "e6193afd7b3b40efd91c82d8065f546ddb8545d16f742beb1dc083376957111d"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1536x1024",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen source -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "scene.archive",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "scene.partner",
+      "kind": "wide-scene",
+      "production": {
+        "path": "assets/heishan_r20/backgrounds/story/partner-dawn-threshold.webp",
+        "bytes": 184698,
+        "sha256": "4d50989adc62840c35d0d98a717c2b8a2da47de2be46946a579974d2376d3158"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/backgrounds/story/partner-dawn-threshold.png",
+          "bytes": 2349671,
+          "sha256": "09e630543c6b4073a5d8942631b6fe3ece7713f89d4a79ecdd7a9a4e9f6901fd"
+        },
+        {
+          "path": "art-source/heishan_r20/backgrounds/story/partner-dawn-threshold-source.png",
+          "bytes": 2349671,
+          "sha256": "09e630543c6b4073a5d8942631b6fe3ece7713f89d4a79ecdd7a9a4e9f6901fd"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1536x1024",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen source -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "scene.partner",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "scene.rumor",
+      "kind": "wide-scene",
+      "production": {
+        "path": "assets/heishan_r20/backgrounds/story/rumor-rain-room.webp",
+        "bytes": 145408,
+        "sha256": "8f0fa43333ac02164af93b263f0cb1335be9743953d3ad17e8b1e2c865531e28"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/backgrounds/story/rumor-rain-room.png",
+          "bytes": 2259740,
+          "sha256": "766431875fc0294e5adb80ab45a63b5599455e5b2954889839fd7531f4c94cdc"
+        },
+        {
+          "path": "art-source/heishan_r20/backgrounds/story/rumor-rain-room-source.png",
+          "bytes": 2259740,
+          "sha256": "766431875fc0294e5adb80ab45a63b5599455e5b2954889839fd7531f4c94cdc"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1536x1024",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen source -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "scene.rumor",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "route.xuanjia",
+      "kind": "route-scene",
+      "production": {
+        "path": "assets/heishan_r20/backgrounds/routes/xuanjia-old-gate.webp",
+        "bytes": 308376,
+        "sha256": "cc2da2b2dd653c3da4ffddf5ac5c1d184f7456321cd49366290ed4e86929483a"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/backgrounds/routes/xuanjia-old-gate.png",
+          "bytes": 2887402,
+          "sha256": "8f81fa9cb2ca77bec1ed91e34a793d79fa6f7f1a68ec5b49e84ec953625b51ee"
+        },
+        {
+          "path": "art-source/heishan_r20/backgrounds/routes/xuanjia-old-gate-source.png",
+          "bytes": 2887402,
+          "sha256": "8f81fa9cb2ca77bec1ed91e34a793d79fa6f7f1a68ec5b49e84ec953625b51ee"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1536x1024",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen source -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "route.xuanjia",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P2_DESKTOP_MOBILE"
+    },
+    {
+      "roleId": "route.leixue",
+      "kind": "route-scene",
+      "production": {
+        "path": "assets/heishan_r20/backgrounds/routes/leixue-thunder-pass.webp",
+        "bytes": 210018,
+        "sha256": "dc9e4655bcb7f1a23972836b17f027bbbc37265968187b48f9d890f0fced8e04"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/backgrounds/routes/leixue-thunder-pass.png",
+          "bytes": 2553148,
+          "sha256": "7ce301bcb81b1d27f9220f0f2b6ba63c6cd5b0e87f54d2bd13a1efc7793cb888"
+        },
+        {
+          "path": "art-source/heishan_r20/backgrounds/routes/leixue-thunder-pass-source.png",
+          "bytes": 2553148,
+          "sha256": "7ce301bcb81b1d27f9220f0f2b6ba63c6cd5b0e87f54d2bd13a1efc7793cb888"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1536x1024",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen source -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "route.leixue",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P2_DESKTOP_MOBILE"
+    },
+    {
+      "roleId": "route.zhenyu",
+      "kind": "route-scene",
+      "production": {
+        "path": "assets/heishan_r20/backgrounds/routes/zhenyu-prison-shrine.webp",
+        "bytes": 244954,
+        "sha256": "9eba1c3df132881a3fa76dfada5cd45564754cad36a9dada5bbb5ec06101934e"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/backgrounds/routes/zhenyu-prison-shrine.png",
+          "bytes": 2622805,
+          "sha256": "e755a20c743ff904179dfa4598ade22fa185a6c4a523df2f51a58ac925766bc0"
+        },
+        {
+          "path": "art-source/heishan_r20/backgrounds/routes/zhenyu-prison-shrine-source.png",
+          "bytes": 2622805,
+          "sha256": "e755a20c743ff904179dfa4598ade22fa185a6c4a523df2f51a58ac925766bc0"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1536x1024",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen source -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "route.zhenyu",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P2_DESKTOP_MOBILE"
+    },
+    {
+      "roleId": "route.zhuoying",
+      "kind": "route-scene",
+      "production": {
+        "path": "assets/heishan_r20/backgrounds/routes/zhuoying-death-notice-road.webp",
+        "bytes": 279466,
+        "sha256": "36444d51c901a334852aa84fab19753c6ad49feca57fb6a8b4d06c772e4d9ae1"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/backgrounds/routes/zhuoying-death-notice-road.png",
+          "bytes": 2708916,
+          "sha256": "38267bb0b94fc15e9b4cf816a2e7f47fef530007be431c1354c727c4c1b28b21"
+        },
+        {
+          "path": "art-source/heishan_r20/generated-route-masters/zhuoying-route-source.png",
+          "bytes": 2708916,
+          "sha256": "38267bb0b94fc15e9b4cf816a2e7f47fef530007be431c1354c727c4c1b28b21"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1536x1024",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "project-directed imagegen source -> preserved runtime PNG master -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "route.zhuoying",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "route.guizang",
+      "kind": "route-scene",
+      "production": {
+        "path": "assets/heishan_r20/backgrounds/routes/guizang-archive-clinic.webp",
+        "bytes": 288036,
+        "sha256": "65806f1562d6c472318590e1b927e780da4285b91207b4af8aedd23c9cb02d67"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/backgrounds/routes/guizang-archive-clinic.png",
+          "bytes": 2709262,
+          "sha256": "f9413be119891b3b27b42322a9e32fcb03aae5803e4e6b2aec498bc04408bccf"
+        },
+        {
+          "path": "art-source/heishan_r20/generated-route-masters/guizang-route-source.png",
+          "bytes": 2709262,
+          "sha256": "f9413be119891b3b27b42322a9e32fcb03aae5803e4e6b2aec498bc04408bccf"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1536x1024",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "project-directed imagegen source -> preserved runtime PNG master -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "route.guizang",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "route.wuxiang",
+      "kind": "route-scene",
+      "production": {
+        "path": "assets/heishan_r20/backgrounds/routes/wuxiang-borrowed-stage.webp",
+        "bytes": 283874,
+        "sha256": "a7f91d7c189fb698982913570784055ce6b99296a129e16a93314aa09cbea05b"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/backgrounds/routes/wuxiang-borrowed-stage.png",
+          "bytes": 2697548,
+          "sha256": "92c4972a450b1124ce1435394fc05561149446d6f48625c13445b327d702b37f"
+        },
+        {
+          "path": "art-source/heishan_r20/generated-route-masters/wuxiang-route-source-v2.png",
+          "bytes": 2697548,
+          "sha256": "92c4972a450b1124ce1435394fc05561149446d6f48625c13445b327d702b37f"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1536x1024",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "project-directed imagegen source -> preserved runtime PNG master -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "route.wuxiang",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "boss.yaojiang",
+      "kind": "boss-cutout",
+      "production": {
+        "path": "assets/heishan_r20/bosses/yaojiang.webp",
+        "bytes": 226508,
+        "sha256": "7d39f004bed5957ad9f3e2183fa3535ae1287e221102a5d28ec6844d1a387293"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/bosses/yaojiang.png",
+          "bytes": 1587407,
+          "sha256": "ff3c2cd4eebb5b946edbc753f7fbee984a187aac463dcbddd4e88b096c772505"
+        },
+        {
+          "path": "art-source/heishan_r20/bosses/concepts/yaojiang-checker-concept.png",
+          "bytes": 2269383,
+          "sha256": "b56abad9fd799d7fc219ca42c8f14e76a01c07047bdf699ffbf61fcb67a73579"
+        },
+        {
+          "path": "art-source/heishan_r20/bosses/chroma/yaojiang-chroma.png",
+          "bytes": 2084427,
+          "sha256": "cad958bc763fe6b754b9a620c054ffff076831334ef52e254824f218e919a360"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen concept -> imagegen chroma master -> scripts/processR20BossChroma.mjs -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "boss.yaojiang",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P2_DESKTOP_MOBILE"
+    },
+    {
+      "roleId": "boss.shanjun",
+      "kind": "boss-cutout",
+      "production": {
+        "path": "assets/heishan_r20/bosses/shanjun.webp",
+        "bytes": 280468,
+        "sha256": "3d1d36e58ebaa4506df6c5924d5b33e54f199cd5d85d4590704fe7838b045283"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/bosses/shanjun.png",
+          "bytes": 1918870,
+          "sha256": "6019d556194028079646a360cf7f15b6c27ef51d9122e28d07a961dbe95b066d"
+        },
+        {
+          "path": "art-source/heishan_r20/bosses/concepts/shanjun-checker-concept.png",
+          "bytes": 2382349,
+          "sha256": "8ab0e08223f4df314f047534d444d2656c05cf7e532521a79b7fd6bbf3be2e21"
+        },
+        {
+          "path": "art-source/heishan_r20/bosses/chroma/shanjun-chroma.png",
+          "bytes": 2329363,
+          "sha256": "04dd2e7b88e32d9eee6e1af7585142006d68d94e9e3f31c77438ba66d9b488a9"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen concept -> imagegen chroma master -> scripts/processR20BossChroma.mjs -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "boss.shanjun",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "boss.heishan",
+      "kind": "boss-cutout",
+      "production": {
+        "path": "assets/heishan_r20/bosses/heishan-laoyao.webp",
+        "bytes": 337264,
+        "sha256": "2d34f8aae0ab38b3195627b9aa870c89b85914538465bb90f4e94f9be73fd0dd"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/bosses/heishan-laoyao.png",
+          "bytes": 2108895,
+          "sha256": "53960f30eb942ee32b1bd53affffcb34121c3cd41fed5d029e92dcced24fbbd3"
+        },
+        {
+          "path": "art-source/heishan_r20/bosses/concepts/heishan-laoyao-checker-concept.png",
+          "bytes": 2575065,
+          "sha256": "ce037c62e6f4ec7f50be593493bc4c443e831aa92be61c9173914fc21f1adf12"
+        },
+        {
+          "path": "art-source/heishan_r20/bosses/chroma/heishan-laoyao-chroma.png",
+          "bytes": 2485444,
+          "sha256": "498bfb42aca2872a3fca09831f19c89af79182a9398462c90385324f856c1e2b"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen concept -> imagegen chroma master -> scripts/processR20BossChroma.mjs -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "boss.heishan",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "ordinary.old-army-sentinel",
+      "kind": "enemy-cutout",
+      "production": {
+        "path": "assets/heishan_r20/enemies/ordinary-old-army-sentinel.webp",
+        "bytes": 220468,
+        "sha256": "7d23a0ec396b5036fe02aba6d1581f654ba6b813dc63feaa5d55f9839cad49a9"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/enemies/ordinary-old-army-sentinel.png",
+          "bytes": 1438834,
+          "sha256": "67489e0b2e41fc77bf60a9e80c74cd33dc6dae156d86dd13ce22b4b3f95672ef"
+        },
+        {
+          "path": "art-source/heishan_r20/enemies/chroma/ordinary-old-army-sentinel-chroma.png",
+          "bytes": 2104044,
+          "sha256": "7210097f404f7fc24146468266323723326784e1781869d943bc94f75d67f115"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen chroma master -> scripts/processR20EnemyChroma.mjs -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "ordinary.old-army-sentinel",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "ordinary.archive-wraith",
+      "kind": "enemy-cutout",
+      "production": {
+        "path": "assets/heishan_r20/enemies/ordinary-archive-wraith.webp",
+        "bytes": 228688,
+        "sha256": "2b561e73d54b3f2e5580ce5dadce19113ad8648071c0cf815f8394207aff2b52"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/enemies/ordinary-archive-wraith.png",
+          "bytes": 1677862,
+          "sha256": "4d9e8d3fd3fd1fe1cdc5306c2baeb0eef8b88af53497b2c70b2546ab6c273554"
+        },
+        {
+          "path": "art-source/heishan_r20/enemies/chroma/ordinary-archive-wraith-chroma.png",
+          "bytes": 2110927,
+          "sha256": "5fef7ed64553bdc79ac2d3d1fbe363329cea04ef52c74474911bd86c9ada9d46"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen chroma master -> scripts/processR20EnemyChroma.mjs -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "ordinary.archive-wraith",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P3_MOBILE"
+    },
+    {
+      "roleId": "ordinary.beast-hunter",
+      "kind": "enemy-cutout",
+      "production": {
+        "path": "assets/heishan_r20/enemies/ordinary-beast-hunter.webp",
+        "bytes": 196964,
+        "sha256": "5d37b9d567cbf6e0f4e02a79f2cadb0474e8bf51cf6f0d89bd7c7d5b9c2b425b"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/enemies/ordinary-beast-hunter.png",
+          "bytes": 1345138,
+          "sha256": "3af48190b1ba0643239f34ee18a9792bd54867e81734695bcbf5a8e02c55bcb9"
+        },
+        {
+          "path": "art-source/heishan_r20/enemies/chroma/ordinary-beast-hunter-chroma.png",
+          "bytes": 1955198,
+          "sha256": "eb5dd930fa82638233fea17cf09d4afcc3a64722bc5c2d6449f504d7a787a124"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen chroma master -> scripts/processR20EnemyChroma.mjs -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "ordinary.beast-hunter",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P3_DESKTOP"
+    },
+    {
+      "roleId": "ordinary.thunder-debt-revenant",
+      "kind": "enemy-cutout",
+      "production": {
+        "path": "assets/heishan_r20/enemies/ordinary-thunder-debt-revenant.webp",
+        "bytes": 190596,
+        "sha256": "b92d5fa983cf6047914bd883a972fa3009c27e50918c5a70f8fe0e9983cc9cec"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/enemies/ordinary-thunder-debt-revenant.png",
+          "bytes": 1271101,
+          "sha256": "d5a7443d073ad6e6413c41cac850bd58dc791852ceb2458e2bf340018bb7a8c6"
+        },
+        {
+          "path": "art-source/heishan_r20/enemies/chroma/ordinary-thunder-debt-revenant-chroma.png",
+          "bytes": 1932935,
+          "sha256": "9e4207cd8209cb3f3ef43ad01478e583b284fcf1e12d16dda950df961bc9b5ad"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen chroma master -> scripts/processR20EnemyChroma.mjs -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "ordinary.thunder-debt-revenant",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "ordinary.kiln-ash-effigy",
+      "kind": "enemy-cutout",
+      "production": {
+        "path": "assets/heishan_r20/enemies/ordinary-kiln-ash-effigy.webp",
+        "bytes": 199664,
+        "sha256": "86b3188be805e6a2476b01ed23ad799aa9d3bb84ed6c1ede66f77ee526953b93"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/enemies/ordinary-kiln-ash-effigy.png",
+          "bytes": 1381984,
+          "sha256": "1b9d169c3ca549e9452a868eb8ad34ee2d9708e6c428fb7c5b39a4d838a867b1"
+        },
+        {
+          "path": "art-source/heishan_r20/enemies/chroma/ordinary-kiln-ash-effigy-chroma.png",
+          "bytes": 2007507,
+          "sha256": "1858817a9bce65bd134a7d511419d8cd59712c0294e9f3dce7abab63b8cc3cd1"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen chroma master -> scripts/processR20EnemyChroma.mjs -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "ordinary.kiln-ash-effigy",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P3_DESKTOP"
+    },
+    {
+      "roleId": "ordinary.root-marsh-demon",
+      "kind": "enemy-cutout",
+      "production": {
+        "path": "assets/heishan_r20/enemies/ordinary-root-marsh-demon.webp",
+        "bytes": 206634,
+        "sha256": "a88773395a3e98a9ac126ff683f46ce8d0ae821c0aad8e696b395c8467f7181a"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/enemies/ordinary-root-marsh-demon.png",
+          "bytes": 1437971,
+          "sha256": "6dd5c29c3fa67fea6e667c76821205747fe5c732bab36e81bd8155ec47d5d31f"
+        },
+        {
+          "path": "art-source/heishan_r20/enemies/chroma/ordinary-root-marsh-demon-chroma.png",
+          "bytes": 2045806,
+          "sha256": "0492ce97cb9abce4d9266023ef8ce9b44954cd5c9634fbe930082ff85bc33667"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen chroma master -> scripts/processR20EnemyChroma.mjs -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "ordinary.root-marsh-demon",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "ordinary.lantern-ferryman",
+      "kind": "enemy-cutout",
+      "production": {
+        "path": "assets/heishan_r20/enemies/ordinary-lantern-ferryman.webp",
+        "bytes": 184114,
+        "sha256": "fd0ccf6e9a5b38c13164789b10729b2f5ba85bd3e768b5a3d049ed77728abd48"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/enemies/ordinary-lantern-ferryman.png",
+          "bytes": 1278859,
+          "sha256": "1b5fd48a38f7e226b5db1310f573546d24c2ad650c43b6734526e3373b2559f8"
+        },
+        {
+          "path": "art-source/heishan_r20/enemies/chroma/ordinary-lantern-ferryman-chroma.png",
+          "bytes": 1915559,
+          "sha256": "687686d62454f7df42cecf256e0c11ed19c622266dd3c0a6e27d08cd85b538c5"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen chroma master -> scripts/processR20EnemyChroma.mjs -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "ordinary.lantern-ferryman",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "ordinary.nail-blade-executioner",
+      "kind": "enemy-cutout",
+      "production": {
+        "path": "assets/heishan_r20/enemies/ordinary-nail-blade-executioner.webp",
+        "bytes": 176186,
+        "sha256": "43a84d5769e582ca183d7b53b6f463d19cc85d560d64bb4c8fe6684cb1f898de"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/enemies/ordinary-nail-blade-executioner.png",
+          "bytes": 1298564,
+          "sha256": "0be099c31495d5d153bd21016d4011a4d05825d8fa2e3350e162c70f71d43819"
+        },
+        {
+          "path": "art-source/heishan_r20/enemies/chroma/ordinary-nail-blade-executioner-chroma.png",
+          "bytes": 1924431,
+          "sha256": "04e892ac59b832758dfe44c64e5a822856a2aa15afe94bcd4967d352ceffa7f7"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen chroma master -> scripts/processR20EnemyChroma.mjs -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "ordinary.nail-blade-executioner",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "elite.war-banner-enforcer",
+      "kind": "elite-cutout",
+      "production": {
+        "path": "assets/heishan_r20/enemies/elite-war-banner-enforcer.webp",
+        "bytes": 259962,
+        "sha256": "8ad929b7573c56ab51a61e7d1fb0dd7bd200c368b82f8cdce9238f7a977fb1e4"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/enemies/elite-war-banner-enforcer.png",
+          "bytes": 1573715,
+          "sha256": "fad5cb90326b4c2b24171dfbad5114e2fd552f0ec2f734c01bef52062d5a8470"
+        },
+        {
+          "path": "art-source/heishan_r20/enemies/chroma/elite-war-banner-enforcer-chroma.png",
+          "bytes": 2211659,
+          "sha256": "d819bd7b155a748970e1ac69cfe9dcdd76fd39f5933cf9494e6d95a569f1914f"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen chroma master -> scripts/processR20EnemyChroma.mjs -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "elite.war-banner-enforcer",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "elite.debt-magistrate",
+      "kind": "elite-cutout",
+      "production": {
+        "path": "assets/heishan_r20/enemies/elite-debt-magistrate.webp",
+        "bytes": 232314,
+        "sha256": "dabbc6693a2321a4132faa5d48b336b01fc6c837d4dd91e591d079aa4473b7fb"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/enemies/elite-debt-magistrate.png",
+          "bytes": 1729163,
+          "sha256": "78df28fb1399b11d3529c141269a8d1214e824875330df58c57fcc8422f889c2"
+        },
+        {
+          "path": "art-source/heishan_r20/enemies/chroma/elite-debt-magistrate-chroma.png",
+          "bytes": 2127154,
+          "sha256": "63f41161c4be7faf312e4c2b26b0ae95c9b8e2b9ac08bfcf9ab3c429446b5e2e"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen chroma master -> scripts/processR20EnemyChroma.mjs -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "elite.debt-magistrate",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P3_DESKTOP_MOBILE"
+    },
+    {
+      "roleId": "elite.prison-stone-lord",
+      "kind": "elite-cutout",
+      "production": {
+        "path": "assets/heishan_r20/enemies/elite-prison-stone-lord.webp",
+        "bytes": 322974,
+        "sha256": "267ea4663fc3a21c9600c28bebfb90fd24ac3ae4ffcdb68b895656ad67f28928"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/enemies/elite-prison-stone-lord.png",
+          "bytes": 2064332,
+          "sha256": "4d049266e7575360b304c94697d4916d51dc2e14a9daf20fe901e43a5a6cda75"
+        },
+        {
+          "path": "art-source/heishan_r20/enemies/chroma/elite-prison-stone-lord-chroma.png",
+          "bytes": 2537194,
+          "sha256": "cd96e8b6da0994160b04c30b502381493ac24aab383e7bbf272d0e47d18c60b3"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen chroma master -> scripts/processR20EnemyChroma.mjs -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "elite.prison-stone-lord",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "elite.lantern-psychopomp",
+      "kind": "elite-cutout",
+      "production": {
+        "path": "assets/heishan_r20/enemies/elite-lantern-psychopomp.webp",
+        "bytes": 275364,
+        "sha256": "95b27550f4e1be7ca08f176c854f4ea8af53ceca63c54d08de9e49efc8c84f09"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/enemies/elite-lantern-psychopomp.png",
+          "bytes": 1778607,
+          "sha256": "28abdaa01cb5f6347ed532cf361cfb0e88d64713e0fc2ab1e72e7e94e645556a"
+        },
+        {
+          "path": "art-source/heishan_r20/enemies/chroma/elite-lantern-psychopomp-chroma.png",
+          "bytes": 2187303,
+          "sha256": "3719998d49555a4be1c42cf042fbedf36f7a3932c8645a808c33d1aa8a8654a8"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen chroma master -> scripts/processR20EnemyChroma.mjs -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "elite.lantern-psychopomp",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "elite.wild-hunt-lord",
+      "kind": "elite-cutout",
+      "production": {
+        "path": "assets/heishan_r20/enemies/elite-wild-hunt-lord.webp",
+        "bytes": 293852,
+        "sha256": "abbbc5efe67f4081284f71460441329be7ba32912b6c31561eb32ddecbe2d5d6"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/enemies/elite-wild-hunt-lord.png",
+          "bytes": 1663657,
+          "sha256": "ee4d751f58510129af768a2087c1942d58586b931753dfe2b98f3424783169ef"
+        },
+        {
+          "path": "art-source/heishan_r20/enemies/chroma/elite-wild-hunt-lord-chroma.png",
+          "bytes": 2289176,
+          "sha256": "2cff1d822a55f525e07c80c3e64862f2c39278937e140ed92a114be1b5f131c5"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen chroma master -> scripts/processR20EnemyChroma.mjs -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "elite.wild-hunt-lord",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "elite.kiln-archive-aberration",
+      "kind": "elite-cutout",
+      "production": {
+        "path": "assets/heishan_r20/enemies/elite-kiln-archive-aberration.webp",
+        "bytes": 280422,
+        "sha256": "d48a579a36dd433bd021ddb9c74e472ca58e523968ec548e44cca9f3627c9c85"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/runtime-png-masters/enemies/elite-kiln-archive-aberration.png",
+          "bytes": 1762215,
+          "sha256": "01b8deb2aae8c87306527b996f6de372fe7c28088047d8461fbf17bfc0147888"
+        },
+        {
+          "path": "art-source/heishan_r20/enemies/chroma/elite-kiln-archive-aberration-chroma.png",
+          "bytes": 2316849,
+          "sha256": "c440e9ee919acef485429ddf80890c5d2804720b91afe0a9c09140c6b2c81170"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "imagegen chroma master -> scripts/processR20EnemyChroma.mjs -> preserved runtime PNG master -> scripts/buildR20RuntimeWebp.py audited WebP",
+      "intendedSlot": "elite.kiln-archive-aberration",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P3_DESKTOP"
+    },
+    {
+      "roleId": "icon.tavern.heal",
+      "kind": "ui-icon",
+      "production": {
+        "path": "assets/heishan_r20/icons/tavern-actions/rest-wine.svg",
+        "bytes": 612,
+        "sha256": "7ed7c55f0d9b44888ea7e7744545909685a0300c396144ee68fc83141de0407f"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/icons/tavern-actions/rest-wine.svg",
+          "bytes": 612,
+          "sha256": "7ed7c55f0d9b44888ea7e7744545909685a0300c396144ee68fc83141de0407f"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "icon.tavern.heal",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P3_DESKTOP_MOBILE"
+    },
+    {
+      "roleId": "icon.tavern.prep",
+      "kind": "ui-icon",
+      "production": {
+        "path": "assets/heishan_r20/icons/tavern-actions/polish-weapon.svg",
+        "bytes": 611,
+        "sha256": "6c7a3ef023e38628cd3449d9fafee6bc8bd92822a2ee88299457323eea953ab6"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/icons/tavern-actions/polish-weapon.svg",
+          "bytes": 611,
+          "sha256": "6c7a3ef023e38628cd3449d9fafee6bc8bd92822a2ee88299457323eea953ab6"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "icon.tavern.prep",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P3_DESKTOP_MOBILE"
+    },
+    {
+      "roleId": "icon.tavern.intel",
+      "kind": "ui-icon",
+      "production": {
+        "path": "assets/heishan_r20/icons/tavern-actions/ask-keeper.svg",
+        "bytes": 587,
+        "sha256": "7a6b877360d2c4cb09930deb44069dce978953e48602ceef1272ceea9f6953f9"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/icons/tavern-actions/ask-keeper.svg",
+          "bytes": 587,
+          "sha256": "7a6b877360d2c4cb09930deb44069dce978953e48602ceef1272ceea9f6953f9"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "icon.tavern.intel",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P3_DESKTOP_MOBILE"
+    },
+    {
+      "roleId": "icon.tavern.ward",
+      "kind": "ui-icon",
+      "production": {
+        "path": "assets/heishan_r20/icons/tavern-actions/seal-talisman.svg",
+        "bytes": 543,
+        "sha256": "87f8c12c321317b4a6f7ef40901107d90153d0a24a7c75c80c1805a2f68208c6"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/icons/tavern-actions/seal-talisman.svg",
+          "bytes": 543,
+          "sha256": "87f8c12c321317b4a6f7ef40901107d90153d0a24a7c75c80c1805a2f68208c6"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "icon.tavern.ward",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P3_DESKTOP_MOBILE"
+    },
+    {
+      "roleId": "icon.tavern.recruit",
+      "kind": "ui-icon",
+      "production": {
+        "path": "assets/heishan_r20/icons/tavern-actions/recruit.svg",
+        "bytes": 632,
+        "sha256": "b21a9d95b5fb795ed8a4f5884bc319e44209bce96ec788105f040e882783a307"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/icons/tavern-actions/recruit.svg",
+          "bytes": 632,
+          "sha256": "b21a9d95b5fb795ed8a4f5884bc319e44209bce96ec788105f040e882783a307"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "icon.tavern.recruit",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P3_DESKTOP_MOBILE"
+    },
+    {
+      "roleId": "icon.tavern.leave",
+      "kind": "ui-icon",
+      "production": {
+        "path": "assets/heishan_r20/icons/tavern-actions/leave-road.svg",
+        "bytes": 548,
+        "sha256": "59eb2e80dec71ed4eb52cdf2edeeb0baaf44dd12b81e40423642ea48e00971e0"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/icons/tavern-actions/leave-road.svg",
+          "bytes": 548,
+          "sha256": "59eb2e80dec71ed4eb52cdf2edeeb0baaf44dd12b81e40423642ea48e00971e0"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "icon.tavern.leave",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "icon.tavern.revive",
+      "kind": "ui-icon",
+      "production": {
+        "path": "assets/heishan_r20/icons/tavern-actions/revive-seal.svg",
+        "bytes": 568,
+        "sha256": "6f3496ac10fe9832a487785b17fc544228b61b49b4b0fd415449a264528afc82"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/icons/tavern-actions/revive-seal.svg",
+          "bytes": 568,
+          "sha256": "6f3496ac10fe9832a487785b17fc544228b61b49b4b0fd415449a264528afc82"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "icon.tavern.revive",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "icon.status.life",
+      "kind": "status-icon",
+      "production": {
+        "path": "assets/heishan_r20/icons/status/life.svg",
+        "bytes": 552,
+        "sha256": "419f09cf7c800bc8e6fa635ae1077b4b6a044843fd25426661f8807eedd9f3e2"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/icons/status/life.svg",
+          "bytes": 552,
+          "sha256": "419f09cf7c800bc8e6fa635ae1077b4b6a044843fd25426661f8807eedd9f3e2"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "icon.status.life",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "icon.status.armor",
+      "kind": "status-icon",
+      "production": {
+        "path": "assets/heishan_r20/icons/status/armor.svg",
+        "bytes": 556,
+        "sha256": "1bc8e12036a3f77eaeba6f259646a47cca28b29a499226ae6a5dca61d2257dcd"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/icons/status/armor.svg",
+          "bytes": 556,
+          "sha256": "1bc8e12036a3f77eaeba6f259646a47cca28b29a499226ae6a5dca61d2257dcd"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "icon.status.armor",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "icon.status.damage",
+      "kind": "status-icon",
+      "production": {
+        "path": "assets/heishan_r20/icons/status/damage.svg",
+        "bytes": 526,
+        "sha256": "fb6ab0fd6e59e38d8837abd483b463053b6e53f95caea0c972803e1545eb5704"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/icons/status/damage.svg",
+          "bytes": 526,
+          "sha256": "fb6ab0fd6e59e38d8837abd483b463053b6e53f95caea0c972803e1545eb5704"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "icon.status.damage",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "icon.status.pressure",
+      "kind": "status-icon",
+      "production": {
+        "path": "assets/heishan_r20/icons/status/pressure.svg",
+        "bytes": 554,
+        "sha256": "a163e8f8af8151382b50a04243fe91e1d83f498a8124123c9f323ffd360fb53d"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/icons/status/pressure.svg",
+          "bytes": 554,
+          "sha256": "a163e8f8af8151382b50a04243fe91e1d83f498a8124123c9f323ffd360fb53d"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "icon.status.pressure",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "icon.status.clue",
+      "kind": "status-icon",
+      "production": {
+        "path": "assets/heishan_r20/icons/status/clue.svg",
+        "bytes": 576,
+        "sha256": "2fbdcec29a02053d2443c6744d126edc34bdfbfa9dbf2ba8150276a573b48796"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/icons/status/clue.svg",
+          "bytes": 576,
+          "sha256": "2fbdcec29a02053d2443c6744d126edc34bdfbfa9dbf2ba8150276a573b48796"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "icon.status.clue",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "icon.status.rescue",
+      "kind": "status-icon",
+      "production": {
+        "path": "assets/heishan_r20/icons/status/rescue.svg",
+        "bytes": 575,
+        "sha256": "1561953629c846df1fc29aa7252327e56854748087c65f668a3f4a45d908fdaa"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/icons/status/rescue.svg",
+          "bytes": 575,
+          "sha256": "1561953629c846df1fc29aa7252327e56854748087c65f668a3f4a45d908fdaa"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "icon.status.rescue",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "icon.status.revive",
+      "kind": "status-icon",
+      "production": {
+        "path": "assets/heishan_r20/icons/status/revive.svg",
+        "bytes": 542,
+        "sha256": "17704d603b7e3d03eec459b39cca6b3813b48cef088010650299c37f81c5c536"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/icons/status/revive.svg",
+          "bytes": 542,
+          "sha256": "17704d603b7e3d03eec459b39cca6b3813b48cef088010650299c37f81c5c536"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "icon.status.revive",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "icon.consequence.immediate",
+      "kind": "consequence-icon",
+      "production": {
+        "path": "assets/heishan_r20/icons/consequence/immediate.svg",
+        "bytes": 504,
+        "sha256": "f11681cb5cdc674d5037acd28216ad3b748fe886622b417a0509b67051332d2d"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/icons/consequence/immediate.svg",
+          "bytes": 504,
+          "sha256": "f11681cb5cdc674d5037acd28216ad3b748fe886622b417a0509b67051332d2d"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "icon.consequence.immediate",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "icon.consequence.daomai",
+      "kind": "consequence-icon",
+      "production": {
+        "path": "assets/heishan_r20/icons/consequence/daomai.svg",
+        "bytes": 648,
+        "sha256": "f0c8836f7f9b9bd90f18261db8e10a31ddebabbd353ae262af33cb1b9bc249e0"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/icons/consequence/daomai.svg",
+          "bytes": 648,
+          "sha256": "f0c8836f7f9b9bd90f18261db8e10a31ddebabbd353ae262af33cb1b9bc249e0"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "icon.consequence.daomai",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "icon.consequence.threshold",
+      "kind": "consequence-icon",
+      "production": {
+        "path": "assets/heishan_r20/icons/consequence/threshold.svg",
+        "bytes": 506,
+        "sha256": "bad1033792e072cdbc405a4040b3d13abf904cc16d42477fd31426c25c14e05a"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/icons/consequence/threshold.svg",
+          "bytes": 506,
+          "sha256": "bad1033792e072cdbc405a4040b3d13abf904cc16d42477fd31426c25c14e05a"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "icon.consequence.threshold",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "icon.consequence.old-cause",
+      "kind": "consequence-icon",
+      "production": {
+        "path": "assets/heishan_r20/icons/consequence/old-cause.svg",
+        "bytes": 496,
+        "sha256": "c07918898c61772f6d85b28c5cf8d128166e3631036fd57bfd8fb352107a12fe"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/icons/consequence/old-cause.svg",
+          "bytes": 496,
+          "sha256": "c07918898c61772f6d85b28c5cf8d128166e3631036fd57bfd8fb352107a12fe"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "icon.consequence.old-cause",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "icon.consequence.fulfillment",
+      "kind": "consequence-icon",
+      "production": {
+        "path": "assets/heishan_r20/icons/consequence/fulfillment.svg",
+        "bytes": 511,
+        "sha256": "c08762e158d0051fc406da23208225cc83c932af945671185c95f9c82f6c4758"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/icons/consequence/fulfillment.svg",
+          "bytes": 511,
+          "sha256": "c08762e158d0051fc406da23208225cc83c932af945671185c95f9c82f6c4758"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "icon.consequence.fulfillment",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "icon.consequence.debt",
+      "kind": "consequence-icon",
+      "production": {
+        "path": "assets/heishan_r20/icons/consequence/debt.svg",
+        "bytes": 581,
+        "sha256": "6a2d3e8f4048ef5f32153c931ac8ebb375bd05affaf60d3ecc2097a20fbe8f7f"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/icons/consequence/debt.svg",
+          "bytes": 581,
+          "sha256": "6a2d3e8f4048ef5f32153c931ac8ebb375bd05affaf60d3ecc2097a20fbe8f7f"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "icon.consequence.debt",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "icon.consequence.clue",
+      "kind": "consequence-icon",
+      "production": {
+        "path": "assets/heishan_r20/icons/consequence/clue.svg",
+        "bytes": 570,
+        "sha256": "38f1810e785755af7e0e87b820087f7c9c2a18e21ae19b3d62c53a3800a8be1a"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/icons/consequence/clue.svg",
+          "bytes": 570,
+          "sha256": "38f1810e785755af7e0e87b820087f7c9c2a18e21ae19b3d62c53a3800a8be1a"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "icon.consequence.clue",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "fx.intro",
+      "kind": "combat-cue",
+      "production": {
+        "path": "assets/heishan_r20/fx/intro.svg",
+        "bytes": 524,
+        "sha256": "165d9b3797b02138ce6759ea3ab7c46c69c565b76856af448ffbdb3d68c1ee36"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/fx/intro.svg",
+          "bytes": 524,
+          "sha256": "165d9b3797b02138ce6759ea3ab7c46c69c565b76856af448ffbdb3d68c1ee36"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "fx.intro",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P3_DESKTOP_MOBILE"
+    },
+    {
+      "roleId": "fx.hit-slash",
+      "kind": "combat-cue",
+      "production": {
+        "path": "assets/heishan_r20/fx/hit-slash.svg",
+        "bytes": 484,
+        "sha256": "9da0a9767a24eecf3e397eb4cae6acdae8219c860bf19512a6add57cea936900"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/fx/hit-slash.svg",
+          "bytes": 484,
+          "sha256": "9da0a9767a24eecf3e397eb4cae6acdae8219c860bf19512a6add57cea936900"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "fx.hit-slash",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P3_DESKTOP"
+    },
+    {
+      "roleId": "fx.pressure-pulse",
+      "kind": "combat-cue",
+      "production": {
+        "path": "assets/heishan_r20/fx/pressure-pulse.svg",
+        "bytes": 570,
+        "sha256": "4f40b51a14d9523ac8525980c068ac5a630e7cd4beed2342b763e554447d3aab"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/fx/pressure-pulse.svg",
+          "bytes": 570,
+          "sha256": "4f40b51a14d9523ac8525980c068ac5a630e7cd4beed2342b763e554447d3aab"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "fx.pressure-pulse",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P3_DESKTOP"
+    },
+    {
+      "roleId": "fx.armor-break",
+      "kind": "combat-cue",
+      "production": {
+        "path": "assets/heishan_r20/fx/armor-break.svg",
+        "bytes": 544,
+        "sha256": "cd6ed4fc0dcdb0104c99e49d6640c22bbb0a83326094a6abbeb2af5df23a7534"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/fx/armor-break.svg",
+          "bytes": 544,
+          "sha256": "cd6ed4fc0dcdb0104c99e49d6640c22bbb0a83326094a6abbeb2af5df23a7534"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "fx.armor-break",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P3_DESKTOP"
+    },
+    {
+      "roleId": "fx.ally-guard",
+      "kind": "combat-cue",
+      "production": {
+        "path": "assets/heishan_r20/fx/ally-guard.svg",
+        "bytes": 624,
+        "sha256": "7fead2a9276558d7661772bb8ede95ce6281bb3a085fef1e8c3f2eadbc58665c"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/fx/ally-guard.svg",
+          "bytes": 624,
+          "sha256": "7fead2a9276558d7661772bb8ede95ce6281bb3a085fef1e8c3f2eadbc58665c"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "fx.ally-guard",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "fx.ally-revive",
+      "kind": "combat-cue",
+      "production": {
+        "path": "assets/heishan_r20/fx/ally-revive.svg",
+        "bytes": 529,
+        "sha256": "b82e282b02463bc8d0804e90aa65d7920c194fdcfe43930c239d01ba5902dd9e"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/fx/ally-revive.svg",
+          "bytes": 529,
+          "sha256": "b82e282b02463bc8d0804e90aa65d7920c194fdcfe43930c239d01ba5902dd9e"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "fx.ally-revive",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "fx.boss-phase-red",
+      "kind": "combat-cue",
+      "production": {
+        "path": "assets/heishan_r20/fx/boss-phase-red.svg",
+        "bytes": 631,
+        "sha256": "7c9c6fd31b1971f395b4e9b31182c3024d34890542d4d34fb76377d4771d4b7c"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/fx/boss-phase-red.svg",
+          "bytes": 631,
+          "sha256": "7c9c6fd31b1971f395b4e9b31182c3024d34890542d4d34fb76377d4771d4b7c"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "64x64",
+      "format": "svg",
+      "generator": "Codex-authored deterministic SVG",
+      "transformation": "authored code-native SVG source -> byte-identical production SVG",
+      "intendedSlot": "fx.boss-phase-red",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "protagonist.shen-li",
+      "kind": "character-cutout",
+      "production": {
+        "path": "assets/heishan_r20/portraits/shen-li.png",
+        "bytes": 1595410,
+        "sha256": "dba41831ea4709476500c99b9f21b64827e8951c3f848216f441dc4f252dd116"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/portraits/chroma/shen-li-chroma.png",
+          "bytes": 2120234,
+          "sha256": "f858cde5e9a66195e7d91005915ea919b48ec8b1c51efb41984df9716e593d61"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "png",
+      "generator": "OpenAI imagegen source + deterministic project matte",
+      "transformation": "imagegen chroma master -> deterministic R20 RGBA matte",
+      "intendedSlot": "protagonist.shen-li",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P1"
+    },
+    {
+      "roleId": "protagonist.yue-chenbei",
+      "kind": "character-cutout",
+      "production": {
+        "path": "assets/heishan_r20/portraits/yue-chenbei.png",
+        "bytes": 1577325,
+        "sha256": "af2413dc01202561373adf3dd7ac359823d909aab0c224cd0069b8e2aea9a2ac"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/portraits/chroma/yue-chenbei-chroma.png",
+          "bytes": 2166617,
+          "sha256": "5f643c22c1cf6074eb5b238478218355f6003f7287292c7e98e13854cd233617"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "png",
+      "generator": "OpenAI imagegen source + deterministic project matte",
+      "transformation": "imagegen chroma master -> deterministic R20 RGBA matte",
+      "intendedSlot": "protagonist.yue-chenbei",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P1"
+    },
+    {
+      "roleId": "protagonist.lu-qinglu",
+      "kind": "character-cutout",
+      "production": {
+        "path": "assets/heishan_r20/portraits/lu-qinglu.png",
+        "bytes": 1443357,
+        "sha256": "0a357e497aceccf7efb018b4f74f2dd5d4ca79c716d5b660d193f007837d3a3b"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/portraits/chroma/lu-qinglu-chroma.png",
+          "bytes": 2047255,
+          "sha256": "ccd869917e9f6fe5beb662ff492ee5e9c865114cdb008a948c5bdc444cbd6027"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "png",
+      "generator": "OpenAI imagegen source + deterministic project matte",
+      "transformation": "imagegen chroma master -> deterministic R20 RGBA matte",
+      "intendedSlot": "protagonist.lu-qinglu",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P1"
+    },
+    {
+      "roleId": "companion.chi-yao",
+      "kind": "character-cutout",
+      "production": {
+        "path": "assets/heishan_r20/portraits/chi-yao.png",
+        "bytes": 1417315,
+        "sha256": "e45a58f72e4f38862664820d97041b3d348abc8cb2101a59341b9fa6bb3ed1d2"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/portraits/chroma/chi-yao-chroma.png",
+          "bytes": 2028224,
+          "sha256": "24489ea511f35d2a033f969935635296d02a472e43c07374b9d82a551a87c916"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "png",
+      "generator": "OpenAI imagegen source + deterministic project matte",
+      "transformation": "imagegen chroma master -> deterministic R20 RGBA matte",
+      "intendedSlot": "companion.chi-yao",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P1"
+    },
+    {
+      "roleId": "companion.wen-fuji",
+      "kind": "character-cutout",
+      "production": {
+        "path": "assets/heishan_r20/portraits/wen-fuji.png",
+        "bytes": 1346374,
+        "sha256": "137f7944300b188ac2f8bdbfe1703705505516e5d2fe81f7f664fa1679647689"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/portraits/chroma/wen-fuji-chroma.png",
+          "bytes": 2005028,
+          "sha256": "7d1d211c7b3accb466fba91dee9e79905880341bc79779615658d5d0acc284bc"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "png",
+      "generator": "OpenAI imagegen source + deterministic project matte",
+      "transformation": "imagegen chroma master -> deterministic R20 RGBA matte",
+      "intendedSlot": "companion.wen-fuji",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P1"
+    },
+    {
+      "roleId": "companion.xuan-yu",
+      "kind": "character-cutout",
+      "production": {
+        "path": "assets/heishan_r20/portraits/xuan-yu.png",
+        "bytes": 1574668,
+        "sha256": "a9a9ba0c5e2803fe330f8ed11361631b3df68d73058069a0d4fc164a17df541a"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/portraits/chroma/xuan-yu-chroma.png",
+          "bytes": 2186871,
+          "sha256": "4dc1e1a4497f8bfaac0a0bc7f1858d3b7ab5ec587574a6fa9d0196446f7d60c8"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "png",
+      "generator": "OpenAI imagegen source + deterministic project matte",
+      "transformation": "imagegen chroma master -> deterministic R20 RGBA matte",
+      "intendedSlot": "companion.xuan-yu",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P1"
+    },
+    {
+      "roleId": "protagonist.su-yanhui",
+      "kind": "character-cutout",
+      "production": {
+        "path": "assets/heishan_r20/portraits/su-yanhui.png",
+        "bytes": 1435344,
+        "sha256": "58e7b6ff7da3bc2a6be2fe62fbd226fe7bf67b8b9f4f9adaf0c175b4775445a6"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/generated-portrait-masters/su-yanhui-chroma.png",
+          "bytes": 2124429,
+          "sha256": "97bdb807740a6e9a775398c6ce18e4cd365e4092d24200a0af80329ccfc93234"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "png",
+      "generator": "OpenAI imagegen source + deterministic project matte",
+      "transformation": "imagegen chroma master -> deterministic R20 RGBA matte",
+      "intendedSlot": "protagonist.su-yanhui",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "protagonist.bai-heng",
+      "kind": "character-cutout",
+      "production": {
+        "path": "assets/heishan_r20/portraits/bai-heng.png",
+        "bytes": 1445334,
+        "sha256": "b50fe05aa221d6806c04c9c11160f8a826bb2b294bbb4b94e350301c7b766de1"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/generated-portrait-masters/bai-heng-v2-chroma.png",
+          "bytes": 2132145,
+          "sha256": "86385f357a682092d34a4caaabf145df864a73783fb8d5f61bca546cdd4260ea"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "png",
+      "generator": "OpenAI imagegen source + deterministic project matte",
+      "transformation": "imagegen chroma master -> deterministic R20 RGBA matte",
+      "intendedSlot": "protagonist.bai-heng",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "protagonist.liu-jisheng",
+      "kind": "character-cutout",
+      "production": {
+        "path": "assets/heishan_r20/portraits/liu-jisheng.png",
+        "bytes": 1479708,
+        "sha256": "28ec125905f8327aeb2700f7a0124cc6ed3cf36224a1a98501cf47097c698839"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/generated-portrait-masters/liu-jisheng-v2-chroma.png",
+          "bytes": 2082771,
+          "sha256": "d7ed269b95f102da15690cb5ca6b20643751532dc1a2ac2d001aa0aa58eb9115"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "png",
+      "generator": "OpenAI imagegen source + deterministic project matte",
+      "transformation": "imagegen chroma master -> deterministic R20 RGBA matte",
+      "intendedSlot": "protagonist.liu-jisheng",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "downed.shen-li",
+      "kind": "character-downed-cutout",
+      "production": {
+        "path": "assets/heishan_r20/portraits/downed/shen-li-downed.webp",
+        "bytes": 141474,
+        "sha256": "a6f203815df5b28a2dc2d5d24cd3ab1bd5a8ff829208904bc2eddc75d291699c"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/downed/shen-li-downed-chroma.png",
+          "bytes": 1937890,
+          "sha256": "57c889dbae1e1b3853bf360890c4f331cdc905233a49f7adbe5a98b75299890d"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "identity-locked imagegen pose edit -> preserved chroma master -> deterministic transparent WebP matte",
+      "intendedSlot": "downed.shen-li",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "downed.yue-chenbei",
+      "kind": "character-downed-cutout",
+      "production": {
+        "path": "assets/heishan_r20/portraits/downed/yue-chenbei-downed.webp",
+        "bytes": 161360,
+        "sha256": "0b552efcb590f648a2f144dac7b82b8d8df257e85f6a8bf0cfd099606b48a3be"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/downed/yue-chenbei-downed-chroma.png",
+          "bytes": 2141164,
+          "sha256": "b2cce6e984cadcc3fb844fdd61aff8184bc5827ca4e5b954e772316babccc4c8"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "identity-locked imagegen pose edit -> preserved chroma master -> deterministic transparent WebP matte",
+      "intendedSlot": "downed.yue-chenbei",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "downed.lu-qinglu",
+      "kind": "character-downed-cutout",
+      "production": {
+        "path": "assets/heishan_r20/portraits/downed/lu-qinglu-downed.webp",
+        "bytes": 137888,
+        "sha256": "06afaa49f25d8bbfe664747c2aaf99bef5b6ccdaf9c281989bb1f5ccdd42c9ff"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/downed/lu-qinglu-downed-chroma.png",
+          "bytes": 1916398,
+          "sha256": "f7b5862c21929de99daacf2c072de7cb4e89edf96ed72127ff3730eb418ff556"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "identity-locked imagegen pose edit -> preserved chroma master -> deterministic transparent WebP matte",
+      "intendedSlot": "downed.lu-qinglu",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "downed.chi-yao",
+      "kind": "character-downed-cutout",
+      "production": {
+        "path": "assets/heishan_r20/portraits/downed/chi-yao-downed.webp",
+        "bytes": 164164,
+        "sha256": "670fe365da3484cab8bf9080286a7fd0ec0aee0f2b146cbc01bd3621961327b8"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/downed/chi-yao-downed-chroma.png",
+          "bytes": 1951785,
+          "sha256": "8f2a4bdba7b84dc7944d88279b9caa2a1102bbc1581f77fb76ace0ff076d11b1"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "identity-locked imagegen pose edit -> preserved chroma master -> deterministic transparent WebP matte",
+      "intendedSlot": "downed.chi-yao",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "downed.wen-fuji",
+      "kind": "character-downed-cutout",
+      "production": {
+        "path": "assets/heishan_r20/portraits/downed/wen-fuji-downed.webp",
+        "bytes": 137570,
+        "sha256": "035cb7bd8b3409c93f31bf39ec97aea0c9a0e9dc69e5de9aec9e21ff277f3279"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/downed/wen-fuji-downed-chroma.png",
+          "bytes": 1996945,
+          "sha256": "4455f28ff843f7d926da487024dca41ee61d3ebe943e51202ef4c44624ce8eeb"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "identity-locked imagegen pose edit -> preserved chroma master -> deterministic transparent WebP matte",
+      "intendedSlot": "downed.wen-fuji",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "downed.xuan-yu",
+      "kind": "character-downed-cutout",
+      "production": {
+        "path": "assets/heishan_r20/portraits/downed/xuan-yu-downed.webp",
+        "bytes": 133898,
+        "sha256": "21afed51cb84965d1ce3f899be2edbce0f14db3cdb98b8dda73ba4fecb6d76f6"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/downed/xuan-yu-downed-chroma.png",
+          "bytes": 1930407,
+          "sha256": "645493fc461d0182531edfc443a246d6ee129d8e793d0ed46f3fb856b79dcbde"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "identity-locked imagegen pose edit -> preserved chroma master -> deterministic transparent WebP matte",
+      "intendedSlot": "downed.xuan-yu",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "downed.su-yanhui",
+      "kind": "character-downed-cutout",
+      "production": {
+        "path": "assets/heishan_r20/portraits/downed/su-yanhui-downed.webp",
+        "bytes": 150318,
+        "sha256": "c94a70325e8cd0ad30ad51f03b7697709e1713e6471e9dcfb100167fe551dcb8"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/downed/su-yanhui-downed-chroma.png",
+          "bytes": 1860421,
+          "sha256": "3af85f1fd8b417a91069f1cb992bf64b8e15cb3124b769374d893722a69658fc"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "identity-locked imagegen pose edit -> preserved chroma master -> deterministic transparent WebP matte",
+      "intendedSlot": "downed.su-yanhui",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "downed.bai-heng",
+      "kind": "character-downed-cutout",
+      "production": {
+        "path": "assets/heishan_r20/portraits/downed/bai-heng-downed.webp",
+        "bytes": 143104,
+        "sha256": "d4b984ea931d71b39ed55caf497608ea953493582999b7d34060dccdc79fb61b"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/downed/bai-heng-downed-chroma.png",
+          "bytes": 2032532,
+          "sha256": "b245243794252b6f3ceb4f84c83a208690162443fb769b03e22e4f6753eb5117"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "identity-locked imagegen pose edit -> preserved chroma master -> deterministic transparent WebP matte",
+      "intendedSlot": "downed.bai-heng",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    },
+    {
+      "roleId": "downed.liu-jisheng",
+      "kind": "character-downed-cutout",
+      "production": {
+        "path": "assets/heishan_r20/portraits/downed/liu-jisheng-downed.webp",
+        "bytes": 148672,
+        "sha256": "e37e770f05b6500270ba3135d9b89149aab44807d710284c8f8ca788d11816c7"
+      },
+      "sources": [
+        {
+          "path": "art-source/heishan_r20/downed/liu-jisheng-downed-chroma.png",
+          "bytes": 2019890,
+          "sha256": "00b38f70ac0a82f33a97eaf6d76a3d8ffba8c26e71902bf392c5dc13ea4f1e20"
+        }
+      ],
+      "fallback": null,
+      "dimensions": "1024x1536",
+      "format": "webp",
+      "generator": "OpenAI imagegen source + deterministic Pillow/libwebp derivative",
+      "transformation": "identity-locked imagegen pose edit -> preserved chroma master -> deterministic transparent WebP matte",
+      "intendedSlot": "downed.liu-jisheng",
+      "rightsStatus": "PROJECT_GENERATED_PROVENANCE_RECORDED_EXTERNAL_LEGAL_ACCEPTANCE_REQUIRED",
+      "rightsBasis": "Project-directed generation or project-authored SVG; see art-source/heishan_r20/provenance.md and LEGAL_REVIEW_REQUIRED.md",
+      "visualStatus": "BROWSER_ACCEPTED_P4_DESKTOP_MOBILE_ATLAS"
+    }
+  ]
+}
